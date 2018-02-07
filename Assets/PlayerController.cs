@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour {
     Transform cam;
     Vector3 camRot;
     float camUpDown;
+    float camLeftRight;
 
     // Use this for initialization
     void Start () {
@@ -39,15 +40,6 @@ public class PlayerController : MonoBehaviour {
             rgdBody.AddForce(transform.up * jumpForce);
         }
 
-        if (rgdBody.velocity.y < 0)
-        {
-            rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
-        }
-        else if (rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
-        {
-            rgdBody.velocity += Vector3.up * Physics.gravity.y * 4 * Time.deltaTime;
-        }
-
         if (grounded)
             GetComponent<Renderer>().material.color = Color.green;
         else
@@ -58,7 +50,7 @@ public class PlayerController : MonoBehaviour {
         camUpDown = Mathf.Clamp(camUpDown, -65, 65);
         cam.localRotation = Quaternion.AngleAxis(-camUpDown, Vector3.right);
 
-        float camLeftRight = Input.GetAxis("Mouse X") * sensX;
+        camLeftRight = Input.GetAxis("Mouse X") * sensX;
         transform.Rotate(Vector3.up, camLeftRight);
 
         Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
@@ -71,10 +63,10 @@ public class PlayerController : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        //if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump")) // NOT WORKING PROPERLY  -  UPSIDEDOWN NEEDS INVERTED NUMBERS
-        //{
-        //    gravityBody.gravityMultiplier = startGravMult * 4;
-        //}
+        if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
+        {
+            rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
+        }
 
         rgdBody.MovePosition(rgdBody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
