@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour {
 
 
         camUpDown += Input.GetAxis("Mouse Y") * sensY;
-        camUpDown = Mathf.Clamp(camUpDown, -75, 75);
+        camUpDown = Mathf.Clamp(camUpDown, -65, 65);
         cam.localRotation = Quaternion.AngleAxis(-camUpDown, Vector3.right);
 
         float camLeftRight = Input.GetAxis("Mouse X") * sensX;
