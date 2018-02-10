@@ -3,71 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-
-    [SerializeField]
-    float speed = 10;
-    [SerializeField]
-    float jumpForce = 300;
-    [SerializeField]
-    float sensX = 5f;
-    [SerializeField]
-    float sensY = 5f;
-    [SerializeField]
-    float moveFloatiness = .15f;
-    bool grounded;
-    bool jump;
-    Vector3 moveAmount;
-    Vector3 smoothMove;
-    Rigidbody rgdBody;
-
-    Transform cam;
-    Vector3 camRot;
-    float camUpDown;
-    float camLeftRight;
-
+    GroundState ground;
     // Use this for initialization
-    void Start () {
-        rgdBody = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked;
-        cam = Camera.main.transform;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        jump = Input.GetButtonDown("Jump");
-        if (jump)
-        {
-            rgdBody.AddForce(transform.up * jumpForce);
-        }
-
-        if (grounded)
-            GetComponent<Renderer>().material.color = Color.green;
-        else
-            GetComponent<Renderer>().material.color = Color.red;
-
-
-        camUpDown += Input.GetAxis("Mouse Y") * sensY;
-        camUpDown = Mathf.Clamp(camUpDown, -65, 65);
-        cam.localRotation = Quaternion.AngleAxis(-camUpDown, Vector3.right);
-
-        camLeftRight = Input.GetAxis("Mouse X") * sensX;
-        transform.Rotate(Vector3.up, camLeftRight);
-
-        Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-        moveAmount = Vector3.SmoothDamp(moveAmount, strafe * speed, ref smoothMove, moveFloatiness);
-
-
-        if (Input.GetKeyDown("escape"))
-            Cursor.lockState = CursorLockMode.None;
-	}
-
-    private void FixedUpdate()
+    void Start()
     {
-        if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
-        {
-            rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
-        }
-
-        rgdBody.MovePosition(rgdBody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+        //if (Input.GetKeyDown("escape"))
+        //    Cursor.lockState = CursorLockMode.None;
+        //Cursor.lockState = CursorLockMode.Locked;
+        ground = GetComponent<GroundState>();
     }
+
+    // Update is called once per frame
+    void Update()
+    {
+        ground.Run();
+    }
+
+    //private void FixedUpdate()
+    //{
+    //    if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
+    //    {
+    //        rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
+    //    }
+
+    //    rgdBody.MovePosition(rgdBody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+    //}
 }
