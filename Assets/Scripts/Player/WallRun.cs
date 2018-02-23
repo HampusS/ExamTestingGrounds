@@ -4,50 +4,52 @@ using UnityEngine;
 
 public class WallRun : MonoBehaviour
 {
-
-    bool isWallR, isWallL;
-    RaycastHit hitR, hitL;
-    int jumpCount;
+    RaycastHit hit;
     Rigidbody rgdBody;
+    GroundState groundState;
 
     // Use this for initialization
     void Start()
     {
         rgdBody = GetComponent<Rigidbody>();
+        groundState = GetComponent<GroundState>();
     }
 
+    bool Enter()
+    {
+        if (Input.GetButtonDown("Jump") && groundState.Grounded)
+        {
+            if (Physics.Raycast(transform.position, transform.right, out hit, 1) || Physics.Raycast(transform.position, -transform.right, out hit, 1))
+            {
+                if (hit.transform.tag == "wall")
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     void Run()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Enter())
         {
-            if (Physics.Raycast(transform.position, transform.right, out hitR, 1))
-            {
-                GetComponent<Renderer>().material.color = Color.green;
-                if (hitR.transform.tag == "wall")
-                {
-                    isWallR = true;
-                    isWallL = false;
-                    rgdBody.useGravity = false;
-                }
-            }
-            else if (Physics.Raycast(transform.position, -transform.right, out hitL, 1))
-            {
-                if (hitL.transform.tag == "wall")
-                {
-                    isWallR = false;
-                    isWallL = true;
-                    rgdBody.useGravity = false;
-                }
-            }
+            GetComponent<Renderer>().material.color = Color.green;
+            transform.position += Vector3.up * (GetComponent<CapsuleCollider>().height * 0.15f);
+            rgdBody.AddForce(transform.up * 50);
+            rgdBody.useGravity = false;
             StartCoroutine(afterRun());
         }
     }
     IEnumerator afterRun()
     {
-        yield return new WaitForSeconds(0.15f);
-        isWallR = false;
-        isWallL = false;
+        yield return new WaitForSeconds(0.5f);
+        Exit();
+    }
+
+    void Exit()
+    {
+        GetComponent<Renderer>().material.color = Color.red;
         rgdBody.useGravity = true;
     }
 

@@ -15,11 +15,13 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
+
+
         ground.Run();
 
         Ray ray = new Ray(transform.position, Vector3.down);
-        Debug.DrawRay(ray.origin, transform.up * -1.25f, Color.black);
-        Debug.DrawRay(ray.origin, transform.right * -1, Color.black);
+        Debug.DrawRay(ray.origin, -transform.up * 1.25f, Color.black);
+        Debug.DrawRay(ray.origin, -transform.right, Color.black);
         Debug.DrawRay(ray.origin, transform.right, Color.black);
         Debug.DrawRay(ray.origin, transform.forward, Color.black);
 

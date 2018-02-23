@@ -8,7 +8,7 @@ public class GroundState : MonoBehaviour {
     [SerializeField]
     float speed = 10;
     [SerializeField]
-    float jumpForce = 300;
+    float jumpForce = 100;
     [SerializeField]
     float moveFloatiness = .15f;
 
@@ -17,7 +17,7 @@ public class GroundState : MonoBehaviour {
     Vector3 smoothMove;
     Rigidbody rgdBody;
     RaycastHit hit;
-    bool Grounded;
+    public bool Grounded { get; set; }
 
     void Start()
     {
@@ -27,9 +27,8 @@ public class GroundState : MonoBehaviour {
     public void Run()
     {
         Grounded = false;
-        Ray ray = new Ray(transform.position, Vector3.down);
 
-        if (Physics.Raycast(ray, out hit, 1.25f, groundedMask))
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.25f, groundedMask))
         {
             Grounded = true;
             float surfDist = Vector3.Distance(hit.point, transform.position);

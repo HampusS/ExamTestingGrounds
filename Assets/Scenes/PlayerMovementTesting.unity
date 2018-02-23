@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 32660094}
   m_Layer: 0
   m_Name: Cube (7)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 175714723}
   m_Layer: 0
   m_Name: Cube (5)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 227723279}
   m_Layer: 0
   m_Name: Cube (3)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -534,7 +534,7 @@ GameObject:
   - component: {fileID: 505434747}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -789,6 +789,7 @@ GameObject:
   - component: {fileID: 990467769}
   - component: {fileID: 990467766}
   - component: {fileID: 990467767}
+  - component: {fileID: 990467768}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -891,8 +892,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   speed: 10
-  jumpForce: 300
+  jumpForce: 200
   moveFloatiness: 0.15
+--- !u!114 &990467768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 990467761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcd584859bf53a044b9c10f471b2ed78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &990467769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1556,7 +1568,7 @@ GameObject:
   - component: {fileID: 2031891143}
   m_Layer: 0
   m_Name: Cube (4)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
