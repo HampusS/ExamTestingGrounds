@@ -52,18 +52,14 @@ public class GroundState : MonoBehaviour {
             moveAmount = Vector3.SmoothDamp(moveAmount, strafe * speed, ref smoothMove, moveFloatiness);
         }
 
-        if (Grounded)
-            GetComponent<Renderer>().material.color = Color.green;
-        else
-            GetComponent<Renderer>().material.color = Color.red;
     }
 
     private void FixedUpdate()
     {
-        if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
-        {
-            rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
-        }
+        //if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
+        //{
+        //    rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
+        //}
 
         rgdBody.MovePosition(rgdBody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }

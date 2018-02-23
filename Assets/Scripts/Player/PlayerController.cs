@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     GroundState ground;
-    // Use this for initialization
+
     void Start()
     {
         //if (Input.GetKeyDown("escape"))
@@ -13,10 +13,16 @@ public class PlayerController : MonoBehaviour {
         ground = GetComponent<GroundState>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         ground.Run();
+
+        Ray ray = new Ray(transform.position, Vector3.down);
+        Debug.DrawRay(ray.origin, transform.up * -1.25f, Color.black);
+        Debug.DrawRay(ray.origin, transform.right * -1, Color.black);
+        Debug.DrawRay(ray.origin, transform.right, Color.black);
+        Debug.DrawRay(ray.origin, transform.forward, Color.black);
+
     }
 
     //private void FixedUpdate()
