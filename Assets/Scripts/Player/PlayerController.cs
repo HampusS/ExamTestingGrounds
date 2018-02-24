@@ -2,17 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MoveStates
+{
+    ERROR,
+    GROUND,
+    WALLRUN,
+}
+
 public class PlayerController : MonoBehaviour
 {
-    List<BaseState> states;
+    public MoveStates moveStates { get; set; }
     public BaseState currentState { get; set; }
-    public bool Grounded { get; set; }
+    List<BaseState> states;
 
     Rigidbody rgdBody;
     Vector3 moveAmount;
     Vector3 smoothMove;
     RaycastHit hit;
 
+    bool onBottom;
 
     void Start()
     {
@@ -23,13 +31,15 @@ public class PlayerController : MonoBehaviour
         states = new List<BaseState>();
         states.Add(GetComponent<GroundState>());
         states.Add(GetComponent<WallRun>());
+        moveStates = MoveStates.GROUND;
     }
 
     void Update()
     {
-        UpdateGroundCheck();
+        RayTraceBottom();
         if (currentState == null || currentState.Exit())
         {
+            UpdateGroundCheck();
             currentState = null;
             foreach (BaseState state in states)
             {
@@ -41,12 +51,13 @@ public class PlayerController : MonoBehaviour
         }
         if (currentState != null)
             currentState.Run();
-        if(!Grounded)
-        Debug.Log(Grounded);
-        if(Grounded)
+
+        if (moveStates == MoveStates.GROUND)
         {
             SnapToGround();
         }
+        //Debug.Log(moveStates);
+
 
         Ray ray = new Ray(transform.position, Vector3.down);
         Debug.DrawRay(ray.origin, -transform.up * 1.15f, Color.black);
@@ -64,10 +75,10 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateGroundCheck()
     {
-        Grounded = false;
-        if (Physics.Raycast(transform.position, -transform.up * 1.25f, out hit))
+        if (moveStates != MoveStates.GROUND && onBottom)
         {
-            Grounded = true;
+            moveStates = MoveStates.GROUND;
+            Debug.Log("switch");
         }
     }
 
@@ -78,6 +89,11 @@ public class PlayerController : MonoBehaviour
         {
             transform.position += hit.normal * ((GetComponent<CapsuleCollider>().height * 0.5f) - surfDist);
         }
+    }
+
+    void RayTraceBottom()
+    {
+        onBottom = Physics.Raycast(transform.position, -transform.up, out hit, 1.25f);
     }
 
     private void FixedUpdate()

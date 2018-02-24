@@ -16,21 +16,28 @@ public class GroundState : BaseState
     bool jump;
     RaycastHit hit;
 
+    private void Start()
+    {
+        myStateType = MoveStates.GROUND;
+    }
+
     public override bool Enter()
     {
-        if (controller.Grounded)
+        if (controller.moveStates == myStateType)
+        {
             return true;
+        }
         return false;
     }
 
     public override void Run()
     {
         jump = Input.GetButtonDown("Jump");
-        if (jump && controller.Grounded)
+        if (jump && controller.moveStates == MoveStates.GROUND)
         {
             transform.position += Vector3.up * (GetComponent<CapsuleCollider>().height * 0.15f);
             rgdBody.AddForce(transform.up * jumpForce);
-            controller.Grounded = false;
+            controller.moveStates = MoveStates.ERROR;
         }
 
         controller.UpdateMoveAmount(speed, moveFloatiness);
