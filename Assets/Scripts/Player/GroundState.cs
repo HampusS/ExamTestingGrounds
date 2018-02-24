@@ -2,64 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundState : MonoBehaviour {
+public class GroundState : BaseState
+{
     [SerializeField]
-    LayerMask groundedMask;
+    LayerMask groundLayer;
     [SerializeField]
     float speed = 10;
     [SerializeField]
-    float jumpForce = 100;
-    [SerializeField]
     float moveFloatiness = .15f;
+    [SerializeField]
+    float jumpForce = 300;
 
     bool jump;
-    Vector3 moveAmount;
-    Vector3 smoothMove;
-    Rigidbody rgdBody;
     RaycastHit hit;
-    public bool Grounded { get; set; }
 
-    void Start()
+    public override bool Enter()
     {
-        rgdBody = GetComponent<Rigidbody>();
+        if (controller.Grounded)
+            return true;
+        return false;
     }
 
-    public void Run()
+    public override void Run()
     {
-        Grounded = false;
-
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.25f, groundedMask))
-        {
-            Grounded = true;
-            float surfDist = Vector3.Distance(hit.point, transform.position);
-            if (!jump && surfDist < GetComponent<CapsuleCollider>().height * 0.6f)
-            {
-                transform.position += hit.normal * ((GetComponent<CapsuleCollider>().height * 0.5f) - surfDist);
-            }
-        }
-
         jump = Input.GetButtonDown("Jump");
-        if (jump && Grounded)
+        if (jump && controller.Grounded)
         {
             transform.position += Vector3.up * (GetComponent<CapsuleCollider>().height * 0.15f);
             rgdBody.AddForce(transform.up * jumpForce);
+            controller.Grounded = false;
         }
 
-        if (Grounded)
-        {
-            Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-            moveAmount = Vector3.SmoothDamp(moveAmount, strafe * speed, ref smoothMove, moveFloatiness);
-        }
-
+        controller.UpdateMoveAmount(speed, moveFloatiness);
     }
 
-    private void FixedUpdate()
+    public override bool Exit()
     {
-        //if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
-        //{
-        //    rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
-        //}
-
-        rgdBody.MovePosition(rgdBody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+        return true;
     }
+
 }

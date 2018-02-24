@@ -2,60 +2,62 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallRun : MonoBehaviour
+public class WallRun : BaseState
 {
+    [SerializeField]
+    LayerMask wallLayer;
     RaycastHit hit;
-    Rigidbody rgdBody;
-    GroundState groundState;
+    float timer, timeSpan;
+    bool running;
 
     // Use this for initialization
     void Start()
     {
-        rgdBody = GetComponent<Rigidbody>();
-        groundState = GetComponent<GroundState>();
+        timer = 0;
+        timeSpan = 0.8f;
     }
 
-    bool Enter()
+    public override bool Enter()
     {
-        if (Input.GetButtonDown("Jump") && groundState.Grounded)
+        if (controller.Grounded && Input.GetButtonDown("Jump") && Input.GetAxisRaw("Vertical") > 0)
         {
-            if (Physics.Raycast(transform.position, transform.right, out hit, 1) || Physics.Raycast(transform.position, -transform.right, out hit, 1))
+            if (Physics.Raycast(transform.position, transform.right, out hit, 1, wallLayer) ||
+                Physics.Raycast(transform.position, -transform.right, out hit, 1, wallLayer))
             {
-                if (hit.transform.tag == "wall")
-                {
-                    return true;
-                }
+                GetComponent<Renderer>().material.color = Color.green;
+                timer = 0;
+                running = true;
+                controller.Grounded = false;
+                return true;
             }
         }
         return false;
     }
 
-    void Run()
+    public override void Run()
     {
-        if (Enter())
+        timer += Time.deltaTime;
+        if (running)
         {
-            GetComponent<Renderer>().material.color = Color.green;
-            transform.position += Vector3.up * (GetComponent<CapsuleCollider>().height * 0.15f);
-            rgdBody.AddForce(transform.up * 50);
             rgdBody.useGravity = false;
-            StartCoroutine(afterRun());
+            transform.position += Vector3.up * (GetComponent<CapsuleCollider>().height * 0.15f);
+            rgdBody.velocity = new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z);
+            rgdBody.AddForce(transform.up * 60);
+            running = false;
         }
     }
-    IEnumerator afterRun()
+
+    public override bool Exit()
     {
-        yield return new WaitForSeconds(0.5f);
-        Exit();
+        if (timer >= timeSpan || !Input.GetButton("Jump"))
+        {
+            GetComponent<Renderer>().material.color = Color.red;
+            rgdBody.useGravity = true;
+            timer = 0;
+            return true;
+        }
+
+        return false;
     }
 
-    void Exit()
-    {
-        GetComponent<Renderer>().material.color = Color.red;
-        rgdBody.useGravity = true;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        Run();
-    }
 }
