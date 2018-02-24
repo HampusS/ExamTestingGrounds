@@ -5,22 +5,28 @@ using UnityEngine;
 public enum MoveStates
 {
     ERROR,
+    AIRBORNE,
     GROUND,
     WALLRUN,
+    LEDGEGRAB,
 }
 
 public class PlayerController : MonoBehaviour
 {
     public MoveStates moveStates { get; set; }
-    public BaseState currentState { get; set; }
+    public BaseState currentState { get; private set; }
     List<BaseState> states;
 
     Rigidbody rgdBody;
     Vector3 moveAmount;
     Vector3 smoothMove;
-    RaycastHit hit;
+    public RaycastHit BottomRayHit() { return bottomHit; }
+    RaycastHit bottomHit;
 
     bool onBottom;
+
+    public float rayLengthHorizontal = 0.6f;
+    public float rayLengthVertical = 1.25f;
 
     void Start()
     {
@@ -52,18 +58,13 @@ public class PlayerController : MonoBehaviour
         if (currentState != null)
             currentState.Run();
 
-        if (moveStates == MoveStates.GROUND)
-        {
-            SnapToGround();
-        }
         //Debug.Log(moveStates);
 
-
         Ray ray = new Ray(transform.position, Vector3.down);
-        Debug.DrawRay(ray.origin, -transform.up * 1.15f, Color.black);
-        Debug.DrawRay(ray.origin, -transform.right, Color.black);
-        Debug.DrawRay(ray.origin, transform.right, Color.black);
-        Debug.DrawRay(ray.origin, transform.forward, Color.black);
+        Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.black);
+        Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.black);
+        Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.black);
+        Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
 
     }
 
@@ -78,30 +79,22 @@ public class PlayerController : MonoBehaviour
         if (moveStates != MoveStates.GROUND && onBottom)
         {
             moveStates = MoveStates.GROUND;
-            Debug.Log("switch");
-        }
-    }
-
-    void SnapToGround()
-    {
-        float surfDist = Vector3.Distance(hit.point, transform.position);
-        if (surfDist < GetComponent<CapsuleCollider>().height * 0.6f)
-        {
-            transform.position += hit.normal * ((GetComponent<CapsuleCollider>().height * 0.5f) - surfDist);
+            UpdateMoveAmount(0, 0.05f);
         }
     }
 
     void RayTraceBottom()
     {
-        onBottom = Physics.Raycast(transform.position, -transform.up, out hit, 1.25f);
+        onBottom = Physics.Raycast(transform.position, -transform.up, out bottomHit, 1.25f);
     }
 
     private void FixedUpdate()
     {
-        if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
-        {
-            rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
-        }
+        if (moveStates != MoveStates.WALLRUN)
+            if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
+            {
+                rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
+            }
 
         rgdBody.MovePosition(rgdBody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }

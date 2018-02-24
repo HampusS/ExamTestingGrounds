@@ -8,22 +8,26 @@ public class WallRun : BaseState
     LayerMask wallLayer;
     float timer, timeSpan;
     bool running;
-    float runHeight = 60;
-    bool onWall;
+    float runHeight = 30;
+    bool onWall, forward;
 
     private void Start()
     {
         myStateType = MoveStates.WALLRUN;
         timer = 0;
-        timeSpan = 0.8f;
+        timeSpan = 1.2f;
     }
 
     void TraceForWalls()
     {
         onWall = false;
-        if (Physics.Raycast(transform.position, transform.right, 1, wallLayer) ||
-                Physics.Raycast(transform.position, -transform.right, 1, wallLayer))
+        if (Physics.Raycast(transform.position, transform.right, controller.rayLengthHorizontal, wallLayer) ||
+                Physics.Raycast(transform.position, -transform.right, controller.rayLengthHorizontal, wallLayer) ||
+                Physics.Raycast(transform.position, transform.forward, controller.rayLengthHorizontal, wallLayer))
+        {
+            forward = Physics.Raycast(transform.position, transform.forward, controller.rayLengthHorizontal, wallLayer);
             onWall = true;
+        }
     }
 
     public override bool Enter()
@@ -33,6 +37,16 @@ public class WallRun : BaseState
             TraceForWalls();
             if (onWall)
             {
+                if (forward)
+                {
+                    runHeight = 100;
+                    timeSpan = 0.8f;
+                }
+                else
+                {
+                    runHeight = 50;
+                    timeSpan = 1f;
+                }
                 GetComponent<Renderer>().material.color = Color.green;
                 controller.moveStates = myStateType;
                 running = true;
@@ -51,7 +65,6 @@ public class WallRun : BaseState
         if (running)
         {
             rgdBody.useGravity = false;
-            transform.position += Vector3.up * (GetComponent<CapsuleCollider>().height * 0.15f);
             rgdBody.velocity = new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z);
             rgdBody.AddForce(transform.up * runHeight);
             running = false;
