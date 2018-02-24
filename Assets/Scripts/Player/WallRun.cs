@@ -6,7 +6,6 @@ public class WallRun : BaseState
 {
     [SerializeField]
     LayerMask wallLayer;
-    RaycastHit hit;
     float timer, timeSpan;
     bool running;
     float runHeight = 60;
@@ -22,8 +21,8 @@ public class WallRun : BaseState
     void TraceForWalls()
     {
         onWall = false;
-        if (Physics.Raycast(transform.position, transform.right, out hit, 1, wallLayer) ||
-                Physics.Raycast(transform.position, -transform.right, out hit, 1, wallLayer))
+        if (Physics.Raycast(transform.position, transform.right, 1, wallLayer) ||
+                Physics.Raycast(transform.position, -transform.right, 1, wallLayer))
             onWall = true;
     }
 
