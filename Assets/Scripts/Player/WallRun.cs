@@ -41,6 +41,7 @@ public class WallRun : BaseState
                 {
                     runHeight = 100;
                     timeSpan = 0.8f;
+                    controller.UpdateMoveAmount(0, 0);
                 }
                 else
                 {
