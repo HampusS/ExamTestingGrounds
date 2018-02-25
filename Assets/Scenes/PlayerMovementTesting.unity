@@ -463,7 +463,7 @@ GameObject:
   - component: {fileID: 492956332}
   - component: {fileID: 492956331}
   m_Layer: 0
-  m_Name: CollisionBelt
+  m_Name: Collision Belt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -940,6 +940,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 657d212ce8b65dd4c91ece659a8a93ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rayLengthHorizontal: 0.6
+  rayLengthVertical: 1.25
 --- !u!54 &990467770
 Rigidbody:
   m_ObjectHideFlags: 0
