@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody rgdBody;
     Vector3 moveAmount;
+    Vector3 finalMove;
     Vector3 smoothMove;
     public RaycastHit BottomRayHit() { return bottomHit; }
     RaycastHit bottomHit;
@@ -66,7 +67,7 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.black);
         Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
 
-        Debug.Log(transform.TransformDirection(moveAmount) + " " + moveAmount);
+        //Debug.Log(transform.TransformDirection(moveAmount) + " " + moveAmount);
 
     }
 
@@ -74,6 +75,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
         moveAmount = Vector3.SmoothDamp(moveAmount, strafe * speed, ref smoothMove, moveFloatiness);
+        finalMove = transform.TransformDirection(moveAmount);
     }
 
     public void UpdateGroundCheck()
@@ -98,6 +100,6 @@ public class PlayerController : MonoBehaviour
                 rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
             }
 
-        rgdBody.MovePosition(rgdBody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+        rgdBody.MovePosition(rgdBody.position + finalMove * Time.fixedDeltaTime);
     }
 }
