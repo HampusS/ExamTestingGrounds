@@ -5,8 +5,6 @@ using UnityEngine;
 public class GroundState : BaseState
 {
     [SerializeField]
-    LayerMask groundLayer;
-    [SerializeField]
     float speed = 10;
     [SerializeField]
     float moveFloatiness = .15f;

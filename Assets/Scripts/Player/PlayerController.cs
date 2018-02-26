@@ -66,6 +66,8 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.black);
         Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
 
+        Debug.Log(transform.TransformDirection(moveAmount) + " " + moveAmount);
+
     }
 
     public void UpdateMoveAmount(float speed, float moveFloatiness)
