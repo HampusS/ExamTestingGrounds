@@ -8,12 +8,12 @@ public class HomingScript : MonoBehaviour
 {
 
     public Transform target;
-    public float speed = 5f;
-    public float maxSpeed = 4f;
-    public float rotateSpeed = 0.01f;
+    public float speed;
+    public float maxSpeed;
+    public float rotateSpeed;
+    private float dist;
     private Rigidbody rb;
-    Vector3 acceleration = new Vector3(0,0,0);
-
+    
     Vector3 dir;
     Vector3 desired;
 
@@ -27,20 +27,21 @@ public class HomingScript : MonoBehaviour
     }
     void FixedUpdate()
     {
+        dist = Vector3.Distance(rb.position, target.position) / 100;
+        Debug.Log(dist);
+        rotateSpeed = dist;
+
         dir = target.position - rb.position;
         dir.Normalize();
+        rb.rotation = Quaternion.RotateTowards(transform.rotation, 
+            Quaternion.LookRotation(dir), dist * Time.deltaTime);
+
         desired = dir * maxSpeed;
-        //dir = maxSpeed*dir;
-        //Vector3.ClampMagnitude(dir, maxSpeed);
-        rb.velocity.Normalize();
         Vector3 steering = -(desired - rb.velocity);
-        //Debug.Log("before"+steering);
-        //steering.Normalize();
-        //Vector3.ClampMagnitude(steering, rotateSpeed);
-        //Debug.Log("after" + steering);
-        //steering = steering * rotateSpeed;
-        //acceleration = acceleration + steering;
+
+        steering = steering * rotateSpeed;
 
         rb.AddForce(-steering);
     }
 }
+

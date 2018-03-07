@@ -783,9 +783,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1971994077}
-  speed: 1
-  maxSpeed: 50
-  rotateSpeed: 200
+  speed: 5
+  maxSpeed: 40
+  rotateSpeed: 0.2
 --- !u!1 &548228945
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,7 +1232,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-137220
+  m_Name: pb_Mesh28612
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
