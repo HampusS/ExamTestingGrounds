@@ -8,7 +8,8 @@ public class WallRun : BaseState
     LayerMask wallLayer;
     float timer, timeSpan;
     bool running;
-    float runHeight = 30;
+    //tested with different values, was 30 when i started
+    float runHeight = 60;
     bool onWall, forward;
 
     private void Start()
