@@ -9,7 +9,7 @@ public class WallRun : BaseState
     float timer, timeSpan;
     bool running;
     float runHeight = 30;
-    bool onWall, forward;
+    bool onWall, wallForward, wallLeft, wallRight;
 
     private void Start()
     {
@@ -25,19 +25,22 @@ public class WallRun : BaseState
                 Physics.Raycast(transform.position, -transform.right, controller.rayLengthHorizontal, wallLayer) ||
                 Physics.Raycast(transform.position, transform.forward, controller.rayLengthHorizontal, wallLayer))
         {
-            forward = Physics.Raycast(transform.position, transform.forward, controller.rayLengthHorizontal, wallLayer);
+            wallForward = Physics.Raycast(transform.position, transform.forward, controller.rayLengthHorizontal, wallLayer);
+            wallRight = Physics.Raycast(transform.position, transform.right, controller.rayLengthHorizontal, wallLayer);
+            wallLeft = Physics.Raycast(transform.position, -transform.right, controller.rayLengthHorizontal, wallLayer);
             onWall = true;
         }
     }
 
     public override bool Enter()
     {
+        // if we are on ground, holding down jump button and moving forward
         if (controller.moveStates == MoveStates.GROUND && Input.GetButtonDown("Jump") && Input.GetAxisRaw("Vertical") > 0)
         {
             TraceForWalls();
             if (onWall)
             {
-                if (forward)
+                if (wallForward)
                 {
                     runHeight = 100;
                     timeSpan = 0.8f;

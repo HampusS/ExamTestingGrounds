@@ -5,7 +5,7 @@ using UnityEngine;
 public enum MoveStates
 {
     ERROR,
-    AIRBORNE,
+    AIR,
     GROUND,
     WALLRUN,
     LEDGEGRAB,
@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     Vector3 moveAmount;
     Vector3 finalMove;
     Vector3 smoothMove;
+
+    // Used in ground state
     public RaycastHit BottomRayHit() { return bottomHit; }
     RaycastHit bottomHit;
 
@@ -43,7 +45,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        RayTraceBottom();
+        onBottom = Physics.Raycast(transform.position, -transform.up, out bottomHit, 1.25f);
         if (currentState == null || currentState.Exit())
         {
             UpdateGroundCheck();
@@ -61,14 +63,10 @@ public class PlayerController : MonoBehaviour
 
         //Debug.Log(moveStates);
 
-        Ray ray = new Ray(transform.position, Vector3.down);
-        Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.black);
-        Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.black);
-        Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.black);
-        Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
-
-        //Debug.Log(transform.TransformDirection(moveAmount) + " " + moveAmount);
-
+        Debug.DrawRay(transform.position, -transform.up * rayLengthVertical, Color.black);
+        Debug.DrawRay(transform.position, -transform.right * rayLengthHorizontal, Color.black);
+        Debug.DrawRay(transform.position, transform.right * rayLengthHorizontal, Color.black);
+        Debug.DrawRay(transform.position, transform.forward * rayLengthHorizontal, Color.black);
     }
 
     public void UpdateMoveAmount(float speed, float moveFloatiness)
@@ -87,18 +85,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void RayTraceBottom()
-    {
-        onBottom = Physics.Raycast(transform.position, -transform.up, out bottomHit, 1.25f);
-    }
-
     private void FixedUpdate()
     {
-        if (moveStates != MoveStates.WALLRUN)
-            if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
-            {
-                rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
-            }
+        if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
+        {
+            rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
+        }
 
         rgdBody.MovePosition(rgdBody.position + finalMove * Time.fixedDeltaTime);
     }

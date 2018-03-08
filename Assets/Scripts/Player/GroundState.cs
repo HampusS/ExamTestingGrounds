@@ -12,18 +12,21 @@ public class GroundState : BaseState
     float jumpForce = 300;
 
     bool jump;
+    float halfHeight, fullHeight;
 
     private void Start()
     {
         myStateType = MoveStates.GROUND;
+        fullHeight = GetComponent<CapsuleCollider>().height;
+        halfHeight = fullHeight * 0.5f;
     }
 
     void SnapToGround()
     {
         float surfDist = Vector3.Distance(controller.BottomRayHit().point, transform.position);
-        if (surfDist < GetComponent<CapsuleCollider>().height * 0.6f)
+        if (surfDist < fullHeight * 0.6f)
         {
-            transform.position += controller.BottomRayHit().normal * ((GetComponent<CapsuleCollider>().height * 0.5f) - surfDist);
+            transform.position += controller.BottomRayHit().normal * (halfHeight - surfDist);
         }
     }
 
@@ -41,9 +44,9 @@ public class GroundState : BaseState
         jump = Input.GetButtonDown("Jump");
         if (jump && controller.moveStates == MoveStates.GROUND)
         {
-            transform.position += Vector3.up * (GetComponent<CapsuleCollider>().height * 0.15f);
+            transform.position += Vector3.up * (fullHeight * 0.1f);
             rgdBody.AddForce(transform.up * jumpForce);
-            controller.moveStates = MoveStates.ERROR;
+            //controller.moveStates = MoveStates.AIR;
         }
         SnapToGround();
         controller.UpdateMoveAmount(speed, moveFloatiness);
