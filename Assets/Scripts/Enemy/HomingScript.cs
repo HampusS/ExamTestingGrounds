@@ -27,19 +27,22 @@ public class HomingScript : MonoBehaviour
     }
     void FixedUpdate()
     {
-        dist = Vector3.Distance(rb.position, target.position) / 100;
-        Debug.Log(dist);
-        rotateSpeed = dist;
-
+        //dist = Vector3.Distance(rb.position, target.position) / 100;
+        //Debug.Log(dist);
+        //rotateSpeed = dist;
+        
         dir = target.position - rb.position;
+        //transform.rotation = Quaternion.RotateTowards(transform.rotation, 
         dir.Normalize();
-        rb.rotation = Quaternion.RotateTowards(transform.rotation, 
-            Quaternion.LookRotation(dir), dist * Time.deltaTime);
+        //   Quaternion.LookRotation(dir), dist * Time.deltaTime);
 
         desired = dir * maxSpeed;
         Vector3 steering = -(desired - rb.velocity);
 
         steering = steering * rotateSpeed;
+        transform.rotation = Quaternion.Slerp(transform.rotation,
+                                                     Quaternion.LookRotation(dir),
+                                                     dir.magnitude * Time.deltaTime);
 
         rb.AddForce(-steering);
     }
