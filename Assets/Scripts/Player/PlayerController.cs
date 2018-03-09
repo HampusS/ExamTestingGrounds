@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         RayTrace();
+
         if (currentState == null || currentState.Exit())
         {
             BumpGround();
@@ -67,7 +68,6 @@ public class PlayerController : MonoBehaviour
         }
         if (currentState != null)
             currentState.Run();
-
 
         DrawRayTraces();
     }
@@ -110,14 +110,13 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.black);
         Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
     }
-
+    
     private void FixedUpdate()
     {
-        if (moveStates != MoveStates.WALLRUN)
-            if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
-            {
-                rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
-            }
+        if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
+        {
+            rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
+        }
 
         rgdBody.MovePosition(rgdBody.position + finalMove * Time.fixedDeltaTime);
     }

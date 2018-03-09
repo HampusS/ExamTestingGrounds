@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class AirState : BaseState
 {
-
     [SerializeField]
     float speed = 4;
     [SerializeField]
     float moveFloatiness = .35f;
-
-
 
     // Use this for initialization
     void Start()
@@ -35,5 +32,4 @@ public class AirState : BaseState
     {
         return true;
     }
-
 }

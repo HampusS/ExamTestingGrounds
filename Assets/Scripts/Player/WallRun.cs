@@ -5,10 +5,9 @@ using UnityEngine;
 public class WallRun : BaseState
 {
     float timer, timeSpan;
+    float runHeight = 60;
     bool running;
 
-    float runHeight = 60;
-    bool onWall;
     RaycastHit myHit;
 
     private void Start()
