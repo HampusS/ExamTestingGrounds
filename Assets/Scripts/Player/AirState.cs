@@ -2,15 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AirState : MonoBehaviour {
+public class AirState : BaseState
+{
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [SerializeField]
+    float speed = 4;
+    [SerializeField]
+    float moveFloatiness = .35f;
+
+
+
+    // Use this for initialization
+    void Start()
+    {
+        myStateType = MoveStates.AIR;
+    }
+
+    public override bool Enter()
+    {
+        if (!controller.onBottom && controller.moveStates != MoveStates.AIR)
+            return true;
+        return false;
+    }
+
+    public override void Run()
+    {
+
+        controller.UpdateMoveAmount(speed, moveFloatiness);
+    }
+
+    public override bool Exit()
+    {
+        return true;
+    }
+
 }

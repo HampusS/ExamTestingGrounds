@@ -5,7 +5,7 @@ using UnityEngine;
 abstract public class BaseState : MonoBehaviour {
     protected Rigidbody rgdBody;
     protected PlayerController controller;
-    protected MoveStates myStateType;
+    public MoveStates myStateType { get; set; }
 
     private void Awake()
     {

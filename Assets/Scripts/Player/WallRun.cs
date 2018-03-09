@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class WallRun : BaseState
 {
-    [SerializeField]
-    LayerMask wallLayer;
     float timer, timeSpan;
     bool running;
-    //tested with different values, was 30 when i started
+
     float runHeight = 60;
-    bool onWall, forward;
+    bool onWall;
+    RaycastHit myHit;
 
     private void Start()
     {
@@ -19,26 +18,23 @@ public class WallRun : BaseState
         timeSpan = 1.2f;
     }
 
-    void TraceForWalls()
+    void InitializeRun()
     {
-        onWall = false;
-        if (Physics.Raycast(transform.position, transform.right, controller.rayLengthHorizontal, wallLayer) ||
-                Physics.Raycast(transform.position, -transform.right, controller.rayLengthHorizontal, wallLayer) ||
-                Physics.Raycast(transform.position, transform.forward, controller.rayLengthHorizontal, wallLayer))
-        {
-            forward = Physics.Raycast(transform.position, transform.forward, controller.rayLengthHorizontal, wallLayer);
-            onWall = true;
-        }
+        GetComponent<Renderer>().material.color = Color.green;
+        myHit = controller.HorizontalHit();
+        running = true;
+        timer = 0;
     }
 
     public override bool Enter()
     {
-        if (controller.moveStates == MoveStates.GROUND && Input.GetButtonDown("Jump") && Input.GetAxisRaw("Vertical") > 0)
+        if (Input.GetButtonDown("Jump") && Input.GetAxisRaw("Vertical") > 0)
         {
-            TraceForWalls();
-            if (onWall)
+            if (controller.onLeftWall || controller.onRightWall || controller.onForwardWall)
             {
-                if (forward)
+                InitializeRun();
+
+                if (controller.onForwardWall)
                 {
                     runHeight = 100;
                     timeSpan = 0.8f;
@@ -48,11 +44,9 @@ public class WallRun : BaseState
                 {
                     runHeight = 50;
                     timeSpan = 1f;
+                    controller.SetMoveAmount(Vector3.ProjectOnPlane(controller.finalMove, myHit.normal));
                 }
-                GetComponent<Renderer>().material.color = Color.green;
-                controller.moveStates = myStateType;
-                running = true;
-                timer = 0;
+
                 return true;
             }
         }
@@ -61,8 +55,19 @@ public class WallRun : BaseState
 
     public override void Run()
     {
-        timer += Time.deltaTime;
-        TraceForWalls();
+        if (timer > 0 && Input.GetButtonDown("Jump"))
+        {
+            Debug.Log(myHit.normal);
+            rgdBody.AddForce(myHit.normal * 300);
+            rgdBody.AddForce(transform.up * 150);
+            timer = timeSpan;
+        }
+
+        if (Input.GetButton("Jump"))
+            timer += Time.deltaTime;
+        else
+            timer += Time.deltaTime * 2;
+
 
         if (running)
         {
@@ -75,7 +80,7 @@ public class WallRun : BaseState
 
     public override bool Exit()
     {
-        if (timer >= timeSpan || !Input.GetButton("Jump") || !onWall)
+        if (timer >= timeSpan)
         {
             GetComponent<Renderer>().material.color = Color.red;
             rgdBody.useGravity = true;

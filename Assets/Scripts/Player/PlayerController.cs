@@ -5,7 +5,7 @@ using UnityEngine;
 public enum MoveStates
 {
     ERROR,
-    AIRBORNE,
+    AIR,
     GROUND,
     WALLRUN,
     LEDGEGRAB,
@@ -13,18 +13,25 @@ public enum MoveStates
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField]
+    LayerMask wallLayer;
     public MoveStates moveStates { get; set; }
     public BaseState currentState { get; private set; }
     List<BaseState> states;
 
-    Rigidbody rgdBody;
-    Vector3 moveAmount;
-    Vector3 finalMove;
-    Vector3 smoothMove;
     public RaycastHit BottomRayHit() { return bottomHit; }
-    RaycastHit bottomHit;
+    public RaycastHit HorizontalHit() { return horizHit; }
+    public Vector3 finalMove { get; set; }
+    public bool onBottom { get; set; }
+    public bool onLeftWall { get; set; }
+    public bool onRightWall { get; set; }
+    public bool onForwardWall { get; set; }
 
-    bool onBottom;
+    RaycastHit bottomHit, horizHit;
+    Vector3 moveAmount;
+    Vector3 smoothMove;
+    Rigidbody rgdBody;
+
 
     public float rayLengthHorizontal = 0.6f;
     public float rayLengthVertical = 1.25f;
@@ -36,6 +43,7 @@ public class PlayerController : MonoBehaviour
         //Cursor.lockState = CursorLockMode.Locked;
         rgdBody = GetComponent<Rigidbody>();
         states = new List<BaseState>();
+        //states.Add(GetComponent<AirState>());
         states.Add(GetComponent<GroundState>());
         states.Add(GetComponent<WallRun>());
         moveStates = MoveStates.GROUND;
@@ -43,15 +51,16 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        RayTraceBottom();
+        RayTrace();
         if (currentState == null || currentState.Exit())
         {
-            UpdateGroundCheck();
+            BumpGround();
             currentState = null;
             foreach (BaseState state in states)
             {
                 if (state.Enter())
                 {
+                    moveStates = state.myStateType;
                     currentState = state;
                 }
             }
@@ -59,16 +68,8 @@ public class PlayerController : MonoBehaviour
         if (currentState != null)
             currentState.Run();
 
-        //Debug.Log(moveStates);
 
-        Ray ray = new Ray(transform.position, Vector3.down);
-        Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.black);
-        Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.black);
-        Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.black);
-        Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
-
-        //Debug.Log(transform.TransformDirection(moveAmount) + " " + moveAmount);
-
+        DrawRayTraces();
     }
 
     public void UpdateMoveAmount(float speed, float moveFloatiness)
@@ -78,7 +79,13 @@ public class PlayerController : MonoBehaviour
         finalMove = transform.TransformDirection(moveAmount);
     }
 
-    public void UpdateGroundCheck()
+    public void SetMoveAmount(Vector3 newVect)
+    {
+        moveAmount = newVect;
+        finalMove = newVect;
+    }
+
+    public void BumpGround()
     {
         if (moveStates != MoveStates.GROUND && onBottom)
         {
@@ -87,9 +94,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void RayTraceBottom()
+    void RayTrace()
     {
         onBottom = Physics.Raycast(transform.position, -transform.up, out bottomHit, 1.25f);
+        onLeftWall = Physics.Raycast(transform.position, -transform.right, out horizHit, rayLengthHorizontal, wallLayer);
+        onRightWall = Physics.Raycast(transform.position, transform.right, out horizHit, rayLengthHorizontal, wallLayer);
+        onForwardWall = Physics.Raycast(transform.position, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);
+    }
+
+    void DrawRayTraces()
+    {
+        Ray ray = new Ray(transform.position, Vector3.down);
+        Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.black);
+        Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.black);
+        Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.black);
+        Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
     }
 
     private void FixedUpdate()

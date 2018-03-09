@@ -11,8 +11,6 @@ public class GroundState : BaseState
     [SerializeField]
     float jumpForce = 300;
 
-    bool jump;
-
     private void Start()
     {
         myStateType = MoveStates.GROUND;
@@ -29,21 +27,17 @@ public class GroundState : BaseState
 
     public override bool Enter()
     {
-        if (controller.moveStates == myStateType)
-        {
+        if (controller.onBottom)
             return true;
-        }
         return false;
     }
 
     public override void Run()
     {
-        jump = Input.GetButtonDown("Jump");
-        if (jump && controller.moveStates == MoveStates.GROUND)
+        if (Input.GetButtonDown("Jump"))
         {
             transform.position += Vector3.up * (GetComponent<CapsuleCollider>().height * 0.15f);
             rgdBody.AddForce(transform.up * jumpForce);
-            controller.moveStates = MoveStates.ERROR;
         }
         SnapToGround();
         controller.UpdateMoveAmount(speed, moveFloatiness);
