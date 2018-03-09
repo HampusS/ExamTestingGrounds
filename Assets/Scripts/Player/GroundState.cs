@@ -11,13 +11,10 @@ public class GroundState : BaseState
     [SerializeField]
     float jumpForce = 300;
     
-    float halfHeight, fullHeight;
     
     private void Start()
     {
         myStateType = MoveStates.GROUND;
-        fullHeight = GetComponent<CapsuleCollider>().height;
-        halfHeight = fullHeight * 0.5f;
     }
 
     public override bool Enter()
@@ -43,9 +40,9 @@ public class GroundState : BaseState
     void SnapToGround()
     {
         float surfDist = Vector3.Distance(controller.BottomRayHit().point, transform.position);
-        if (surfDist < fullHeight * 0.6f)
+        if (surfDist < controller.fullHeight * 0.6f)
         {
-            transform.position += controller.BottomRayHit().normal * (halfHeight - surfDist);
+            transform.position += controller.BottomRayHit().normal * (controller.halfHeight - surfDist);
         }
     }
 
@@ -53,7 +50,7 @@ public class GroundState : BaseState
     {
         if (Input.GetButtonDown("Jump"))
         {
-            transform.position += Vector3.up * (fullHeight * 0.15f);
+            transform.position += Vector3.up * (controller.fullHeight * 0.15f);
             controller.Jump(transform.up * jumpForce);
         }
     }

@@ -4,61 +4,45 @@ using UnityEngine;
 
 public class WallRun : BaseState
 {
-    float timer, timeSpan;
-    float runHeight = 60;
-    bool running;
+    float timer;
+    float timeSpan = 1.0f;
+    float runHeight = 45;
 
     Vector3 prevNormal, currNormal;
 
     private void Start()
     {
         myStateType = MoveStates.WALLRUN;
-        timer = 0;
-        timeSpan = 1.2f;
         currNormal = Vector3.left;
+        timer = 0;
     }
 
     void InitializeRun()
     {
+        controller.SetMoveAmount(Vector3.ProjectOnPlane(controller.FinalMove, currNormal));
         GetComponent<Renderer>().material.color = Color.green;
-        prevNormal = currNormal;
-        currNormal = controller.HorizontalHit().normal;
-        running = true;
+        controller.Jump(transform.up * runHeight);
+        controller.EnableGravity(false);
+        timeSpan = 1.2f;
         timer = 0;
     }
 
     public override bool Enter()
     {
-        if (Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
+        if (controller.onLeftWall || controller.onRightWall)
         {
-            if (controller.onLeftWall || controller.onRightWall || controller.onForwardWall)
+            if (Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
             {
+                currNormal = controller.HorizontalHit().normal;
+
                 if (currNormal != prevNormal)
                 {
                     InitializeRun();
-
-                    if (controller.onForwardWall)
-                    {
-                        runHeight = 100;
-                        timeSpan = 0.8f;
-                        controller.UpdateMoveAmount(0, 0);
-                    }
-                    else
-                    {
-                        runHeight = 50;
-                        timeSpan = 1.2f;
-                        controller.SetMoveAmount(Vector3.ProjectOnPlane(controller.FinalMove, currNormal));
-                    }
-
                     return true;
                 }
-                //else if (Input.GetButtonDown("Jump"))
-                //{
-                //    controller.Jump(currNormal * 400);
-                //    controller.Jump(transform.up * 200);
-                //}
             }
         }
+
         return false;
     }
 
@@ -80,13 +64,6 @@ public class WallRun : BaseState
             timer += Time.deltaTime;
         else
             timer += Time.deltaTime * 2;
-
-        if (running)
-        {
-            controller.rgdBody.useGravity = false;
-            controller.Jump(transform.up * runHeight);
-            running = false;
-        }
     }
 
     public override bool Exit()
@@ -94,8 +71,8 @@ public class WallRun : BaseState
         if (timer >= timeSpan)
         {
             GetComponent<Renderer>().material.color = Color.red;
-            controller.rgdBody.useGravity = true;
-            currNormal = Vector3.zero;
+            controller.EnableGravity(true);
+            prevNormal = currNormal;
             timer = 0;
             return true;
         }

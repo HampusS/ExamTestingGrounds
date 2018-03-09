@@ -5,9 +5,9 @@ using UnityEngine;
 public class AirState : BaseState
 {
     [SerializeField]
-    float speed = 4;
+    float speed = 3;
     [SerializeField]
-    float moveFloatiness = .35f;
+    float moveFloatiness = 0.4f;
 
     // Use this for initialization
     void Start()
@@ -24,7 +24,12 @@ public class AirState : BaseState
 
     public override void Run()
     {
-
+        if (Input.GetButtonDown("Jump"))
+            if (controller.onLeftWall || controller.onRightWall || controller.onForwardWall)
+            {
+                controller.Jump(controller.HorizontalHit().normal * 400);
+                controller.Jump(transform.up * 200);
+            }
         controller.UpdateMoveAmount(speed, moveFloatiness);
     }
 

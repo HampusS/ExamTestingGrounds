@@ -8,6 +8,7 @@ public enum MoveStates
     AIR,
     GROUND,
     WALLRUN,
+    WALLCLIMB,
     LEDGEGRAB,
 }
 
@@ -35,20 +36,26 @@ public class PlayerController : MonoBehaviour
     RaycastHit bottomHit, horizHit;
     Vector3 moveAmount;
     Vector3 smoothMove;
-    public Rigidbody rgdBody { get; set; }
+    Rigidbody rgdBody;
+    public float halfHeight { get; set; }
+    public float fullHeight { get; set; }
+
 
     void Start()
     {
         //if (Input.GetKeyDown("escape"))
         //    Cursor.lockState = CursorLockMode.None;
         //Cursor.lockState = CursorLockMode.Locked;
+        fullHeight = GetComponent<CapsuleCollider>().height;
+        halfHeight = fullHeight * 0.5f;
         rgdBody = GetComponent<Rigidbody>();
         states = new List<BaseState>();
         states.Add(GetComponent<AirState>());
         states.Add(GetComponent<GroundState>());
         states.Add(GetComponent<WallRun>());
+        states.Add(GetComponent<WallClimb>());
         currentState = states[0];
-        moveStates = MoveStates.GROUND;
+        moveStates = MoveStates.AIR;
     }
 
     void Update()
@@ -84,6 +91,11 @@ public class PlayerController : MonoBehaviour
     {
         moveAmount = newVect;
         FinalMove = newVect;
+    }
+
+    public void EnableGravity(bool enable)
+    {
+        rgdBody.useGravity = enable;
     }
 
     public void BumpGround()
