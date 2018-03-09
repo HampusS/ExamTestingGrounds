@@ -11,7 +11,6 @@ public class GroundState : BaseState
     [SerializeField]
     float jumpForce = 300;
     
-    bool jump;
     float halfHeight, fullHeight;
     
     private void Start()
@@ -19,15 +18,6 @@ public class GroundState : BaseState
         myStateType = MoveStates.GROUND;
         fullHeight = GetComponent<CapsuleCollider>().height;
         halfHeight = fullHeight * 0.5f;
-    }
-
-    void SnapToGround()
-    {
-        float surfDist = Vector3.Distance(controller.BottomRayHit().point, transform.position);
-        if (surfDist < fullHeight * 0.6f)
-        {
-            transform.position += controller.BottomRayHit().normal * (halfHeight - surfDist);
-        }
     }
 
     public override bool Enter()
@@ -39,11 +29,7 @@ public class GroundState : BaseState
 
     public override void Run()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
-            transform.position += Vector3.up * (fullHeight * 0.1f);
-            rgdBody.AddForce(transform.up * jumpForce);
-        }
+        Jump();
         SnapToGround();
         controller.UpdateMoveAmount(speed, moveFloatiness);
     }
@@ -53,4 +39,22 @@ public class GroundState : BaseState
         return true;
     }
 
+
+    void SnapToGround()
+    {
+        float surfDist = Vector3.Distance(controller.BottomRayHit().point, transform.position);
+        if (surfDist < fullHeight * 0.6f)
+        {
+            transform.position += controller.BottomRayHit().normal * (halfHeight - surfDist);
+        }
+    }
+
+    void Jump()
+    {
+        if (Input.GetButtonDown("Jump"))
+        {
+            transform.position += Vector3.up * (fullHeight * 0.15f);
+            controller.Jump(transform.up * jumpForce);
+        }
+    }
 }

@@ -8,45 +8,55 @@ public class WallRun : BaseState
     float runHeight = 60;
     bool running;
 
-    RaycastHit myHit;
+    Vector3 prevNormal, currNormal;
 
     private void Start()
     {
         myStateType = MoveStates.WALLRUN;
         timer = 0;
         timeSpan = 1.2f;
+        currNormal = Vector3.left;
     }
 
     void InitializeRun()
     {
         GetComponent<Renderer>().material.color = Color.green;
-        myHit = controller.HorizontalHit();
+        prevNormal = currNormal;
+        currNormal = controller.HorizontalHit().normal;
         running = true;
         timer = 0;
     }
 
     public override bool Enter()
     {
-        if (Input.GetButtonDown("Jump") && Input.GetAxisRaw("Vertical") > 0)
+        if (Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
         {
             if (controller.onLeftWall || controller.onRightWall || controller.onForwardWall)
             {
-                InitializeRun();
-
-                if (controller.onForwardWall)
+                if (currNormal != prevNormal)
                 {
-                    runHeight = 100;
-                    timeSpan = 0.8f;
-                    controller.UpdateMoveAmount(0, 0);
-                }
-                else
-                {
-                    runHeight = 50;
-                    timeSpan = 1f;
-                    controller.SetMoveAmount(Vector3.ProjectOnPlane(controller.finalMove, myHit.normal));
-                }
+                    InitializeRun();
 
-                return true;
+                    if (controller.onForwardWall)
+                    {
+                        runHeight = 100;
+                        timeSpan = 0.8f;
+                        controller.UpdateMoveAmount(0, 0);
+                    }
+                    else
+                    {
+                        runHeight = 50;
+                        timeSpan = 1.2f;
+                        controller.SetMoveAmount(Vector3.ProjectOnPlane(controller.FinalMove, currNormal));
+                    }
+
+                    return true;
+                }
+                //else if (Input.GetButtonDown("Jump"))
+                //{
+                //    controller.Jump(currNormal * 400);
+                //    controller.Jump(transform.up * 200);
+                //}
             }
         }
         return false;
@@ -56,10 +66,14 @@ public class WallRun : BaseState
     {
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {
-            Debug.Log(myHit.normal);
-            rgdBody.AddForce(myHit.normal * 300);
-            rgdBody.AddForce(transform.up * 150);
-            timer = timeSpan;
+            controller.Jump(currNormal * 400);
+            controller.Jump(transform.up * 200);
+            timer += timeSpan;
+        }
+
+        if (!controller.onLeftWall && !controller.onRightWall)
+        {
+            timer += timeSpan;
         }
 
         if (Input.GetButton("Jump"))
@@ -67,12 +81,10 @@ public class WallRun : BaseState
         else
             timer += Time.deltaTime * 2;
 
-
         if (running)
         {
-            rgdBody.useGravity = false;
-            rgdBody.velocity = new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z);
-            rgdBody.AddForce(transform.up * runHeight);
+            controller.rgdBody.useGravity = false;
+            controller.Jump(transform.up * runHeight);
             running = false;
         }
     }
@@ -82,11 +94,11 @@ public class WallRun : BaseState
         if (timer >= timeSpan)
         {
             GetComponent<Renderer>().material.color = Color.red;
-            rgdBody.useGravity = true;
+            controller.rgdBody.useGravity = true;
+            currNormal = Vector3.zero;
             timer = 0;
             return true;
         }
-
         return false;
     }
 
