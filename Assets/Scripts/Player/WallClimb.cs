@@ -4,27 +4,38 @@ using UnityEngine;
 
 public class WallClimb : BaseState
 {
-    float timer;
+    float timer = 0;
     float timeSpan = 0.8f;
     float runHeight = 100;
+    float jumpStrength = 8f;
+    float jumpHeight = 300;
+    float rotateSpeed = 6;
+    bool turning;
+    Vector3 prevNormal, currNormal;
 
     // Use this for initialization
     void Start()
     {
         myStateType = MoveStates.WALLCLIMB;
-        timer = 0;
+        turning = false;
     }
 
     public override bool Enter()
     {
-        if (controller.onForwardWall && controller.moveStates == MoveStates.GROUND)
+        if (controller.onForwardWall)
         {
-            if (Input.GetButtonDown("Jump") && Input.GetAxisRaw("Vertical") > 0)
+            if (controller.onBottom)
+                prevNormal = Vector3.zero;
+
+            currNormal = controller.HorizontalHit().normal;
+
+            if (currNormal != prevNormal && Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
             {
                 GetComponent<Renderer>().material.color = Color.green;
-                controller.Jump(transform.up * runHeight);
+                controller.Jump(runHeight);
                 controller.UpdateMoveAmount(0, 0);
                 controller.EnableGravity(false);
+                turning = false;
                 timer = 0;
                 return true;
             }
@@ -35,17 +46,25 @@ public class WallClimb : BaseState
 
     public override void Run()
     {
-        if (timer > 0 && Input.GetButtonDown("Jump"))
+        if (!turning)
         {
-            controller.Jump(controller.HorizontalHit().normal * 400);
-            controller.Jump(transform.up * 200);
+            if (timer > 0 && Input.GetButtonDown("Jump"))
+            {
+                controller.Jump(0);
+                turning = true;
+            }
+
+            if (Input.GetButton("Jump"))
+                timer += Time.deltaTime;
+            else
+                timer += Time.deltaTime * 2;
+        }
+        else if (controller.TurnAroundForJump(jumpHeight, jumpStrength, rotateSpeed))
+        {
             timer += timeSpan;
+            turning = false;
         }
 
-        if (Input.GetButton("Jump"))
-            timer += Time.deltaTime;
-        else
-            timer += Time.deltaTime * 2;
     }
 
     public override bool Exit()
@@ -54,10 +73,13 @@ public class WallClimb : BaseState
         {
             GetComponent<Renderer>().material.color = Color.red;
             controller.EnableGravity(true);
+            prevNormal = currNormal;
             timer = 0;
             return true;
         }
         return false;
     }
+
+
 
 }

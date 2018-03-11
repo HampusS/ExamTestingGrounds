@@ -51,7 +51,7 @@ public class GroundState : BaseState
         if (Input.GetButtonDown("Jump"))
         {
             transform.position += Vector3.up * (controller.fullHeight * 0.15f);
-            controller.Jump(transform.up * jumpForce);
+            controller.Jump(jumpForce);
         }
     }
 }

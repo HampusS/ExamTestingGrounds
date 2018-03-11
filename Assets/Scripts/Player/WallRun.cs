@@ -4,26 +4,27 @@ using UnityEngine;
 
 public class WallRun : BaseState
 {
-    float timer;
+    float timer = 0;
     float timeSpan = 1.0f;
     float runHeight = 45;
-
+    float runSpeed = 10;
+    float runTimeMultiplier = 2f;
+    float jumpStrength = 8f;
+    float jumpHeight = 200;
     Vector3 prevNormal, currNormal;
 
     private void Start()
     {
         myStateType = MoveStates.WALLRUN;
         currNormal = Vector3.left;
-        timer = 0;
     }
 
     void InitializeRun()
     {
-        controller.SetMoveAmount(Vector3.ProjectOnPlane(controller.FinalMove, currNormal));
+        controller.SetMoveAmount(Vector3.ProjectOnPlane(transform.forward * runSpeed, currNormal));
         GetComponent<Renderer>().material.color = Color.green;
-        controller.Jump(transform.up * runHeight);
+        controller.Jump(runHeight);
         controller.EnableGravity(false);
-        timeSpan = 1.2f;
         timer = 0;
     }
 
@@ -33,6 +34,9 @@ public class WallRun : BaseState
         {
             if (Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
             {
+                if (controller.onBottom)
+                    prevNormal = Vector3.zero;
+
                 currNormal = controller.HorizontalHit().normal;
 
                 if (currNormal != prevNormal)
@@ -48,12 +52,7 @@ public class WallRun : BaseState
 
     public override void Run()
     {
-        if (timer > 0 && Input.GetButtonDown("Jump"))
-        {
-            controller.Jump(currNormal * 400);
-            controller.Jump(transform.up * 200);
-            timer += timeSpan;
-        }
+        WallJump();
 
         if (!controller.onLeftWall && !controller.onRightWall)
         {
@@ -63,7 +62,7 @@ public class WallRun : BaseState
         if (Input.GetButton("Jump"))
             timer += Time.deltaTime;
         else
-            timer += Time.deltaTime * 2;
+            timer += Time.deltaTime * runTimeMultiplier;
     }
 
     public override bool Exit()
@@ -77,6 +76,17 @@ public class WallRun : BaseState
             return true;
         }
         return false;
+    }
+
+    private void WallJump()
+    {
+        if (timer > 0 && Input.GetButtonDown("Jump"))
+        {
+            controller.UpdateMoveAmount(currNormal, jumpStrength);
+            controller.Jump(jumpHeight);
+
+            timer += timeSpan;
+        }
     }
 
 }
