@@ -4,86 +4,89 @@ using UnityEngine;
 
 public class WallRun : BaseState
 {
-    [SerializeField]
-    LayerMask wallLayer;
-    float timer, timeSpan;
-    bool running;
-    //tested with different values, was 30 when i started
-    float runHeight = 60;
-    bool onWall, forward;
+    float timer = 0;
+    float timeSpan = 1.0f;
+    float runHeight = 45;
+    float runSpeed = 10;
+    float runTimeMultiplier = 2f;
+    float jumpStrength = 8f;
+    float jumpHeight = 200;
+    Vector3 prevNormal, currNormal;
 
     private void Start()
     {
         myStateType = MoveStates.WALLRUN;
-        timer = 0;
-        timeSpan = 1.2f;
+        currNormal = Vector3.left;
     }
 
-    void TraceForWalls()
+    void InitializeRun()
     {
-        onWall = false;
-        if (Physics.Raycast(transform.position, transform.right, controller.rayLengthHorizontal, wallLayer) ||
-                Physics.Raycast(transform.position, -transform.right, controller.rayLengthHorizontal, wallLayer) ||
-                Physics.Raycast(transform.position, transform.forward, controller.rayLengthHorizontal, wallLayer))
-        {
-            forward = Physics.Raycast(transform.position, transform.forward, controller.rayLengthHorizontal, wallLayer);
-            onWall = true;
-        }
+        controller.SetMoveAmount(Vector3.ProjectOnPlane(transform.forward * runSpeed, currNormal));
+        GetComponent<Renderer>().material.color = Color.green;
+        controller.Jump(runHeight);
+        controller.EnableGravity(false);
+        timer = 0;
     }
 
     public override bool Enter()
     {
-        if (controller.moveStates == MoveStates.GROUND && Input.GetButtonDown("Jump") && Input.GetAxisRaw("Vertical") > 0)
+        if (controller.onLeftWall || controller.onRightWall)
         {
-            TraceForWalls();
-            if (onWall)
+            if (Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
             {
-                if (forward)
+                if (controller.onBottom)
+                    prevNormal = Vector3.zero;
+
+                currNormal = controller.HorizontalHit().normal;
+
+                if (currNormal != prevNormal)
                 {
-                    runHeight = 100;
-                    timeSpan = 0.8f;
-                    controller.UpdateMoveAmount(0, 0);
+                    InitializeRun();
+                    return true;
                 }
-                else
-                {
-                    runHeight = 50;
-                    timeSpan = 1f;
-                }
-                GetComponent<Renderer>().material.color = Color.green;
-                controller.moveStates = myStateType;
-                running = true;
-                timer = 0;
-                return true;
             }
         }
+
         return false;
     }
 
     public override void Run()
     {
-        timer += Time.deltaTime;
-        TraceForWalls();
+        WallJump();
 
-        if (running)
+        if (!controller.onLeftWall && !controller.onRightWall)
         {
-            rgdBody.useGravity = false;
-            rgdBody.velocity = new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z);
-            rgdBody.AddForce(transform.up * runHeight);
-            running = false;
+            timer += timeSpan;
         }
+
+        if (Input.GetButton("Jump"))
+            timer += Time.deltaTime;
+        else
+            timer += Time.deltaTime * runTimeMultiplier;
     }
 
     public override bool Exit()
     {
-        if (timer >= timeSpan || !Input.GetButton("Jump") || !onWall)
+        if (timer >= timeSpan)
         {
             GetComponent<Renderer>().material.color = Color.red;
-            rgdBody.useGravity = true;
+            controller.EnableGravity(true);
+            prevNormal = currNormal;
             timer = 0;
             return true;
         }
-
         return false;
+    }
+
+    private void WallJump()
+    {
+        if (timer > 0 && Input.GetButtonDown("Jump"))
+        {
+            controller.UpdateMoveAmount(currNormal, jumpStrength);
+            controller.Jump(jumpHeight);
+
+            timer += timeSpan;
+        }
     }
 
 }
