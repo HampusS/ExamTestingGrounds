@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum State
+public enum RocketState
 {
+    ERROR,
     IDEL,
     ENDPHASE,
     AVIOD,
@@ -13,27 +14,48 @@ public enum State
 [RequireComponent(typeof(Rigidbody))]
 public class MissileController : MonoBehaviour
 {
-    public Transform target;
-    public float speed;
-    public float maxSpeed;
-    public float rotateSpeed;
+    //public Transform target;
+    //public float speed;
+    //public float maxSpeed;
+    //public float rotateSpeed; 
+    Ray rayFwd;
+    Ray rayLeft;
+    Ray rayRight;
     public float rayAngle;
-
     private float dist;
-    private Rigidbody rb;
+    public Transform target;
+    public Rigidbody rb { get; set; }
+    public Vector3 steering { get; set; }
 
-    Vector3 dir;
-    Vector3 desired;
     Vector3 right;
     Vector3 left;
     public float rayLenght = 10;
 
+    public RocketState NPCState { get; set; }
+    public BaseEnemyState currentState { get; private set; }
+    List<BaseEnemyState> states;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        states = new List<BaseEnemyState>();
+        states.Add(GetComponent<Chase>());
+        currentState = states[0];
+        NPCState = RocketState.CHASE;
     }
     void Update()
     {
+        if (currentState.Exit())
+        {
+            foreach (BaseEnemyState state in states)
+            {
+                if (state.Enter())
+                {
+                    NPCState = state.myStateType;
+                    currentState = state;
+                }
+            }
+        }
+        currentState.Run();
         UpdateRays();
     }
 
@@ -43,25 +65,33 @@ public class MissileController : MonoBehaviour
     }
     void Move()
     {
-        dir = target.position - rb.position;
-        dir.Normalize();
-        desired = dir * maxSpeed;
-        Vector3 steering = -(desired - rb.velocity);
-
-        steering = steering * rotateSpeed;
-        transform.rotation = Quaternion.Slerp(transform.rotation,
-                                                     Quaternion.LookRotation(dir),
-                                                     dir.magnitude * Time.deltaTime);
         rb.AddForce(-steering);
     }
     void UpdateRays()
     {
-        Ray ray = new Ray(transform.position, Vector3.forward);
         right = transform.forward - transform.right * (-rayAngle);
         left = transform.forward - transform.right * (rayAngle);
+        rayFwd = new Ray(transform.position, Vector3.forward);
+        rayLeft = new Ray(transform.position, left * rayLenght);
+        rayRight = new Ray(transform.position, right * rayLenght);
+        if(Physics.Raycast(transform.position, Vector3.forward, rayLenght))
+        {
+            Debug.Log("rayhit");
+            
+        }
 
-        Debug.DrawRay(ray.origin, transform.forward * rayLenght, Color.blue);
-        Debug.DrawRay(ray.origin, right * rayLenght, Color.red);
-        Debug.DrawRay(ray.origin, left * rayLenght, Color.green);
+        Debug.DrawRay(rayFwd.origin, transform.forward * rayLenght, Color.blue);
+        Debug.DrawRay(rayFwd.origin, right * rayLenght, Color.red);
+        Debug.DrawRay(rayFwd.origin, left * rayLenght, Color.green);
+    }
+
+    bool Rayhit()
+    {
+        if (Physics.Raycast(rayFwd, rayLenght))
+        {
+            Debug.Log("rayhit");
+            return true;
+        }
+        return false;
     }
 }
