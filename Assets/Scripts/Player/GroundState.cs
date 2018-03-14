@@ -20,7 +20,11 @@ public class GroundState : BaseState
     public override bool Enter()
     {
         if (controller.onBottom)
+        {
+            //if(controller.prevMoveState != myStateType && controller.onBottom)
+            //    UpdateMoveAmount(0.035f, Vector3.zero);
             return true;
+        }
         return false;
     }
 

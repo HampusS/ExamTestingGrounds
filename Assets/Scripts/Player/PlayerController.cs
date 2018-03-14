@@ -27,19 +27,21 @@ public class PlayerController : MonoBehaviour
     public BaseState currentState { get; private set; }
     List<BaseState> states;
 
-    public RaycastHit BottomRayHit() { return bottomHit; }
-    public RaycastHit HorizontalHit() { return horizHit; }
     public Vector3 FinalMove { get; set; }
     public bool onForwardWall { get; private set; }
     public bool onRightWall { get; private set; }
     public bool onLeftWall { get; private set; }
     public bool onBottom { get; private set; }
+    public bool onTop { get; private set; }
     public bool onGravityMultiplier { get; set; }
 
     public float halfHeight { get; set; }
     public float fullHeight { get; set; }
 
-    RaycastHit bottomHit, horizHit;
+    public RaycastHit BottomRayHit() { return bottomHit; }
+    public RaycastHit TopRayHit() { return topHit; }
+    public RaycastHit HorizontalHit() { return horizHit; }
+    RaycastHit bottomHit, topHit, horizHit;
     Rigidbody rgdBody;
 
 
@@ -77,6 +79,12 @@ public class PlayerController : MonoBehaviour
         }
         currentState.Run();
 
+        if (Input.GetKey(KeyCode.LeftControl))
+            transform.localScale = new Vector3(1, 0.65f, 1);
+        else if (!onTop)
+            transform.localScale = new Vector3(1, 1, 1);
+
+
         currentState.TraceDebug();
     }
 
@@ -103,7 +111,9 @@ public class PlayerController : MonoBehaviour
     void RayTrace()
     {
         Ray ray = new Ray(transform.position, Vector3.down);
+        Debug.DrawRay(ray.origin, transform.up * (rayLengthVertical + 0.15f), Color.black);
         Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.black);
+
         Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.black);
         Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.black);
         Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
@@ -114,6 +124,7 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(ray.origin, (transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
 
         onBottom = Physics.Raycast(ray.origin, -transform.up, out bottomHit, rayLengthVertical);
+        onTop = Physics.Raycast(ray.origin, transform.up, out topHit, (rayLengthVertical + 0.15f));
         onLeftWall = Physics.Raycast(ray.origin, -transform.right, out horizHit, rayLengthHorizontal, wallLayer);
         onRightWall = Physics.Raycast(ray.origin, transform.right, out horizHit, rayLengthHorizontal, wallLayer);
         onForwardWall = Physics.Raycast(ray.origin, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);

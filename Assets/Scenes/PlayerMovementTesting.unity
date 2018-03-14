@@ -1055,7 +1055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a34864ba4cb27364482628ddd1264c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 10
 --- !u!114 &722172086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2182,15 +2182,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2.9
+      value: -2.66
       objectReference: {fileID: 0}
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 6.1
+      value: 5.32
       objectReference: {fileID: 0}
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -13.1
+      value: -12.51
       objectReference: {fileID: 0}
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2226,6 +2226,29 @@ Prefab:
         type: 2}
       propertyPath: rayLengthVertical
       value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114086843602797270, guid: a76ac625abdc38c4498d99e68aba330c,
+        type: 2}
+      propertyPath: sensX
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114086843602797270, guid: a76ac625abdc38c4498d99e68aba330c,
+        type: 2}
+      propertyPath: sensY
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 23171729137886190, guid: a76ac625abdc38c4498d99e68aba330c,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911838611874250, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094968827889476, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}

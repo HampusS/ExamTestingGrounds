@@ -50,8 +50,7 @@ abstract public class BaseState : MonoBehaviour
     {
         AppendFinalMove(controller.HorizontalHit().normal * perpendicularStrength);
         Jump(height);
-        moveAmount = Vector3.Project(-moveAmount, controller.HorizontalHit().normal);
-
+        //moveAmount = Vector3.Project(-moveAmount, controller.HorizontalHit().normal);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
