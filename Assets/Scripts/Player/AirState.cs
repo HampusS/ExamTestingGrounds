@@ -6,8 +6,6 @@ public class AirState : BaseState
 {
     [SerializeField]
     float speed = 3;
-    [SerializeField]
-    float moveFloatiness = 0.4f;
 
     float jumpStrength = 8f;
     float jumpHeight = 300;
@@ -22,7 +20,7 @@ public class AirState : BaseState
 
     public override bool Enter()
     {
-        if (!controller.onBottom && controller.moveStates != MoveStates.AIR)
+        if (!controller.onBottom)
         {
             controller.onGravityMultiplier = true;
             turning = false;
@@ -38,8 +36,8 @@ public class AirState : BaseState
             if (controller.onForwardWall && Input.GetButtonDown("Jump"))
             {
                 controller.onGravityMultiplier = false;
-                controller.EnableGravity(false);
-                controller.Jump(0);
+                EnableGravity(false);
+                Jump(0);
                 turning = true;
             }
 
@@ -47,19 +45,24 @@ public class AirState : BaseState
             {
                 if (Input.GetButtonDown("Jump"))
                 {
-                    controller.UpdateMoveAmount(controller.HorizontalHit().normal, jumpStrength);
-                    controller.Jump(jumpHeight);
+                    AppendFinalMove(controller.HorizontalHit().normal * jumpStrength);
+                    Jump(jumpHeight);
                 }
             }
 
             Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-            strafe = transform.TransformDirection(strafe);
-            controller.UpdateMoveAmount(strafe, speed * 0.025f);
+            if (strafe != Vector3.zero)
+            {
+                strafe = transform.TransformDirection(strafe);
+                AppendFinalMove(strafe * (speed * Time.deltaTime));
+            }
+
         }
-        else if (controller.TurnAroundForJump(jumpHeight, jumpStrength, rotateSpeed))
+        else if (TurnTowardsVector(rotateSpeed, controller.HorizontalHit().normal))
         {
+            JumpFromWall(jumpHeight, jumpStrength);
             turning = false;
-            controller.EnableGravity(true);
+            EnableGravity(true);
         }
 
     }

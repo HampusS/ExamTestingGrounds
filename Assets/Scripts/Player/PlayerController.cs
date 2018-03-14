@@ -21,25 +21,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     float rayLengthVertical = 1.25f;
 
-    public MoveStates moveStates { get; set; }
+    public MoveStates currMoveState { get; private set; }
+    public MoveStates prevMoveState { get; private set; }
+
     public BaseState currentState { get; private set; }
     List<BaseState> states;
 
     public RaycastHit BottomRayHit() { return bottomHit; }
     public RaycastHit HorizontalHit() { return horizHit; }
     public Vector3 FinalMove { get; set; }
-    public bool onForwardWall { get; set; }
-    public bool onRightWall { get; set; }
-    public bool onLeftWall { get; set; }
-    public bool onBottom { get; set; }
+    public bool onForwardWall { get; private set; }
+    public bool onRightWall { get; private set; }
+    public bool onLeftWall { get; private set; }
+    public bool onBottom { get; private set; }
     public bool onGravityMultiplier { get; set; }
 
     public float halfHeight { get; set; }
     public float fullHeight { get; set; }
 
     RaycastHit bottomHit, horizHit;
-    Vector3 moveAmount;
-    Vector3 smoothMove;
     Rigidbody rgdBody;
 
 
@@ -57,28 +57,27 @@ public class PlayerController : MonoBehaviour
         states.Add(GetComponent<WallRun>());
         states.Add(GetComponent<WallClimb>());
         currentState = states[0];
-        moveStates = MoveStates.AIR;
+        currMoveState = MoveStates.AIR;
     }
 
     void Update()
     {
         RayTrace();
-
+        prevMoveState = currMoveState;
         if (currentState.Exit())
         {
-            BumpGround();
             foreach (BaseState state in states)
             {
                 if (state.Enter())
                 {
-                    moveStates = state.myStateType;
+                    currMoveState = state.myStateType;
                     currentState = state;
                 }
             }
         }
-
         currentState.Run();
 
+        currentState.TraceDebug();
     }
 
     private void FixedUpdate()
@@ -88,46 +87,18 @@ public class PlayerController : MonoBehaviour
             {
                 rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
             }
-
         rgdBody.MovePosition(rgdBody.position + FinalMove * Time.fixedDeltaTime);
+        //Debug.Log(FinalMove);
     }
 
-    public void UpdateMoveAmount(float speed, float moveFloatiness, Vector3 strafe)
-    {
-        moveAmount = Vector3.SmoothDamp(moveAmount, strafe * speed, ref smoothMove, moveFloatiness);
-        FinalMove = transform.TransformDirection(moveAmount);
-    }
-
-    public void UpdateMoveAmount(Vector3 dir, float magnitude)
-    {
-        FinalMove += dir * magnitude;
-    }
-
-    public void SetMoveAmount(Vector3 newVect)
-    {
-        moveAmount = newVect;
-        FinalMove = newVect;
-    }
-
-    public void EnableGravity(bool enable)
-    {
-        rgdBody.useGravity = enable;
-    }
-
-    public void BumpGround()
-    {
-        if (moveStates != MoveStates.GROUND && onBottom)
-        {
-            Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-            UpdateMoveAmount(0, 0.035f, strafe);
-        }
-    }
-
-    public void Jump(float magnitude)
-    {
-        rgdBody.velocity = new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z);
-        rgdBody.AddForce(transform.up * magnitude);
-    }
+    //public void BumpGround()
+    //{
+    //    if (currMoveState != MoveStates.GROUND && onBottom)
+    //    {
+    //        Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+    //        UpdateMoveAmount(0, 0.035f, strafe);
+    //    }
+    //}
 
     void RayTrace()
     {
@@ -139,6 +110,8 @@ public class PlayerController : MonoBehaviour
 
         Debug.DrawRay(ray.origin, (-transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
         Debug.DrawRay(ray.origin, (transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
+        Debug.DrawRay(ray.origin, (-transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
+        Debug.DrawRay(ray.origin, (transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
 
         onBottom = Physics.Raycast(ray.origin, -transform.up, out bottomHit, rayLengthVertical);
         onLeftWall = Physics.Raycast(ray.origin, -transform.right, out horizHit, rayLengthHorizontal, wallLayer);
@@ -149,20 +122,12 @@ public class PlayerController : MonoBehaviour
         {
             onLeftWall = Physics.Raycast(ray.origin, (-transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
             onRightWall = Physics.Raycast(ray.origin, (transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
+            if (!onLeftWall && !onRightWall)
+            {
+                onLeftWall = Physics.Raycast(ray.origin, (-transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
+                onRightWall = Physics.Raycast(ray.origin, (transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
+            }
         }
     }
 
-    public bool TurnAroundForJump(float height, float perpendicularStrength, float rotateSpeed)
-    {
-        float dot = Vector3.Dot(transform.forward, HorizontalHit().normal);
-        transform.Rotate(Vector3.up, rotateSpeed);
-
-        if (dot > 0.98f)
-        {
-            UpdateMoveAmount(HorizontalHit().normal, perpendicularStrength);
-            Jump(height);
-            return true;
-        }
-        return false;
-    }
 }

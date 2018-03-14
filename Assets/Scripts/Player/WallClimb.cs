@@ -22,21 +22,21 @@ public class WallClimb : BaseState
 
     public override bool Enter()
     {
+        if (controller.onBottom)
+            prevNormal = Vector3.zero;
+
         if (controller.onForwardWall)
         {
-            if (controller.onBottom)
-                prevNormal = Vector3.zero;
 
             currNormal = controller.HorizontalHit().normal;
 
             if (currNormal != prevNormal && Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
             {
                 GetComponent<Renderer>().material.color = Color.green;
-                controller.Jump(runHeight);
-                controller.UpdateMoveAmount(0, 0, Vector3.zero);
-                controller.EnableGravity(false);
                 controller.onGravityMultiplier = false;
-
+                UpdateMoveAmount(0, Vector3.zero);
+                EnableGravity(false);
+                Jump(runHeight);
                 turning = false;
                 timer = 0;
                 return true;
@@ -52,7 +52,7 @@ public class WallClimb : BaseState
         {
             if (timer > 0 && Input.GetButtonDown("Jump"))
             {
-                controller.Jump(0);
+                Jump(0);
                 turning = true;
             }
 
@@ -61,8 +61,9 @@ public class WallClimb : BaseState
             else
                 timer += Time.deltaTime * 2;
         }
-        else if (controller.TurnAroundForJump(jumpHeight, jumpStrength, rotateSpeed))
+        else if (TurnTowardsVector(rotateSpeed, controller.HorizontalHit().normal))
         {
+            JumpFromWall(jumpHeight, jumpStrength);
             timer += timeSpan;
             turning = false;
         }
@@ -74,7 +75,7 @@ public class WallClimb : BaseState
         if (timer >= timeSpan)
         {
             GetComponent<Renderer>().material.color = Color.red;
-            controller.EnableGravity(true);
+            EnableGravity(true);
             prevNormal = currNormal;
             timer = 0;
             return true;

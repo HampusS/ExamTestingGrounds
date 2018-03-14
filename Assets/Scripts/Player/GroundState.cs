@@ -10,8 +10,8 @@ public class GroundState : BaseState
     float moveFloatiness = .15f;
     [SerializeField]
     float jumpForce = 300;
-    
-    
+
+
     private void Start()
     {
         myStateType = MoveStates.GROUND;
@@ -26,11 +26,20 @@ public class GroundState : BaseState
 
     public override void Run()
     {
-        Jump();
-        SnapToGround();
-        Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+        //Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+        //UpdateMoveAmount(moveFloatiness, strafe * speed);
+        //SnapToGround();
 
-        controller.UpdateMoveAmount(speed, moveFloatiness, strafe);
+        UpdateMoveInput(speed);
+        targetMove = TransformVector(targetMove);
+        targetMove = ProjectVectorToPlane(targetMove, controller.BottomRayHit().normal);
+        UpdateMovement(moveFloatiness);
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            transform.position += Vector3.up * (controller.fullHeight * 0.15f);
+            Jump(jumpForce);
+        }
     }
 
     public override bool Exit()
@@ -45,15 +54,6 @@ public class GroundState : BaseState
         if (surfDist < controller.fullHeight * 0.6f)
         {
             transform.position += controller.BottomRayHit().normal * (controller.halfHeight - surfDist);
-        }
-    }
-
-    void Jump()
-    {
-        if (Input.GetButtonDown("Jump"))
-        {
-            transform.position += Vector3.up * (controller.fullHeight * 0.15f);
-            controller.Jump(jumpForce);
         }
     }
 }

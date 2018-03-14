@@ -21,22 +21,23 @@ public class WallRun : BaseState
 
     void InitializeRun()
     {
-        controller.SetMoveAmount(Vector3.ProjectOnPlane(transform.forward * runSpeed, currNormal));
+        SetMoveAmount(Vector3.ProjectOnPlane(transform.forward * runSpeed, currNormal));
         GetComponent<Renderer>().material.color = Color.green;
-        controller.Jump(runHeight);
-        controller.EnableGravity(false);
         controller.onGravityMultiplier = false;
+        EnableGravity(false);
+        Jump(runHeight);
         timer = 0;
     }
 
     public override bool Enter()
     {
+        if (controller.onBottom)
+            prevNormal = Vector3.zero;
+
         if (controller.onLeftWall || controller.onRightWall)
         {
             if (Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
             {
-                if (controller.onBottom)
-                    prevNormal = Vector3.zero;
 
                 currNormal = controller.HorizontalHit().normal;
 
@@ -53,7 +54,12 @@ public class WallRun : BaseState
 
     public override void Run()
     {
-        WallJump();
+        if (timer > 0 && Input.GetButtonDown("Jump"))
+        {
+            JumpFromWall(jumpHeight, jumpStrength);
+
+            timer += timeSpan;
+        }
 
         if (!controller.onLeftWall && !controller.onRightWall)
         {
@@ -71,23 +77,12 @@ public class WallRun : BaseState
         if (timer >= timeSpan)
         {
             GetComponent<Renderer>().material.color = Color.red;
-            controller.EnableGravity(true);
             prevNormal = currNormal;
+            EnableGravity(true);
             timer = 0;
             return true;
         }
         return false;
-    }
-
-    private void WallJump()
-    {
-        if (timer > 0 && Input.GetButtonDown("Jump"))
-        {
-            controller.UpdateMoveAmount(currNormal, jumpStrength);
-            controller.Jump(jumpHeight);
-
-            timer += timeSpan;
-        }
     }
 
 }
