@@ -33,8 +33,10 @@ public class WallClimb : BaseState
             {
                 GetComponent<Renderer>().material.color = Color.green;
                 controller.Jump(runHeight);
-                controller.UpdateMoveAmount(0, 0);
+                controller.UpdateMoveAmount(0, 0, Vector3.zero);
                 controller.EnableGravity(false);
+                controller.onGravityMultiplier = false;
+
                 turning = false;
                 timer = 0;
                 return true;

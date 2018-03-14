@@ -24,6 +24,7 @@ public class AirState : BaseState
     {
         if (!controller.onBottom && controller.moveStates != MoveStates.AIR)
         {
+            controller.onGravityMultiplier = true;
             turning = false;
             return true;
         }
@@ -36,6 +37,7 @@ public class AirState : BaseState
         {
             if (controller.onForwardWall && Input.GetButtonDown("Jump"))
             {
+                controller.onGravityMultiplier = false;
                 controller.EnableGravity(false);
                 controller.Jump(0);
                 turning = true;
@@ -49,13 +51,17 @@ public class AirState : BaseState
                     controller.Jump(jumpHeight);
                 }
             }
+
+            Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+            strafe = transform.TransformDirection(strafe);
+            controller.UpdateMoveAmount(strafe, speed * 0.025f);
         }
         else if (controller.TurnAroundForJump(jumpHeight, jumpStrength, rotateSpeed))
         {
             turning = false;
             controller.EnableGravity(true);
         }
-        //controller.MoveInAir(speed, moveFloatiness);
+
     }
 
     public override bool Exit()

@@ -25,6 +25,7 @@ public class WallRun : BaseState
         GetComponent<Renderer>().material.color = Color.green;
         controller.Jump(runHeight);
         controller.EnableGravity(false);
+        controller.onGravityMultiplier = false;
         timer = 0;
     }
 

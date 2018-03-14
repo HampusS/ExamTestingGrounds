@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 abstract public class BaseState : MonoBehaviour {
-    protected PlayerController controller;
     public MoveStates myStateType { get; set; }
+    protected PlayerController controller;
+    protected Rigidbody rgdBody;
 
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
+        rgdBody = GetComponent<Rigidbody>();
         myStateType = MoveStates.ERROR;
     }
 

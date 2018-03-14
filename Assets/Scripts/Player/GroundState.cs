@@ -28,7 +28,9 @@ public class GroundState : BaseState
     {
         Jump();
         SnapToGround();
-        controller.UpdateMoveAmount(speed, moveFloatiness);
+        Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+
+        controller.UpdateMoveAmount(speed, moveFloatiness, strafe);
     }
 
     public override bool Exit()
