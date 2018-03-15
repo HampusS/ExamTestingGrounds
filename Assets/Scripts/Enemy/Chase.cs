@@ -5,10 +5,8 @@ using UnityEngine;
 
 public class Chase : BaseEnemyState
 {
-   
     public float maxSpeed;
     public float rotateSpeed;
-    Rigidbody rbg;
 
     Vector3 dir;
     Vector3 desired;
@@ -18,11 +16,17 @@ public class Chase : BaseEnemyState
     }
     public override bool Enter()
     {
-        return true;
+        if (!controller.Rayhit())
+        {
+            Debug.Log("enterChase");
+            return true;
+        }
+        else
+            return false;
     }
     public override void Run()
     {
-        Vector3 tar= controller.target.position;
+        Vector3 tar = controller.target.position;
         dir = controller.target.position - controller.rb.position;
         dir.Normalize();
         desired = dir * maxSpeed;
@@ -35,7 +39,13 @@ public class Chase : BaseEnemyState
     }
     public override bool Exit()
     {
-        return false;
+        if (controller.Rayhit())
+        {
+            Debug.Log("exitChase");
+            return true;
+        }
+        else
+            return false;
     }
 
 }
