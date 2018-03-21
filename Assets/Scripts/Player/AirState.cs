@@ -6,8 +6,6 @@ public class AirState : BaseState
 {
     [SerializeField]
     float speed = 3;
-    [SerializeField]
-    float moveFloatiness = 0.4f;
 
     float jumpStrength = 8f;
     float jumpHeight = 300;
@@ -22,8 +20,9 @@ public class AirState : BaseState
 
     public override bool Enter()
     {
-        if (!controller.onBottom && controller.moveStates != MoveStates.AIR)
+        if (!controller.onBottom)
         {
+            controller.onGravityMultiplier = true;
             turning = false;
             return true;
         }
@@ -36,8 +35,9 @@ public class AirState : BaseState
         {
             if (controller.onForwardWall && Input.GetButtonDown("Jump"))
             {
-                controller.EnableGravity(false);
-                controller.Jump(0);
+                controller.onGravityMultiplier = false;
+                EnableGravity(false);
+                Jump(0);
                 turning = true;
             }
 
@@ -45,17 +45,26 @@ public class AirState : BaseState
             {
                 if (Input.GetButtonDown("Jump"))
                 {
-                    controller.UpdateMoveAmount(controller.HorizontalHit().normal, jumpStrength);
-                    controller.Jump(jumpHeight);
+                    AppendFinalMove(controller.HorizontalHit().normal * jumpStrength);
+                    Jump(jumpHeight);
                 }
             }
+
+            Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+            if (strafe != Vector3.zero)
+            {
+                strafe = transform.TransformDirection(strafe);
+                AppendFinalMove(strafe * (speed * Time.deltaTime));
+            }
+
         }
-        else if (controller.TurnAroundForJump(jumpHeight, jumpStrength, rotateSpeed))
+        else if (TurnTowardsVector(rotateSpeed, controller.HorizontalHit().normal))
         {
+            JumpFromWall(jumpHeight, jumpStrength);
             turning = false;
-            controller.EnableGravity(true);
+            EnableGravity(true);
         }
-        //controller.MoveInAir(speed, moveFloatiness);
+
     }
 
     public override bool Exit()
