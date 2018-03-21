@@ -13,6 +13,8 @@ public class WallRun : BaseState
     float jumpHeight = 200;
     Vector3 prevNormal, currNormal;
 
+
+
     private void Start()
     {
         myStateType = MoveStates.WALLRUN;
@@ -27,6 +29,12 @@ public class WallRun : BaseState
         EnableGravity(false);
         Jump(runHeight);
         timer = 0;
+        PlayerCameraControls cam = GetComponent<PlayerCameraControls>();
+
+        if (controller.onLeftWall)
+            cam.TiltCameraRight();
+        else
+            cam.TiltCameraLeft();
     }
 
     public override bool Enter()
@@ -56,7 +64,7 @@ public class WallRun : BaseState
     {
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {
-            JumpFromWall(jumpHeight, jumpStrength);
+            JumpFromWall((transform.forward + (controller.HorizontalHit().normal * 0.5f)).normalized, jumpHeight, jumpStrength);
 
             timer += timeSpan;
         }

@@ -25,4 +25,21 @@ public class PlayerCameraControls : MonoBehaviour {
         camLeftRight = Input.GetAxis("Mouse X") * sensX;
         transform.Rotate(Vector3.up, camLeftRight);
     }
+
+    public void TiltCameraLeft()
+    {
+        cam.transform.rotation = Quaternion.Euler(20, 0, 0);
+        Debug.Log("Left" + cam.transform.rotation);
+    }
+
+    public void TiltCameraRight()
+    {
+        cam.transform.rotation = Quaternion.Euler(-20, 0, 0);
+        Debug.Log("Right" + cam.transform.rotation);
+    }
+
+    public void Align()
+    {
+
+    }
 }

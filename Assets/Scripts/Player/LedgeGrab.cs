@@ -2,55 +2,83 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LedgeGrab : BaseState {
+public class LedgeGrab : BaseState
+{
+    bool onClimbUp;
+    Vector3 targetPos;
 
-
-    bool onLedge;
-    bool onLedgeTraverse;
-
-	// Use this for initialization
-    void Start () {
-        Initialize();
+    void Start()
+    {
+        myStateType = MoveStates.LEDGEGRAB;
     }
 
     void Initialize()
     {
-        onLedge = false;
+        onLedge = true;
+        onClimbUp = false;
+        EnableGravity(false);
+        controller.onGravityMultiplier = false;
+        ResetAllMovement();
     }
 
     public override bool Enter()
     {
+        if (ReachForLedge())
+        {
+            Debug.Log("Enter");
+            Initialize();
+            return true;
+        }
         return false;
     }
 
     public override void Run()
     {
-        
+        Vector3 position = new Vector3(transform.position.x, transform.position.y + 0.75f, transform.position.z);
+        if (Physics.Raycast(position, transform.forward, 1f))
+            onLedge = false;
+        if (!onClimbUp)
+        {
+        }
+        CheckForInput();
+        ClimbUp();
     }
 
     public override bool Exit()
     {
         if (onLedge)
             return false;
+        Debug.Log("Exit");
+        EnableGravity(true);
+        controller.onGravityMultiplier = true;
         return true;
     }
 
-    public void CheckInput()
+    public void CheckForClimb()
     {
-        if (Input.GetKeyDown("Vertical"))
-        {
 
-        }
     }
 
-    public void RayTrace()
+    public void CheckForInput()
     {
+        float forward = Input.GetAxisRaw("Vertical");
 
+        if (forward > 0)
+            onClimbUp = true;
+        else if (forward < 0)
+            onLedge = false;
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            JumpFromWall((transform.forward + (controller.HorizontalHit().normal * 0.5f)).normalized, 150, 8);
+            onLedge = false;
+            Debug.Log("Jump");
+        }
     }
 
     public void ClimbUp()
     {
-        if (onLedgeTraverse)
+        if (onClimbUp)
         {
             // Move player to position on top of ledge
         }

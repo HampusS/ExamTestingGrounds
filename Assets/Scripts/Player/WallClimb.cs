@@ -72,7 +72,7 @@ public class WallClimb : BaseState
 
     public override bool Exit()
     {
-        if (timer >= timeSpan)
+        if (timer >= timeSpan || ReachForLedge())
         {
             GetComponent<Renderer>().material.color = Color.red;
             EnableGravity(true);

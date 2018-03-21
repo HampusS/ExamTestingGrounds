@@ -38,9 +38,9 @@ public class PlayerController : MonoBehaviour
     public float halfHeight { get; set; }
     public float fullHeight { get; set; }
 
+    public RaycastHit HorizontalHit() { return horizHit; }
     public RaycastHit BottomRayHit() { return bottomHit; }
     public RaycastHit TopRayHit() { return topHit; }
-    public RaycastHit HorizontalHit() { return horizHit; }
     RaycastHit bottomHit, topHit, horizHit;
     Rigidbody rgdBody;
 
@@ -58,6 +58,8 @@ public class PlayerController : MonoBehaviour
         states.Add(GetComponent<GroundState>());
         states.Add(GetComponent<WallRun>());
         states.Add(GetComponent<WallClimb>());
+        states.Add(GetComponent<LedgeGrab>());
+
         currentState = states[0];
         currMoveState = MoveStates.AIR;
     }
@@ -83,8 +85,6 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 0.65f, 1);
         else if (!onTop)
             transform.localScale = new Vector3(1, 1, 1);
-
-
         currentState.TraceDebug();
     }
 
@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour
         onLeftWall = Physics.Raycast(ray.origin, -transform.right, out horizHit, rayLengthHorizontal, wallLayer);
         onRightWall = Physics.Raycast(ray.origin, transform.right, out horizHit, rayLengthHorizontal, wallLayer);
         onForwardWall = Physics.Raycast(ray.origin, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);
-
+        
         if(!onLeftWall && !onRightWall)
         {
             onLeftWall = Physics.Raycast(ray.origin, (-transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
