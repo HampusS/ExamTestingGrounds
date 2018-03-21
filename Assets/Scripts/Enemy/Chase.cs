@@ -30,7 +30,7 @@ public class Chase : BaseEnemyState
         dir = controller.target.position - controller.rb.position;
         dir.Normalize();
         desired = dir * maxSpeed;
-        controller.steering = -(desired - controller.rb.velocity);
+        controller.steering = -(desired - controller.rb.velocity);// *maxSpeed;
 
         controller.steering = controller.steering * rotateSpeed;
         transform.rotation = Quaternion.Slerp(transform.rotation,

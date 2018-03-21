@@ -20,12 +20,10 @@ public class Avoid : BaseEnemyState
     {
         if (controller.Rayhit())
         {
-            Debug.Log("enter if avoid");
             if (controller.fwdHitBool)
             {
                 if (controller.FwdRayHit().collider.tag == "Enviorment")
                 {
-                    Debug.Log("enterAvoid");
                     return true;
                 }
                 return false;
@@ -35,7 +33,6 @@ public class Avoid : BaseEnemyState
             {
                 if (controller.RightRayHit().collider.tag == "Enviorment")
                 {
-                    Debug.Log("enterAvoid");
                     return true;
                 }
                 return false;
@@ -45,7 +42,6 @@ public class Avoid : BaseEnemyState
             {
                 if (controller.LeftRayHit().collider.tag == "Enviorment")
                 {
-                    Debug.Log("enterAvoidLeft");
                     return true;
                 }
                 return false;
@@ -61,25 +57,19 @@ public class Avoid : BaseEnemyState
         if (controller.rightHitBool)
         {
             avoidVec = controller.leftRayVector;
+            Debug.Log("turn left");
         }
         else if (controller.leftHitBool)
         {
             avoidVec = controller.rightRayVector;
             Debug.Log("turn right");
         }
-
-        //Vector3 tar = controller.target.position;
-        dir = controller.target.position - controller.rb.position;
-        dir.Normalize();
-        desired = dir * maxSpeed;
-        controller.steering = -(desired - controller.rb.velocity);// + avoidVec;
-
-        controller.steering = (controller.steering + -(avoidVec)) - controller.rb.position;
-        controller.steering = controller.steering * rotateSpeed;
+        avoidVec.Normalize();
+        controller.steering = -avoidVec * maxSpeed;
 
         transform.rotation = Quaternion.Slerp(transform.rotation,
-                                                     Quaternion.LookRotation(dir),
-                                                     dir.magnitude * Time.deltaTime);
+                                                     Quaternion.LookRotation(avoidVec),
+                                                     avoidVec.magnitude* Time.deltaTime);
     }
     public override bool Exit()
     {
