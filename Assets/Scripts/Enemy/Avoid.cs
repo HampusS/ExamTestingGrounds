@@ -65,11 +65,18 @@ public class Avoid : BaseEnemyState
             Debug.Log("turn right");
         }
         avoidVec.Normalize();
-        controller.steering = -avoidVec * maxSpeed;
+        desired = avoidVec * maxSpeed;
+        controller.steering = -(desired - controller.rb.velocity);// *maxSpeed;
 
+        controller.steering = controller.steering * rotateSpeed;
         transform.rotation = Quaternion.Slerp(transform.rotation,
-                                                     Quaternion.LookRotation(avoidVec),
-                                                     avoidVec.magnitude* Time.deltaTime);
+                                                     Quaternion.LookRotation(dir),
+                                                     dir.magnitude * Time.deltaTime);
+        //controller.steering = -avoidVec * maxSpeed;
+
+        //transform.rotation = Quaternion.Slerp(transform.rotation,
+        //                                             Quaternion.LookRotation(avoidVec),
+        //                                             avoidVec.magnitude* Time.deltaTime);
     }
     public override bool Exit()
     {
