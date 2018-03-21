@@ -7,6 +7,7 @@ public class Chase : BaseEnemyState
 {
     public float maxSpeed;
     public float rotateSpeed;
+    public float speed = 50;
 
     Vector3 dir;
     Vector3 desired;
@@ -18,7 +19,6 @@ public class Chase : BaseEnemyState
     {
         if (!controller.Rayhit())
         {
-            Debug.Log("enterChase");
             return true;
         }
         else
@@ -26,22 +26,12 @@ public class Chase : BaseEnemyState
     }
     public override void Run()
     {
-        Vector3 tar = controller.target.position;
-        dir = controller.target.position - controller.rb.position;
-        dir.Normalize();
-        desired = dir * maxSpeed;
-        controller.steering = -(desired - controller.rb.velocity);// *maxSpeed;
-
-        controller.steering = controller.steering * rotateSpeed;
-        transform.rotation = Quaternion.Slerp(transform.rotation,
-                                                     Quaternion.LookRotation(dir),
-                                                     dir.magnitude * Time.deltaTime);
+        controller.targetVect = (controller.target.position - transform.position).normalized;
     }
     public override bool Exit()
     {
         if (controller.Rayhit())
         {
-            Debug.Log("exitChase");
             return true;
         }
         else

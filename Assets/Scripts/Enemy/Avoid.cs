@@ -12,6 +12,11 @@ public class Avoid : BaseEnemyState
     Vector3 dir;
     Vector3 desired;
     Vector3 avoidVec;
+    public float speed = 50;
+    RaycastHit hitAvoid;
+    public bool rightAvoid { get; set; }
+    public bool leftAvoid { get; set; }
+
     void Start()
     {
         myStateType = RocketState.AVIOD;
@@ -20,67 +25,40 @@ public class Avoid : BaseEnemyState
     {
         if (controller.Rayhit())
         {
-            if (controller.fwdHitBool)
+            if (controller.rightHitBool || controller.leftHitBool || controller.downHitBool || controller.upHitBool)
             {
-                if (controller.FwdRayHit().collider.tag == "Enviorment")
+                if (controller.Hit().collider != null && controller.Hit().collider.tag != "Player")
                 {
+                    Debug.Log("ender");
+                    avoidVec = Vector3.ProjectOnPlane(controller.rb.velocity, controller.hit.normal).normalized;
+                    controller.targetVect = avoidVec;
+                    Debug.Log(controller.DownUpHit());
+                   
                     return true;
                 }
-                return false;
-
+                else return false;
             }
-            else if (controller.rightHitBool)
-            {
-                if (controller.RightRayHit().collider.tag == "Enviorment")
-                {
-                    return true;
-                }
-                return false;
-
-            }
-            else if (controller.leftHitBool)
-            {
-                if (controller.LeftRayHit().collider.tag == "Enviorment")
-                {
-                    return true;
-                }
-                return false;
-            }
-            else
-                return false;
+            else return false;
         }
         else
             return false;
     }
     public override void Run()
     {
-        if (controller.rightHitBool)
+        rightAvoid = Physics.Raycast(transform.position, transform.right, out hitAvoid, 3);
+        leftAvoid = Physics.Raycast(transform.position, -transform.right, out hitAvoid, 3);
+        Debug.DrawRay(transform.position, transform.right * 1, Color.black);
+        Debug.DrawRay(transform.position, -transform.right * 1, Color.black);
+        if (controller.DownUpHit().collider != null && controller.DownUpHit().collider.tag != "Player")
         {
-            avoidVec = controller.leftRayVector;
-            Debug.Log("turn left");
+            Debug.Log("up");
+            avoidVec = Vector3.ProjectOnPlane(controller.rb.velocity, controller.upDownHit.normal).normalized;
+            controller.targetVect = avoidVec;
         }
-        else if (controller.leftHitBool)
-        {
-            avoidVec = controller.rightRayVector;
-            Debug.Log("turn right");
-        }
-        avoidVec.Normalize();
-        desired = avoidVec * maxSpeed;
-        controller.steering = -(desired - controller.rb.velocity);// *maxSpeed;
-
-        controller.steering = controller.steering * rotateSpeed;
-        transform.rotation = Quaternion.Slerp(transform.rotation,
-                                                     Quaternion.LookRotation(dir),
-                                                     dir.magnitude * Time.deltaTime);
-        //controller.steering = -avoidVec * maxSpeed;
-
-        //transform.rotation = Quaternion.Slerp(transform.rotation,
-        //                                             Quaternion.LookRotation(avoidVec),
-        //                                             avoidVec.magnitude* Time.deltaTime);
     }
     public override bool Exit()
     {
-        if (!controller.Rayhit())
+        if (rightAvoid == false && leftAvoid == false)
         {
             return true;
         }
