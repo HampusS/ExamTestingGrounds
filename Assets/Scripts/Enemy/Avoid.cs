@@ -23,25 +23,33 @@ public class Avoid : BaseEnemyState
     }
     public override bool Enter()
     {
-        if (controller.Rayhit())
+        if (controller.rightHitBool || controller.leftHitBool || controller.downHitBool || controller.upHitBool)
         {
-            if (controller.rightHitBool || controller.leftHitBool || controller.downHitBool || controller.upHitBool)
+            if (controller.Hit().collider != null || controller.DownUpHit().collider != null)
             {
+                Debug.Log("enter avoid");
+                //Debug.Log("wall dot:"+Vector3.Dot(controller.targetVect, Vector3.ProjectOnPlane(controller.targetVect, controller.hit.normal).normalized));
+                if (Vector3.Dot(controller.targetVect, Vector3.ProjectOnPlane(controller.targetVect, controller.hit.normal).normalized) > 0.95f)
+                {                
+                    if (controller.DownUpHit().collider != null && controller.DownUpHit().collider.tag != "Player")
+                    {
+                        avoidVec = Vector3.ProjectOnPlane(controller.rb.velocity, controller.upDownHit.normal).normalized;
+                        controller.targetVect = avoidVec;
+                        //Debug.Log("up dot:" + Vector3.Dot(controller.targetVect, Vector3.ProjectOnPlane(controller.targetVect, controller.hit.normal).normalized));
+
+                        return true;
+                    }
+                }
                 if (controller.Hit().collider != null && controller.Hit().collider.tag != "Player")
                 {
-                    Debug.Log("ender");
                     avoidVec = Vector3.ProjectOnPlane(controller.rb.velocity, controller.hit.normal).normalized;
                     controller.targetVect = avoidVec;
-                    Debug.Log(controller.DownUpHit());
-                   
-                    return true;
                 }
-                else return false;
+                return true;
             }
             else return false;
         }
-        else
-            return false;
+        else return false;
     }
     public override void Run()
     {
@@ -49,17 +57,13 @@ public class Avoid : BaseEnemyState
         leftAvoid = Physics.Raycast(transform.position, -transform.right, out hitAvoid, 3);
         Debug.DrawRay(transform.position, transform.right * 1, Color.black);
         Debug.DrawRay(transform.position, -transform.right * 1, Color.black);
-        if (controller.DownUpHit().collider != null && controller.DownUpHit().collider.tag != "Player")
-        {
-            Debug.Log("up");
-            avoidVec = Vector3.ProjectOnPlane(controller.rb.velocity, controller.upDownHit.normal).normalized;
-            controller.targetVect = avoidVec;
-        }
+
     }
     public override bool Exit()
     {
-        if (rightAvoid == false && leftAvoid == false)
+        if (rightAvoid == false && leftAvoid == false || controller.downHitBool == true)
         {
+            Debug.Log("exit avoid   ");
             return true;
         }
         else

@@ -48,6 +48,7 @@ public class MissileController : MonoBehaviour
     public Vector3 targetVect { get; set; }
     [SerializeField]
     float rotateSpeed = 1;
+    [SerializeField]
     float speed = 20;
 
     void Start()
