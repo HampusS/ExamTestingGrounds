@@ -5,7 +5,7 @@ using UnityEngine;
 public class AirState : BaseState
 {
     [SerializeField]
-    float speed = 3;
+    float speed = 6;
 
     float jumpStrength = 8f;
     float jumpHeight = 300;

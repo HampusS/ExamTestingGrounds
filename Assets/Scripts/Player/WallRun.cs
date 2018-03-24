@@ -64,7 +64,7 @@ public class WallRun : BaseState
     {
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {
-            JumpFromWall((transform.forward + (controller.HorizontalHit().normal * 0.5f)).normalized, jumpHeight, jumpStrength);
+            JumpFromWall((transform.forward + controller.HorizontalHit().normal).normalized, jumpHeight, jumpStrength);
 
             timer += timeSpan;
         }

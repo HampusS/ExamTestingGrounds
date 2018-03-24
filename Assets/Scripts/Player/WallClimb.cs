@@ -32,7 +32,6 @@ public class WallClimb : BaseState
 
             if (currNormal != prevNormal && Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
             {
-                GetComponent<Renderer>().material.color = Color.green;
                 controller.onGravityMultiplier = false;
                 UpdateMoveAmount(0, Vector3.zero);
                 EnableGravity(false);
@@ -72,11 +71,10 @@ public class WallClimb : BaseState
 
     public override bool Exit()
     {
-        if (timer >= timeSpan || ReachForLedge())
+        if (timer >= timeSpan)
         {
-            GetComponent<Renderer>().material.color = Color.red;
-            EnableGravity(true);
             prevNormal = currNormal;
+            EnableGravity(true);
             timer = 0;
             return true;
         }

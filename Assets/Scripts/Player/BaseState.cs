@@ -7,7 +7,6 @@ abstract public class BaseState : MonoBehaviour
     public MoveStates myStateType { get; set; }
     protected PlayerController controller;
     protected Rigidbody rgdBody;
-    protected bool onLedge;
 
     protected Vector3 moveAmount;
     protected Vector3 targetMove;
@@ -43,9 +42,9 @@ abstract public class BaseState : MonoBehaviour
 
     protected void ResetAllMovement()
     {
+        SetMoveAmount(Vector3.zero);
         rgdBody.angularVelocity = Vector3.zero;
         rgdBody.velocity = Vector3.zero;
-        SetMoveAmount(Vector3.zero);
     }
 
     protected void EnableGravity(bool enable)
@@ -129,7 +128,7 @@ abstract public class BaseState : MonoBehaviour
 
     public void TraceDebug()
     {
-        Vector3 position = new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z);
+        Vector3 position = new Vector3(transform.position.x, transform.position.y + 0.75f, transform.position.z);
         Debug.DrawRay(position, moveAmount, Color.red);
         Debug.DrawRay(position, targetMove, Color.green);
         Debug.DrawRay(position, controller.FinalMove, Color.blue);

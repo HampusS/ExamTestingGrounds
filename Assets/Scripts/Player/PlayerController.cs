@@ -44,7 +44,9 @@ public class PlayerController : MonoBehaviour
     RaycastHit bottomHit, topHit, horizHit;
     Rigidbody rgdBody;
 
-
+    Color prevColor, currColor;
+    Renderer prevRend, currRend;
+    
     void Start()
     {
         //if (Input.GetKeyDown("escape"))

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class LedgeGrab : BaseState
 {
+    bool onLedge;
     bool onClimbUp;
     Vector3 targetPos;
+
 
     void Start()
     {
@@ -35,11 +37,15 @@ public class LedgeGrab : BaseState
     public override void Run()
     {
         Vector3 position = new Vector3(transform.position.x, transform.position.y + 0.75f, transform.position.z);
-        if (Physics.Raycast(position, transform.forward, 1f))
+        bool freeLedge = !Physics.Raycast(position, transform.forward, 1f);
+        if (controller.HorizontalHit().collider != null && freeLedge)
             onLedge = false;
         if (!onClimbUp)
         {
         }
+        Debug.Log(rgdBody.velocity);
+        Debug.Log(controller.FinalMove);
+
         CheckForInput();
         ClimbUp();
     }
