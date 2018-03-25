@@ -12,29 +12,32 @@ public class WallRun : BaseState
     float jumpStrength = 8f;
     float jumpHeight = 200;
     Vector3 prevNormal, currNormal;
-
+    bool initOnce;
 
 
     private void Start()
     {
         myStateType = MoveStates.WALLRUN;
-        currNormal = Vector3.left;
     }
 
     void InitializeRun()
     {
-        SetMoveAmount(Vector3.ProjectOnPlane(transform.forward * runSpeed, currNormal));
-        GetComponent<Renderer>().material.color = Color.green;
-        controller.onGravityMultiplier = false;
-        EnableGravity(false);
-        Jump(runHeight);
-        timer = 0;
-        PlayerCameraControls cam = GetComponent<PlayerCameraControls>();
+        if (initOnce)
+        {
+            SetMoveAmount(Vector3.ProjectOnPlane(transform.forward * runSpeed, currNormal));
+            GetComponent<Renderer>().material.color = Color.green;
+            controller.onGravityMultiplier = false;
+            EnableGravity(false);
+            initOnce = false;
+            Jump(runHeight);
+            timer = 0;
+            PlayerCameraControls cam = GetComponent<PlayerCameraControls>();
 
-        if (controller.onLeftWall)
-            cam.TiltCameraRight();
-        else
-            cam.TiltCameraLeft();
+            if (controller.onLeftWall)
+                cam.TiltCameraRight();
+            else
+                cam.TiltCameraLeft();
+        }
     }
 
     public override bool Enter()
@@ -46,12 +49,10 @@ public class WallRun : BaseState
         {
             if (Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
             {
-
                 currNormal = controller.HorizontalHit().normal;
-
                 if (currNormal != prevNormal)
                 {
-                    InitializeRun();
+                    initOnce = true;
                     return true;
                 }
             }
@@ -62,6 +63,8 @@ public class WallRun : BaseState
 
     public override void Run()
     {
+        InitializeRun();
+
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {
             JumpFromWall((transform.forward + controller.HorizontalHit().normal).normalized, jumpHeight, jumpStrength);

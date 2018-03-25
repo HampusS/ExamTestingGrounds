@@ -8,8 +8,7 @@ abstract public class BaseState : MonoBehaviour
     protected PlayerController controller;
     protected Rigidbody rgdBody;
 
-    protected Vector3 moveAmount;
-    protected Vector3 targetMove;
+
     Vector3 smoothMove;
     Vector3 currVect;
     float maxSpeed = 10;
@@ -82,8 +81,8 @@ abstract public class BaseState : MonoBehaviour
 
     protected void UpdateMoveAmount(float moveFloatiness, Vector3 targetMove)
     {
-        moveAmount = Vector3.SmoothDamp(moveAmount, targetMove, ref smoothMove, moveFloatiness);
-        controller.FinalMove = transform.TransformDirection(moveAmount);
+        controller.moveAmount = Vector3.SmoothDamp(controller.moveAmount, targetMove, ref smoothMove, moveFloatiness);
+        controller.FinalMove = transform.TransformDirection(controller.moveAmount);
     }
 
     protected void AppendFinalMove(Vector3 move)
@@ -94,7 +93,8 @@ abstract public class BaseState : MonoBehaviour
 
     protected void SetMoveAmount(Vector3 newVect)
     {
-        moveAmount = newVect;
+        controller.targetMove = Vector3.zero;
+        controller.moveAmount = newVect;
         controller.FinalMove = newVect;
     }
 
@@ -104,7 +104,7 @@ abstract public class BaseState : MonoBehaviour
     protected void UpdateMoveInput(float speed)
     {
         Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-        targetMove = strafe * speed;
+        controller.targetMove = strafe * speed;
     }
 
     protected Vector3 TransformVector(Vector3 inVect)
@@ -119,18 +119,18 @@ abstract public class BaseState : MonoBehaviour
 
     protected void UpdateMovement(float moveFloatiness)
     {
-        float dot = Vector3.Dot(controller.FinalMove.normalized, moveAmount.normalized);
+        float dot = Vector3.Dot(controller.FinalMove.normalized, controller.moveAmount.normalized);
         if (dot < 0)
-            moveAmount = -moveAmount;
-        moveAmount = Vector3.SmoothDamp(moveAmount, targetMove, ref smoothMove, moveFloatiness);
-        controller.FinalMove = moveAmount;
+            controller.moveAmount = -controller.moveAmount;
+        controller.moveAmount = Vector3.SmoothDamp(controller.moveAmount, controller.targetMove, ref smoothMove, moveFloatiness);
+        controller.FinalMove = controller.moveAmount;
     }
 
     public void TraceDebug()
     {
-        Vector3 position = new Vector3(transform.position.x, transform.position.y + 0.75f, transform.position.z);
-        Debug.DrawRay(position, moveAmount, Color.red);
-        Debug.DrawRay(position, targetMove, Color.green);
+        Vector3 position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+        Debug.DrawRay(position, controller.moveAmount, Color.red);
+        Debug.DrawRay(position, controller.targetMove, Color.green);
         Debug.DrawRay(position, controller.FinalMove, Color.blue);
     }
 }

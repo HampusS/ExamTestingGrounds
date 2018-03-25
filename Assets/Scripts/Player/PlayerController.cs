@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
     List<BaseState> states;
 
     public Vector3 FinalMove { get; set; }
+    public Vector3 moveAmount { get; set; }
+    public Vector3 targetMove { get; set; }
     public bool onForwardWall { get; private set; }
     public bool onRightWall { get; private set; }
     public bool onLeftWall { get; private set; }
@@ -46,7 +48,9 @@ public class PlayerController : MonoBehaviour
 
     Color prevColor, currColor;
     Renderer prevRend, currRend;
-    
+
+
+
     void Start()
     {
         //if (Input.GetKeyDown("escape"))
@@ -87,7 +91,8 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 0.65f, 1);
         else if (!onTop)
             transform.localScale = new Vector3(1, 1, 1);
-        currentState.TraceDebug();
+        //currentState.TraceDebug();
+        //Debug.Log(currentState);
     }
 
     private void FixedUpdate()
@@ -111,7 +116,7 @@ public class PlayerController : MonoBehaviour
     //}
 
     void RayTrace()
-    {
+    {     
         Ray ray = new Ray(transform.position, Vector3.down);
         Debug.DrawRay(ray.origin, transform.up * (rayLengthVertical + 0.15f), Color.black);
         Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.black);

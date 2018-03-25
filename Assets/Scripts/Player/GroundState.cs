@@ -11,7 +11,6 @@ public class GroundState : BaseState
     [SerializeField]
     float jumpForce = 300;
 
-
     private void Start()
     {
         myStateType = MoveStates.GROUND;
@@ -21,8 +20,8 @@ public class GroundState : BaseState
     {
         if (controller.onBottom)
         {
-            //if(controller.prevMoveState != myStateType && controller.onBottom)
-            //    UpdateMoveAmount(0.035f, Vector3.zero);
+            //if (controller.prevMoveState != myStateType && controller.onBottom)
+            //    UpdateMoveAmount(0.05f, Vector3.zero);
             return true;
         }
         return false;
@@ -30,13 +29,9 @@ public class GroundState : BaseState
 
     public override void Run()
     {
-        //Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-        //UpdateMoveAmount(moveFloatiness, strafe * speed);
-        //SnapToGround();
-
         UpdateMoveInput(speed);
-        targetMove = TransformVector(targetMove);
-        targetMove = ProjectVectorToPlane(targetMove, controller.BottomRayHit().normal);
+        controller.targetMove = TransformVector(controller.targetMove);
+        controller.targetMove = ProjectVectorToPlane(controller.targetMove, controller.BottomRayHit().normal);
         UpdateMovement(moveFloatiness);
 
         if (Input.GetButtonDown("Jump"))

@@ -10,6 +10,7 @@ public class WallClimb : BaseState
     float jumpStrength = 8f;
     float jumpHeight = 300;
     float rotateSpeed = 6;
+    bool initOnce;
     bool turning;
     Vector3 prevNormal, currNormal;
 
@@ -17,7 +18,20 @@ public class WallClimb : BaseState
     void Start()
     {
         myStateType = MoveStates.WALLCLIMB;
-        turning = false;
+    }
+
+    private void InitializeRun()
+    {
+        if (initOnce)
+        {
+            controller.onGravityMultiplier = false;
+            UpdateMoveAmount(0, Vector3.zero);
+            EnableGravity(false);
+            Jump(runHeight);
+            turning = false;
+            initOnce = false;
+            timer = 0;
+        }
     }
 
     public override bool Enter()
@@ -27,17 +41,10 @@ public class WallClimb : BaseState
 
         if (controller.onForwardWall)
         {
-
             currNormal = controller.HorizontalHit().normal;
-
             if (currNormal != prevNormal && Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
             {
-                controller.onGravityMultiplier = false;
-                UpdateMoveAmount(0, Vector3.zero);
-                EnableGravity(false);
-                Jump(runHeight);
-                turning = false;
-                timer = 0;
+                initOnce = true;
                 return true;
             }
         }
@@ -47,6 +54,7 @@ public class WallClimb : BaseState
 
     public override void Run()
     {
+        InitializeRun();
         if (!turning)
         {
             if (timer > 0 && Input.GetButtonDown("Jump"))
@@ -59,6 +67,9 @@ public class WallClimb : BaseState
                 timer += Time.deltaTime;
             else
                 timer += Time.deltaTime * 2;
+
+            if (ReachForLedge())
+                timer += timeSpan;
         }
         else if (TurnTowardsVector(rotateSpeed, controller.HorizontalHit().normal))
         {
@@ -73,6 +84,7 @@ public class WallClimb : BaseState
     {
         if (timer >= timeSpan)
         {
+            rgdBody.velocity = Vector3.zero;
             prevNormal = currNormal;
             EnableGravity(true);
             timer = 0;
