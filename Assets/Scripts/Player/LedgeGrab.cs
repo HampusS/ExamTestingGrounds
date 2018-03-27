@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class LedgeGrab : BaseState
 {
-    bool onLedge;
+    bool onForceExit;
     bool onClimbUp;
-    bool moveUp;
-    bool moveIn;
-    bool standUp;
+    bool onLedge;
+    bool onMoveUp;
+    float animSpeed = 2;
     Vector3 targetPos;
-    float animSpeed = 3;
-    bool ForceExit;
 
     void Start()
     {
@@ -30,8 +28,8 @@ public class LedgeGrab : BaseState
     public override bool Enter()
     {
         if (controller.onBottom)
-            ForceExit = false;
-        if (!ForceExit && ReachForLedge())
+            onForceExit = false;
+        if (!onForceExit && ReachForLedge())
         {
             Initialize();
             return true;
@@ -53,7 +51,7 @@ public class LedgeGrab : BaseState
 
     public override bool Exit()
     {
-        if (onLedge && !ForceExit)
+        if (onLedge && !onForceExit)
             return false;
 
         EnableGravity(true);
@@ -69,7 +67,7 @@ public class LedgeGrab : BaseState
             onClimbUp = true;
         else if (forward < 0)
         {
-            ForceExit = true;
+            onForceExit = true;
             onLedge = false;
         }
 
@@ -77,73 +75,46 @@ public class LedgeGrab : BaseState
         {
             JumpFromWall((transform.forward + (controller.HorizontalHit().normal * 0.5f)).normalized, 150, 8);
             onLedge = false;
-            ForceExit = true;
+            onForceExit = true;
         }
     }
 
     public void ClimbUp()
     {
-        Vector3 rayOrig = new Vector3(transform.localPosition.x - controller.HorizontalHit().normal.x, transform.position.y + 0.75f, transform.localPosition.z - controller.HorizontalHit().normal.z);
-        Debug.DrawRay(rayOrig, Vector3.down, Color.red);
+
         if (onClimbUp)
         {
-            if (!moveUp)
+            if (!onMoveUp)
             {
-                Vector3 ledgeOrig = new Vector3(transform.position.x, transform.position.y + 0.75f, transform.position.z);
+                Vector3 ledgeOrig = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+                Debug.DrawRay(ledgeOrig, transform.forward, Color.red);
                 bool freeLedge = !Physics.Raycast(ledgeOrig, transform.forward, 1f);
                 if (freeLedge)
                 {
-
-                    RaycastHit rayHit;
-                    if (Physics.Raycast(rayOrig, Vector3.down, out rayHit, 0.5f))
-                    {
-                        targetPos = rayHit.point;
-                        moveUp = true;
-                        rgdBody.isKinematic = true;
-                        GetComponent<CapsuleCollider>().enabled = false;
-                    }
-                    else
-                        onClimbUp = false;
+                    Vector3 rayOrig = new Vector3(transform.localPosition.x - (controller.HorizontalHit().normal.x * 1.75f), transform.position.y + 1.55f, transform.localPosition.z - (controller.HorizontalHit().normal.z * 1.75f));
+                    Debug.DrawRay(rayOrig, Vector3.down, Color.red);
+                    targetPos = rayOrig;
+                    onMoveUp = true;
+                    rgdBody.isKinematic = true;
+                    GetComponent<CapsuleCollider>().enabled = false;
                 }
                 else
                     onClimbUp = false;
             }
-            else if (moveUp)
+            else
             {
-                if (!moveIn)
-                {
-                    Vector3 targetHeight = new Vector3(transform.position.x, targetPos.y, transform.position.z);
-                    transform.position = Vector3.Lerp(transform.position, targetHeight, Time.deltaTime * animSpeed);
+                transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * animSpeed);
 
-                    if (Vector3.Distance(transform.position, targetHeight) < 0.1f)
-                    {
-                        moveIn = true;
-                    }
-                }
-                else if (!standUp)
+                if (Vector3.Distance(transform.position, targetPos) < 0.1f)
                 {
-                    transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * animSpeed);
-                    if (Vector3.Distance(transform.position, targetPos) < 0.1f)
-                    {
-                        targetPos = new Vector3(transform.position.x, transform.position.y + 1.2f, transform.position.z);
-                        standUp = true;
-                    }
+                    onMoveUp = false;
+                    onLedge = false;
+                    onClimbUp = false;
+                    rgdBody.isKinematic = false;
+                    GetComponent<CapsuleCollider>().enabled = true;
+                    ResetAllMovement();
                 }
-                else
-                {
-                    transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * animSpeed);
-                    if (Vector3.Distance(transform.position, targetPos) < 0.1f)
-                    {
-                        moveUp = false;
-                        moveIn = false;
-                        onLedge = false;
-                        rgdBody.isKinematic = false;
-                        GetComponent<CapsuleCollider>().enabled = true;
-                        onClimbUp = false;
-                        standUp = false;
-                        ResetAllMovement();
-                    }
-                }
+
             }
         }
     }
