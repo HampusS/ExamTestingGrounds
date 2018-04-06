@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class LedgeGrab : BaseState
 {
-    bool onForceExit;
-    bool onClimbUp;
+    bool onTryClimbUp;
     bool onLedge;
     bool onMoveUp;
     float animSpeed = 2;
     Vector3 targetPos;
+
+    Vector3 posToDown;
+    Vector3 posToForward;
 
     void Start()
     {
@@ -19,7 +21,7 @@ public class LedgeGrab : BaseState
     void Initialize()
     {
         onLedge = true;
-        onClimbUp = false;
+        onTryClimbUp = false;
         EnableGravity(false);
         controller.onGravityMultiplier = false;
         ResetAllMovement();
@@ -27,9 +29,7 @@ public class LedgeGrab : BaseState
 
     public override bool Enter()
     {
-        if (controller.onBottom)
-            onForceExit = false;
-        if (!onForceExit && ReachForLedge())
+        if (ReachForLedge())
         {
             Initialize();
             return true;
@@ -39,19 +39,18 @@ public class LedgeGrab : BaseState
 
     public override void Run()
     {
-        if (!onClimbUp)
-        {
-            //if (rgdBody.velocity.y > 0)
-            //    onLedge = false;
+        if (!onTryClimbUp)
             CheckForInput();
-        }
         else
             ClimbUp();
+        Debug.DrawRay(posToDown, Vector3.down, Color.red);
+        Debug.DrawRay(posToDown, Vector3.up, Color.black);
+        Debug.DrawRay(posToForward, transform.forward, Color.red);
     }
 
     public override bool Exit()
     {
-        if (onLedge && !onForceExit)
+        if (onLedge)
             return false;
 
         EnableGravity(true);
@@ -63,53 +62,51 @@ public class LedgeGrab : BaseState
     {
         float forward = Input.GetAxisRaw("Vertical");
 
-        if (forward > 0)
-            onClimbUp = true;
-        else if (forward < 0)
+        if (forward > 0 && controller.onForwardWall)
         {
-            onForceExit = true;
-            onLedge = false;
+            onTryClimbUp = true;
+            posToDown = new Vector3(transform.localPosition.x - (controller.HorizontalHit().normal.x * 1.25f), transform.position.y + 1, transform.localPosition.z - (controller.HorizontalHit().normal.z * 1.25f));
+            posToForward = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
         }
+        else if (forward < 0 || forward > 0 && !controller.onForwardWall)
+            onLedge = false;
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && !ReachForLedge())
         {
             JumpFromWall((transform.forward + (controller.HorizontalHit().normal * 0.5f)).normalized, 150, 8);
             onLedge = false;
-            onForceExit = true;
         }
     }
 
     public void ClimbUp()
     {
-
-        if (onClimbUp)
+        if (onTryClimbUp)
         {
             if (!onMoveUp)
             {
-                Vector3 ledgeOrig = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
-                Debug.DrawRay(ledgeOrig, transform.forward, Color.red);
-                bool freeLedge = !Physics.Raycast(ledgeOrig, transform.forward, 1f);
-                if (freeLedge)
+                RaycastHit groundHit;
+                bool freeLedge = !Physics.Raycast(posToForward, transform.forward, 1f);
+                bool onToGround = Physics.Raycast(posToDown, Vector3.down, out groundHit, 1f);
+
+                if (freeLedge && onToGround)
                 {
-                    Vector3 rayOrig = new Vector3(transform.localPosition.x - (controller.HorizontalHit().normal.x * 1.75f), transform.position.y + 1.55f, transform.localPosition.z - (controller.HorizontalHit().normal.z * 1.75f));
-                    Debug.DrawRay(rayOrig, Vector3.down, Color.red);
-                    targetPos = rayOrig;
+                    targetPos = new Vector3(posToDown.x, groundHit.point.y + 1.15f, posToDown.z);
                     onMoveUp = true;
                     rgdBody.isKinematic = true;
                     GetComponent<CapsuleCollider>().enabled = false;
                 }
                 else
-                    onClimbUp = false;
+                    onTryClimbUp = false;
             }
             else
             {
                 transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * animSpeed);
 
-                if (Vector3.Distance(transform.position, targetPos) < 0.1f)
+                if (Vector3.Distance(transform.position, targetPos) < 0.15f)
                 {
                     onMoveUp = false;
                     onLedge = false;
-                    onClimbUp = false;
+                    onTryClimbUp = false;
                     rgdBody.isKinematic = false;
                     GetComponent<CapsuleCollider>().enabled = true;
                     ResetAllMovement();

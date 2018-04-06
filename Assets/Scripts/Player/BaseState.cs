@@ -13,9 +13,12 @@ abstract public class BaseState : MonoBehaviour
     Vector3 currVect;
     float maxSpeed = 10;
 
+    PlayerCameraControls camCtrl;
+
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
+        camCtrl = GetComponent<PlayerCameraControls>();
         rgdBody = GetComponent<Rigidbody>();
         myStateType = MoveStates.ERROR;
     }
@@ -33,10 +36,12 @@ abstract public class BaseState : MonoBehaviour
     protected bool TurnTowardsVector(float rotateSpeed, Vector3 targetVector)
     {
         float step = rotateSpeed * Time.deltaTime;
-        Vector3 newDir = Vector3.RotateTowards(transform.forward, targetVector, step, 0.0F);
+        Vector3 newDir = Vector3.RotateTowards(transform.forward, targetVector, step, 0.0f);
         transform.rotation = Quaternion.LookRotation(newDir);
-
-        return newDir == targetVector;
+        
+        if (Vector3.Dot(transform.forward, targetVector) < 0.999f)
+            return false;
+        return true;       
     }
 
     protected void ResetAllMovement()
@@ -54,12 +59,9 @@ abstract public class BaseState : MonoBehaviour
     public bool ReachForLedge()
     {
         Vector3 position = new Vector3(transform.position.x, transform.position.y + 0.75f, transform.position.z);
-        Debug.DrawRay(position, transform.forward * 1, Color.green);
 
         if (controller.onForwardWall && !Physics.Raycast(position, transform.forward, 1))
-        {
             return true;
-        }
         return false;
     }
 

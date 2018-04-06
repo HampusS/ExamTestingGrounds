@@ -39,10 +39,10 @@ public class WallClimb : BaseState
         if (controller.onBottom)
             prevNormal = Vector3.zero;
 
-        if (controller.onForwardWall)
+        if (controller.onForwardWall && !ReachForLedge())
         {
             currNormal = controller.HorizontalHit().normal;
-            if (currNormal != prevNormal && Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
+            if (currNormal != prevNormal && Input.GetButton("Jump"))
             {
                 initOnce = true;
                 return true;

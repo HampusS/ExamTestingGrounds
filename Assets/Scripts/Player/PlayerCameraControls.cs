@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCameraControls : MonoBehaviour {
+public class PlayerCameraControls : MonoBehaviour
+{
     [SerializeField]
     float sensX = 5f;
     [SerializeField]
@@ -11,19 +12,27 @@ public class PlayerCameraControls : MonoBehaviour {
     float camUpDown;
     float camLeftRight;
 
+    public bool LockTurning { get; set; }
+
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         cam = Camera.main.transform;
+        LockTurning = false;
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         camUpDown += Input.GetAxis("Mouse Y") * sensY;
         camUpDown = Mathf.Clamp(camUpDown, -65, 65);
         cam.localRotation = Quaternion.AngleAxis(-camUpDown, Vector3.right);
 
-        camLeftRight = Input.GetAxis("Mouse X") * sensX;
-        transform.Rotate(Vector3.up, camLeftRight);
+        if (!LockTurning)
+        {
+            camLeftRight = Input.GetAxis("Mouse X") * sensX;
+            transform.Rotate(Vector3.up, camLeftRight);
+        }
     }
 
     public void TiltCameraLeft()
