@@ -13,12 +13,10 @@ abstract public class BaseState : MonoBehaviour
     Vector3 currVect;
     float maxSpeed = 10;
 
-    PlayerCameraControls camCtrl;
 
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
-        camCtrl = GetComponent<PlayerCameraControls>();
         rgdBody = GetComponent<Rigidbody>();
         myStateType = MoveStates.ERROR;
     }
