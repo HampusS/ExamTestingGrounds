@@ -10,21 +10,23 @@ public enum SwarmState
     IDLE,
 }
 
-public class SwarmerController : MonoBehaviour {
+public class SwarmerController : MonoBehaviour
+{
     public SwarmBase behaviour { get; private set; }
     public EnemySpawner spawner;
     List<SwarmBase> states;
     SwarmState stateType;
     int hp = 2;
 
-
     private void Start()
     {
         states = new List<SwarmBase>();
         states.Add(GetComponent<AgentMove>());
+        behaviour = states[0];
     }
 
-    void Update () {
+    void Update()
+    {
         if (behaviour.Exit())
         {
             foreach (SwarmBase state in states)
@@ -41,7 +43,6 @@ public class SwarmerController : MonoBehaviour {
 
     public void KillMe()
     {
-
         spawner.amount--;
     }
 }
