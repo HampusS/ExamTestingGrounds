@@ -2,47 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum SwarmState
+public class SwarmerController : EnemyController
 {
-    ERROR,
-    MOVE,
-    ATTACK,
-    IDLE,
-}
-
-public class SwarmerController : MonoBehaviour
-{
-    public SwarmBase behaviour { get; private set; }
-    public Transform target;
-
     public EnemySpawner spawner;
-    public SwarmState stateType;
-    List<SwarmBase> states;
-    int hp = 2;
+    
+    // Make a ray to player to check line of sight - then add to NavMove enter
+    // Make a range check for attack
+    // Make an idle behavior
 
     private void Start()
     {
-        states = new List<SwarmBase>();
-        states.Add(GetComponent<AgentMove>());
-        behaviour = states[0];
+        states = new List<EnemyBase>();
+        states.Add(GetComponent<EnemyIdleState>());
+        states.Add(GetComponent<EnemyNavMoveState>());
+        currentState = states[0];
     }
 
     void Update()
     {
-        if (behaviour.Exit())
-        {
-            foreach (SwarmBase state in states)
-            {
-                if (state.Enter())
-                {
-                    behaviour = state;
-                    stateType = behaviour.stateType;
-                }
-            }
-        }
-        behaviour.Run();
+        StateMachine();
 
-        if(hp <= 0)
+        if(health <= 0)
         {
             KillMe();
         }

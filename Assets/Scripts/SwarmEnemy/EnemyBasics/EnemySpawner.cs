@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public SwarmerController controller;
-    public GameObject agent;
+    public Transform player;
+    public GameObject enemy;
     public int Capacity;
     public float spawnRate;
     float time;
@@ -13,7 +13,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-
+        amount = 1;
     }
 
     void Update()
@@ -32,9 +32,11 @@ public class EnemySpawner : MonoBehaviour
     void SpawnAgent()
     {
         amount++;
-        float x = Random.Range(controller.target.position.x - 10, controller.target.position.x + 10);
-        float y = controller.target.position.y;
-        GameObject clone = Instantiate(agent, new Vector3(x, y), agent.transform.rotation);
+        // Improve spawn grounds to check if the ground is available
+        float x = Random.Range(player.position.x - 10, player.position.x + 10);
+        float z = Random.Range(player.position.z - 10, player.position.z + 10);
+        /*GameObject clone = */
+        Instantiate(enemy, new Vector3(x, player.position.y, z), enemy.transform.rotation);
     }
 
 }
