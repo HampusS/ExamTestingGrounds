@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class SwarmBase : MonoBehaviour{
-    protected SwarmerController controller;
     public SwarmState stateType { get; set; }
+    protected SwarmerController controller;
 
     void Start()
     {

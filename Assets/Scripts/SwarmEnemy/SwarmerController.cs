@@ -13,9 +13,11 @@ public enum SwarmState
 public class SwarmerController : MonoBehaviour
 {
     public SwarmBase behaviour { get; private set; }
+    public Transform target;
+
     public EnemySpawner spawner;
+    public SwarmState stateType;
     List<SwarmBase> states;
-    SwarmState stateType;
     int hp = 2;
 
     private void Start()
@@ -39,10 +41,16 @@ public class SwarmerController : MonoBehaviour
             }
         }
         behaviour.Run();
+
+        if(hp <= 0)
+        {
+            KillMe();
+        }
     }
 
     public void KillMe()
     {
         spawner.amount--;
+        Destroy(this);
     }
 }

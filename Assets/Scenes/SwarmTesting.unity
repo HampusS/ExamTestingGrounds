@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4084aedb168698a4795ab76f8317765e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 1099937564}
   agent: {fileID: 1099937562}
   Capacity: 5
   spawnRate: 1
@@ -544,6 +545,11 @@ Prefab:
       propertyPath: m_AutoRepath
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114729343191600808, guid: 2c8fcba34690b684baefe8b068276be7,
+        type: 2}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 280581446}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2c8fcba34690b684baefe8b068276be7, type: 2}
   m_IsPrefabParent: 0
@@ -552,6 +558,12 @@ GameObject:
   m_PrefabParentObject: {fileID: 1948377084217480, guid: 2c8fcba34690b684baefe8b068276be7,
     type: 2}
   m_PrefabInternal: {fileID: 987253727}
+--- !u!114 &1099937564 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114729343191600808, guid: 2c8fcba34690b684baefe8b068276be7,
+    type: 2}
+  m_PrefabInternal: {fileID: 987253727}
+  m_Script: {fileID: 11500000, guid: cdce4c36340cbe24792e8f0d915a4cd2, type: 3}
 --- !u!1 &1869653674
 GameObject:
   m_ObjectHideFlags: 0

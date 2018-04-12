@@ -5,12 +5,12 @@ using UnityEngine.AI;
 
 public class AgentMove : SwarmBase
 {
-    public Transform target;
     NavMeshAgent navMesh;
     
     void Start()
     {
         navMesh = GetComponent<NavMeshAgent>();
+        controller = GetComponent<SwarmerController>();
         stateType = SwarmState.MOVE;
     }
 
@@ -22,12 +22,12 @@ public class AgentMove : SwarmBase
 
     public override void Run()
     {
-        navMesh.SetDestination(target.position);
+        navMesh.SetDestination(controller.target.position);
     }
 
     public override bool Exit()
     {
-        if (transform.position == target.position)
+        if (transform.position == controller.target.position)
             return true;
 
         return false;
