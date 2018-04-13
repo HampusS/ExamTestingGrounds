@@ -1,0 +1,10 @@
+Tester name: Tom
+Tester id: 1
+The test order for this player was: 1243
+-----------------------------Tester name: hampus
+Tester id: 2
+The test order for this player was: 4231
+------------------------------------------------------------------Tester name: tom
+Tester id: 3
+The test order for this player was: 3124
+-----------------------------------------------------------------------------------------------
