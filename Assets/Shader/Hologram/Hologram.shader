@@ -50,7 +50,9 @@
 			v2f vert (appdata v)
 			{
 				v2f o;
-				//v.vertex.x += sin(_Time.y * _Speed + v.vertex.y * _Amplitude) *_Distance * _Amount;
+				v.vertex.x += sin(_Time.y * _Speed + v.vertex.y * _Amplitude) *_Distance * _Amount;
+				v.vertex.y += sin(_Time.y * _Speed + v.vertex.y * _Amplitude) *_Distance * _Amount;
+				v.vertex.z += sin(_Time.y * _Speed + v.vertex.y * _Amplitude) *_Distance * _Amount;
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				return o;
@@ -60,8 +62,8 @@
 			{
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);// +_TintColor;
-				//col.a = _Transparency;
-				/*clip(col.r - _CutoutThresh);*/
+				col.a = _Transparency;
+				clip(col.r - _CutoutThresh);
 				return col;
 			}
 			ENDCG
