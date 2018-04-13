@@ -17,8 +17,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     LayerMask wallLayer;
     [SerializeField]
+    float health;
+
     float rayLengthHorizontal = 0.6f;
-    [SerializeField]
     float rayLengthVertical = 1.25f;
 
     public MoveStates currMoveState { get; private set; }
@@ -45,11 +46,7 @@ public class PlayerController : MonoBehaviour
     public RaycastHit TopRayHit() { return topHit; }
     RaycastHit bottomHit, topHit, horizHit;
     Rigidbody rgdBody;
-
-    Color prevColor, currColor;
-    Renderer prevRend, currRend;
-
-
+    
 
     void Start()
     {
@@ -91,8 +88,6 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 0.65f, 1);
         else if (!onTop)
             transform.localScale = new Vector3(1, 1, 1);
-        //currentState.TraceDebug();
-        //Debug.Log(currentState);
     }
 
     private void FixedUpdate()
@@ -103,17 +98,7 @@ public class PlayerController : MonoBehaviour
                 rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
             }
         rgdBody.MovePosition(rgdBody.position + FinalMove * Time.fixedDeltaTime);
-        //Debug.Log(FinalMove);
     }
-
-    //public void BumpGround()
-    //{
-    //    if (currMoveState != MoveStates.GROUND && onBottom)
-    //    {
-    //        Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-    //        UpdateMoveAmount(0, 0.035f, strafe);
-    //    }
-    //}
 
     void RayTrace()
     {     
@@ -146,6 +131,28 @@ public class PlayerController : MonoBehaviour
                 onRightWall = Physics.Raycast(ray.origin, (transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
             }
         }
+    }
+
+
+
+    public void JumpAway(Vector3 direction, float height, float perpendicularStrength)
+    {
+        SetMoveAmount(direction * perpendicularStrength);
+        Jump(height);
+        //moveAmount = Vector3.Project(-moveAmount, controller.HorizontalHit().normal);
+    }
+
+    void SetMoveAmount(Vector3 newVect)
+    {
+        targetMove = Vector3.zero;
+        moveAmount = newVect;
+        FinalMove = newVect;
+    }
+
+    void Jump(float magnitude)
+    {
+        rgdBody.velocity = Vector3.zero;
+        rgdBody.AddForce(transform.up * magnitude);
     }
 
 }

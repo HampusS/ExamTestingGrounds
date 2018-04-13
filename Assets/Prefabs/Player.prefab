@@ -49,6 +49,8 @@ GameObject:
   - component: {fileID: 92050310502554428}
   - component: {fileID: 124855314769520076}
   - component: {fileID: 81352161462267242}
+  - component: {fileID: 114601326988085836}
+  - component: {fileID: 114757508819226032}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -80,13 +82,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1333145699218440}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.44681534, z: -0, w: 0.89462626}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4222903692774916}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 53.079002, z: 0}
 --- !u!4 &4222903692774916
 Transform:
   m_ObjectHideFlags: 1
@@ -94,14 +96,14 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1239035602709756}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.66, y: 5.32, z: -12.51}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4094968827889476}
   - {fileID: 4710821451453772}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 33.975002, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4710821451453772
 Transform:
   m_ObjectHideFlags: 1
@@ -140,17 +142,17 @@ Camera:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967039
-  m_RenderingPath: -1
+  m_RenderingPath: 3
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+  m_StereoMirrorMode: 0
 --- !u!23 &23171729137886190
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -160,7 +162,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -176,7 +177,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -194,7 +194,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -210,7 +209,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -322,6 +320,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0d7f30311496c54ea7ef5bc7d87581a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114601326988085836
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1333145699218440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeefbb5e8622047458236b96d5ab271c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  postProfileMain: {fileID: 11400000, guid: 39afb5ad1b5ad8b4abc4dec9fbabbfdf, type: 2}
+  postProfileMainNoFx: {fileID: 11400000, guid: d99db2e014755a24fb3b33953126c792,
+    type: 2}
 --- !u!114 &114653560817539702
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -348,8 +360,19 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 1024
-  rayLengthHorizontal: 0.6
-  rayLengthVertical: 1.25
+  health: 0
+--- !u!114 &114757508819226032
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1333145699218440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: 39afb5ad1b5ad8b4abc4dec9fbabbfdf, type: 2}
 --- !u!124 &124855314769520076
 Behaviour:
   m_ObjectHideFlags: 1

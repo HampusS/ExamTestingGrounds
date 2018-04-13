@@ -12,12 +12,13 @@ public enum EnemyTasks
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField]
     public GameObject player;
     [SerializeField]
     protected int health = 2;
     [SerializeField]
     protected float aggroRange = 180;
+    [SerializeField]
+    protected float attackRange = 2.5f;
 
     protected EnemyTasks currentTask;
     protected EnemyBase currentState;
@@ -25,9 +26,15 @@ public class EnemyController : MonoBehaviour
 
     public Vector3 Destination { get; set; }
 
+    public bool InAttackRange()
+    {
+        Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * attackRange, Color.green);
+        return (Vector3.Distance(transform.position, player.transform.position) < attackRange);
+    }
+
     public bool InAggroRange()
     {
-        Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * aggroRange, Color.red);
+        //Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * aggroRange, Color.red);
         return (Vector3.Distance(transform.position, player.transform.position) < aggroRange);
     }
 

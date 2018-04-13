@@ -15,6 +15,7 @@ public class SwarmerController : EnemyController
         states = new List<EnemyBase>();
         states.Add(GetComponent<EnemyIdleState>());
         states.Add(GetComponent<EnemyNavMoveState>());
+        states.Add(GetComponent<EnemyAttackState>());
         currentState = states[0];
     }
 

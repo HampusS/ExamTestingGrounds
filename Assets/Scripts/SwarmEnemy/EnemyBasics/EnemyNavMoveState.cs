@@ -16,7 +16,7 @@ public class EnemyNavMoveState : EnemyBase
 
     public override bool Enter()
     {
-        if (controller.InAggroRange() && controller.InAggroSight())
+        if (controller.InAggroRange() && controller.InAggroSight() && !controller.InAttackRange())
         {
             controller.Destination = controller.player.transform.position;
             navMesh.SetDestination(controller.Destination);
@@ -27,7 +27,11 @@ public class EnemyNavMoveState : EnemyBase
 
     public override void Run()
     {
-
+        if (controller.InAttackRange())
+        {
+            navMesh.isStopped = true;
+            navMesh.ResetPath();
+        }
     }
 
     public override bool Exit()
