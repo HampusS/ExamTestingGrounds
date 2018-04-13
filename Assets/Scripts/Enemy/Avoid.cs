@@ -7,13 +7,13 @@ public class Avoid : BaseEnemyState
 
     public float maxSpeed;
     public float rotateSpeed;
-    Rigidbody rbg;
+    //Rigidbody rbg;
 
-    Vector3 dir;
-    Vector3 desired;
+    //Vector3 dir;
+    //Vector3 desired;
+    //RaycastHit hitAvoid;
     Vector3 avoidVec;
     public float speed = 50;
-    RaycastHit hitAvoid;
     public bool rightAvoid { get; set; }
     public bool leftAvoid { get; set; }
 
@@ -53,8 +53,8 @@ public class Avoid : BaseEnemyState
     }
     public override void Run()
     {
-        rightAvoid = Physics.Raycast(transform.position, transform.right, out hitAvoid, 3);
-        leftAvoid = Physics.Raycast(transform.position, -transform.right, out hitAvoid, 3);
+        rightAvoid = Physics.Raycast(transform.position, transform.right,/* out hitAvoid,*/ 3);
+        leftAvoid = Physics.Raycast(transform.position, -transform.right,/* out hitAvoid,*/ 3);
         Debug.DrawRay(transform.position, transform.right * 1, Color.black);
         Debug.DrawRay(transform.position, -transform.right * 1, Color.black);
 
