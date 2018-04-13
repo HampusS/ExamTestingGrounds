@@ -83,7 +83,6 @@ public class PlayerController : MonoBehaviour
             }
         }
         currentState.Run();
-
         if (Input.GetKey(KeyCode.LeftControl))
             transform.localScale = new Vector3(1, 0.65f, 1);
         else if (!onTop)

@@ -14,10 +14,13 @@ public class WallRun : BaseState
     Vector3 prevNormal, currNormal;
     bool initOnce;
 
+    TiltCamera cam;
+
 
     private void Start()
     {
         myStateType = MoveStates.WALLRUN;
+        cam = Camera.main.GetComponent<TiltCamera>();
     }
 
     void InitializeRun()
@@ -31,12 +34,12 @@ public class WallRun : BaseState
             initOnce = false;
             Jump(runHeight);
             timer = 0;
-            PlayerCameraControls cam = GetComponent<PlayerCameraControls>();
-
+            cam.ResetCamera();
             if (controller.onLeftWall)
-                cam.TiltCameraRight();
-            else
-                cam.TiltCameraLeft();
+                cam.Right = true;
+            else if (controller.onRightWall)
+                cam.Left = true;
+
         }
     }
 
@@ -91,6 +94,7 @@ public class WallRun : BaseState
             prevNormal = currNormal;
             EnableGravity(true);
             timer = 0;
+            cam.ResetCamera();
             return true;
         }
         return false;
