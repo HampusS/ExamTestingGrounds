@@ -50,7 +50,7 @@ public class WallRun : BaseState
 
         if (controller.onLeftWall || controller.onRightWall)
         {
-            if (Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
+            if (Input.GetButton("Action") && Input.GetAxisRaw("Vertical") > 0)
             {
                 currNormal = controller.HorizontalHit().normal;
                 if (currNormal != prevNormal)
@@ -80,7 +80,7 @@ public class WallRun : BaseState
             timer += timeSpan;
         }
 
-        if (Input.GetButton("Jump"))
+        if (Input.GetButton("Action"))
             timer += Time.deltaTime;
         else
             timer += Time.deltaTime * runTimeMultiplier;

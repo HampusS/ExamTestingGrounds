@@ -39,10 +39,10 @@ public class WallClimb : BaseState
         if (controller.onBottom)
             prevNormal = Vector3.zero;
 
-        if (controller.onForwardWall && !ReachForLedge())
+        if (controller.onForwardWall && !inReachOfLedge())
         {
             currNormal = controller.HorizontalHit().normal;
-            if (currNormal != prevNormal && Input.GetButton("Jump"))
+            if (currNormal != prevNormal && Input.GetButton("Action"))
             {
                 initOnce = true;
                 return true;
@@ -63,12 +63,12 @@ public class WallClimb : BaseState
                 turning = true;
             }
 
-            if (Input.GetButton("Jump"))
+            if (Input.GetButton("Action"))
                 timer += Time.deltaTime;
             else
                 timer += Time.deltaTime * 2;
 
-            if (ReachForLedge())
+            if (inReachOfLedge())
                 timer += timeSpan;
         }
         else if (TurnTowardsVector(rotateSpeed, controller.HorizontalHit().normal))

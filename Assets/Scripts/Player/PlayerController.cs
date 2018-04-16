@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     float health;
 
-    float rayLengthHorizontal = 0.6f;
+    float rayLengthHorizontal = 0.7f;
     float rayLengthVertical = 1.25f;
 
     public MoveStates currMoveState { get; private set; }
@@ -46,7 +46,10 @@ public class PlayerController : MonoBehaviour
     public RaycastHit TopRayHit() { return topHit; }
     RaycastHit bottomHit, topHit, horizHit;
     Rigidbody rgdBody;
-    
+
+    // Add invincibility frames
+    // Add Ammo
+    // Add Health
 
     void Start()
     {
