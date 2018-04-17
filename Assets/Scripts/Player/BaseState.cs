@@ -11,7 +11,7 @@ abstract public class BaseState : MonoBehaviour
 
     Vector3 smoothMove;
     Vector3 currVect;
-    float maxSpeed = 10;
+    float maxSpeed = 20;//doubble maxspeed
 
 
     private void Awake()
