@@ -9,10 +9,8 @@ public class WallRun : BaseState
     float runHeight = 45;
     float runTimeMultiplier = 2f;
 
-
     Vector3 prevNormal, currNormal;
     bool initOnce;
-
     TiltCamera cam;
 
 
@@ -49,7 +47,7 @@ public class WallRun : BaseState
 
         if (controller.onLeftWall || controller.onRightWall)
         {
-            if (Input.GetButton("Action") && Input.GetAxisRaw("Vertical") > 0)
+            if (Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
             {
                 currNormal = controller.HorizontalHit().normal;
                 if (currNormal != prevNormal)
@@ -69,7 +67,9 @@ public class WallRun : BaseState
 
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {
-            JumpFromWall((transform.forward + controller.HorizontalHit().normal).normalized, controller.jumpHeight, controller.jumpStrength);
+            Vector3 result;
+            result = Vector3.ProjectOnPlane(transform.forward, controller.HorizontalHit().normal) + transform.forward + controller.HorizontalHit().normal;
+            JumpFromWall(result.normalized, controller.jumpHeight, controller.jumpStrength);
 
             timer += timeSpan;
         }
@@ -79,7 +79,7 @@ public class WallRun : BaseState
             timer += timeSpan;
         }
 
-        if (Input.GetButton("Action"))
+        if (Input.GetButton("Jump"))
             timer += Time.deltaTime;
         else
             timer += Time.deltaTime * runTimeMultiplier;

@@ -11,9 +11,6 @@ abstract public class BaseState : MonoBehaviour
 
     Vector3 smoothMove;
     Vector3 currVect;
-    float maxSpeed = 20;//doubble maxspeed
-
-
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
@@ -65,7 +62,7 @@ abstract public class BaseState : MonoBehaviour
 
     protected void JumpFromWall(float height, float perpendicularStrength)
     {
-        AppendFinalMove(controller.HorizontalHit().normal * perpendicularStrength);
+        controller.AppendFinalMove(controller.HorizontalHit().normal * perpendicularStrength);
         Jump(height);
         //moveAmount = Vector3.Project(-moveAmount, controller.HorizontalHit().normal);
     }
@@ -83,12 +80,6 @@ abstract public class BaseState : MonoBehaviour
     {
         controller.moveAmount = Vector3.SmoothDamp(controller.moveAmount, targetMove, ref smoothMove, moveFloatiness);
         controller.FinalMove = transform.TransformDirection(controller.moveAmount);
-    }
-
-    protected void AppendFinalMove(Vector3 move)
-    {
-        controller.FinalMove += move;
-        controller.FinalMove = Vector3.ClampMagnitude(controller.FinalMove, maxSpeed);
     }
 
     protected void SetMoveAmount(Vector3 newVect)
