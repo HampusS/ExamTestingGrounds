@@ -6,7 +6,8 @@ public class GroundState : BaseState
 {
     [SerializeField]
     float moveFloatiness = .15f;
-
+    [SerializeField]
+    float sprint = 3;
     float speed;
 
     private void Start()
@@ -30,7 +31,9 @@ public class GroundState : BaseState
     {
         speed = controller.moveSpeed;
         if (Input.GetButton("Action"))
-            speed *= 20;
+        {
+            speed *= sprint;
+        }
         
 
         UpdateMoveInput(speed);
