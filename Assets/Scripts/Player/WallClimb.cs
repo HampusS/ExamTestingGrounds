@@ -7,9 +7,7 @@ public class WallClimb : BaseState
     float timer = 0;
     float timeSpan = 0.8f;
     float runHeight = 100;
-    float jumpStrength = 8f;
-    float jumpHeight = 300;
-    float rotateSpeed = 6;
+
     bool initOnce;
     bool turning;
     Vector3 prevNormal, currNormal;
@@ -42,7 +40,7 @@ public class WallClimb : BaseState
         if (controller.onForwardWall && !inReachOfLedge())
         {
             currNormal = controller.HorizontalHit().normal;
-            if (currNormal != prevNormal && Input.GetButton("Action"))
+            if (currNormal != prevNormal && Input.GetButton("Jump"))
             {
                 initOnce = true;
                 return true;
@@ -63,7 +61,7 @@ public class WallClimb : BaseState
                 turning = true;
             }
 
-            if (Input.GetButton("Action"))
+            if (Input.GetButton("Jump"))
                 timer += Time.deltaTime;
             else
                 timer += Time.deltaTime * 2;
@@ -71,9 +69,9 @@ public class WallClimb : BaseState
             if (inReachOfLedge())
                 timer += timeSpan;
         }
-        else if (TurnTowardsVector(rotateSpeed, controller.HorizontalHit().normal))
+        else if (TurnTowardsVector(controller.turnAroundSpeed, controller.HorizontalHit().normal))
         {
-            JumpFromWall(jumpHeight, jumpStrength);
+            JumpFromWall(controller.jumpHeight, controller.jumpStrength);
             timer += timeSpan;
             turning = false;
         }

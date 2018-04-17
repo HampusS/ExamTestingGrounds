@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class AirState : BaseState
 {
-    [SerializeField]
-    float speed = 6;
-
-    float jumpStrength = 8f;
-    float jumpHeight = 300;
-    float rotateSpeed = 6;
     bool turning;
 
     // Use this for initialization
@@ -45,8 +39,8 @@ public class AirState : BaseState
             {
                 if (Input.GetButtonDown("Jump"))
                 {
-                    AppendFinalMove(controller.HorizontalHit().normal * jumpStrength);
-                    Jump(jumpHeight);
+                    AppendFinalMove(controller.HorizontalHit().normal * controller.jumpStrength);
+                    Jump(controller.jumpHeight);
                 }
             }
 
@@ -54,13 +48,13 @@ public class AirState : BaseState
             if (strafe != Vector3.zero)
             {
                 strafe = transform.TransformDirection(strafe);
-                AppendFinalMove(strafe * (speed * Time.deltaTime));
+                AppendFinalMove(strafe * (controller.moveSpeed * Time.deltaTime));
             }
 
         }
-        else if (TurnTowardsVector(rotateSpeed, controller.HorizontalHit().normal))
+        else if (TurnTowardsVector(controller.turnAroundSpeed, controller.HorizontalHit().normal))
         {
-            JumpFromWall(jumpHeight, jumpStrength);
+            JumpFromWall(controller.jumpHeight, controller.jumpStrength);
             turning = false;
             EnableGravity(true);
         }

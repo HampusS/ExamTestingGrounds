@@ -18,6 +18,11 @@ public class PlayerController : MonoBehaviour
     LayerMask wallLayer;
     [SerializeField]
     float health;
+    [SerializeField]
+    public float moveSpeed = 10;
+    public float jumpStrength = 8;
+    public float jumpHeight = 300;
+    public float turnAroundSpeed = 6; 
 
     float rayLengthHorizontal = 0.7f;
     float rayLengthVertical = 1.25f;
