@@ -7,6 +7,9 @@ public class Shoot : MonoBehaviour
     GameObject camHolder;
     public GameObject grenade;
     public float strength = 500;
+    [SerializeField]
+    float fireRate = 0.25f;
+    float timer;
 
 
     // Use this for initialization
@@ -18,8 +21,11 @@ public class Shoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        timer += Time.deltaTime;
+        Debug.Log(timer);
+        if (timer >= fireRate && Input.GetButtonDown("Fire1"))
         {
+            timer = 0;
             GameObject clone = Instantiate(grenade, transform.position, transform.rotation);
             Rigidbody rb = clone.GetComponent<Rigidbody>();
             rb.AddForce(camHolder.transform.forward * strength);
