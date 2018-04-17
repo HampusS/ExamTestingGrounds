@@ -70,7 +70,6 @@ public class WallRun : BaseState
             Vector3 result;
             result = Vector3.ProjectOnPlane(transform.forward, controller.HorizontalHit().normal) + transform.forward + controller.HorizontalHit().normal;
             JumpFromWall(result.normalized, controller.jumpHeight, controller.jumpStrength);
-
             timer += timeSpan;
         }
 
