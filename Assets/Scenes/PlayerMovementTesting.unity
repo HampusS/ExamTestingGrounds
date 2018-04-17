@@ -108,6 +108,63 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &292018
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4148779001514152, guid: 457bd3dc51c5c4e47b8b4e97c300749f, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -2.251
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148779001514152, guid: 457bd3dc51c5c4e47b8b4e97c300749f, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 5.643
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148779001514152, guid: 457bd3dc51c5c4e47b8b4e97c300749f, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -11.458
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148779001514152, guid: 457bd3dc51c5c4e47b8b4e97c300749f, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148779001514152, guid: 457bd3dc51c5c4e47b8b4e97c300749f, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148779001514152, guid: 457bd3dc51c5c4e47b8b4e97c300749f, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148779001514152, guid: 457bd3dc51c5c4e47b8b4e97c300749f, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148779001514152, guid: 457bd3dc51c5c4e47b8b4e97c300749f, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 96767416730677024, guid: 457bd3dc51c5c4e47b8b4e97c300749f,
+        type: 2}
+      propertyPath: m_Time
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 96767416730677024, guid: 457bd3dc51c5c4e47b8b4e97c300749f,
+        type: 2}
+      propertyPath: m_MinVertexDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114663113724433614, guid: 457bd3dc51c5c4e47b8b4e97c300749f,
+        type: 2}
+      propertyPath: lifeTime
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 457bd3dc51c5c4e47b8b4e97c300749f, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &8902490
 GameObject:
   m_ObjectHideFlags: 0
