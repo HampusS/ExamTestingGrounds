@@ -43,21 +43,26 @@ public class Grenade : MonoBehaviour
         if (!exploded)
         {
             exploded = true;
-            //Instantiate(effect, transform.position, transform.rotation);
+
             Collider[] colliders = Physics.OverlapSphere(transform.position, blastRadius);
             foreach (Collider nearObj in colliders)
             {
-                Rigidbody rb = nearObj.GetComponent<Rigidbody>();
-                if (rb != null)
+                if (nearObj.tag != "Player")
                 {
-                    rb.AddExplosionForce(force, transform.position, blastRadius);
+                    Rigidbody rb = nearObj.GetComponent<Rigidbody>();
+                    if (rb != null)
+                    {
+                        rb.AddExplosionForce(force, transform.position, blastRadius);
+                    }
                 }
             }
+            GameObject explosion = Instantiate(effect, transform.position, transform.rotation);
+            Destroy(explosion, lifeTime);
             GetComponent<Renderer>().enabled = false;
             GetComponent<SphereCollider>().enabled = false;
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
-            GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-            GetComponent<Rigidbody>().isKinematic = true;
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true;
             Destroy(gameObject, lifeTime);
         }
     }
