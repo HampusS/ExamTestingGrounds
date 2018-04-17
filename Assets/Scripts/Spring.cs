@@ -23,5 +23,6 @@ public class Spring : MonoBehaviour {
     void AddImpulse()
     {
         player.velocity += Vector3.up * impulse;
+        player.GetComponent<PlayerController>().onGravityMultiplier = false;
     }
 }

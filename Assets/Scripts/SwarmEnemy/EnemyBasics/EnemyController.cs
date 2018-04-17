@@ -12,7 +12,7 @@ public enum EnemyTasks
 
 public class EnemyController : MonoBehaviour
 {
-    public GameObject player;
+    public GameObject player { get; private set; }
     [SerializeField]
     protected int health = 2;
     [SerializeField]
@@ -52,9 +52,15 @@ public class EnemyController : MonoBehaviour
         Destination = player.transform.position;
     }
 
+    private void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
+
     void Start()
     {
         currentTask = EnemyTasks.ERROR;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()

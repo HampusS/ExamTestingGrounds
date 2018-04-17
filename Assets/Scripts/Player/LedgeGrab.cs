@@ -29,7 +29,7 @@ public class LedgeGrab : BaseState
 
     public override bool Enter()
     {
-        if (ReachForLedge())
+        if (inReachOfLedge())
         {
             Initialize();
             return true;
@@ -71,7 +71,7 @@ public class LedgeGrab : BaseState
         else if (forward < 0 || forward > 0 && !controller.onForwardWall)
             onLedge = false;
 
-        if (Input.GetButtonDown("Jump") && !ReachForLedge())
+        if (Input.GetButtonDown("Jump") && !inReachOfLedge())
         {
             JumpFromWall((transform.forward + (controller.HorizontalHit().normal * 0.5f)).normalized, 150, 8);
             onLedge = false;

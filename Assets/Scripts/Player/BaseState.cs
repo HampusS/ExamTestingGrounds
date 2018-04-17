@@ -54,7 +54,7 @@ abstract public class BaseState : MonoBehaviour
         rgdBody.useGravity = enable;
     }
 
-    public bool ReachForLedge()
+    public bool inReachOfLedge()
     {
         Vector3 position = new Vector3(transform.position.x, transform.position.y + 0.75f, transform.position.z);
 
