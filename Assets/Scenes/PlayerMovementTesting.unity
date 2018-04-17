@@ -150,17 +150,17 @@ Prefab:
     - target: {fileID: 96767416730677024, guid: 457bd3dc51c5c4e47b8b4e97c300749f,
         type: 2}
       propertyPath: m_Time
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 96767416730677024, guid: 457bd3dc51c5c4e47b8b4e97c300749f,
-        type: 2}
-      propertyPath: m_MinVertexDistance
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114663113724433614, guid: 457bd3dc51c5c4e47b8b4e97c300749f,
         type: 2}
-      propertyPath: lifeTime
-      value: 5
+      propertyPath: blastRadius
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114663113724433614, guid: 457bd3dc51c5c4e47b8b4e97c300749f,
+        type: 2}
+      propertyPath: force
+      value: 600
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 457bd3dc51c5c4e47b8b4e97c300749f, type: 2}
@@ -1855,6 +1855,11 @@ Prefab:
         type: 2}
       propertyPath: m_CollisionDetection
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114577665959372434, guid: a76ac625abdc38c4498d99e68aba330c,
+        type: 2}
+      propertyPath: strength
+      value: 1500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}

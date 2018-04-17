@@ -132,7 +132,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 5
+  m_Time: 2.5
   m_Parameters:
     serializedVersion: 2
     widthMultiplier: 0.1
@@ -188,7 +188,7 @@ TrailRenderer:
     alignment: 0
     textureMode: 0
     generateLightingData: 0
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 0
   m_Autodestruct: 0
 --- !u!114 &114663113724433614
 MonoBehaviour:
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98a16d8c2fb047c41bc376fbcf73d152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 5
+  lifeTime: 5
   blastRadius: 5
   force: 400
   effect: {fileID: 0}
