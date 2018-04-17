@@ -43,7 +43,7 @@ public class GroundState : BaseState
 
         if (Input.GetButtonDown("Jump"))
         {
-            transform.position += Vector3.up * (controller.fullHeight * 0.15f);
+            transform.position += Vector3.up * 0.15f;
             Jump(controller.jumpHeight);
         }
     }
@@ -53,13 +53,4 @@ public class GroundState : BaseState
         return true;
     }
 
-
-    void SnapToGround()
-    {
-        float surfDist = Vector3.Distance(controller.BottomRayHit().point, transform.position);
-        if (surfDist < controller.fullHeight * 0.6f)
-        {
-            transform.position += controller.BottomRayHit().normal * (controller.halfHeight - surfDist);
-        }
-    }
 }

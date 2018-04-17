@@ -19,10 +19,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     float health;
 
+    float maxSpeed = 10;
     public float moveSpeed = 10;
     public float jumpStrength = 8;
     public float jumpHeight = 300;
-    public float turnAroundSpeed = 6; 
+    public float turnAroundSpeed = 6;
 
     float rayLengthHorizontal = 0.7f;
     float rayLengthVertical = 1.25f;
@@ -43,9 +44,6 @@ public class PlayerController : MonoBehaviour
     public bool onTop { get; private set; }
     public bool onGravityMultiplier { get; set; }
 
-    public float halfHeight { get; set; }
-    public float fullHeight { get; set; }
-
     public RaycastHit HorizontalHit() { return horizHit; }
     public RaycastHit BottomRayHit() { return bottomHit; }
     public RaycastHit TopRayHit() { return topHit; }
@@ -58,11 +56,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        //if (Input.GetKeyDown("escape"))
-        //    Cursor.lockState = CursorLockMode.None;
-        //Cursor.lockState = CursorLockMode.Locked;
-        fullHeight = GetComponent<CapsuleCollider>().height;
-        halfHeight = fullHeight * 0.5f;
+        Cursor.lockState = CursorLockMode.Locked;
+
         rgdBody = GetComponent<Rigidbody>();
         states = new List<BaseState>();
         states.Add(GetComponent<AirState>());
@@ -95,6 +90,15 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 0.65f, 1);
         else if (!onTop)
             transform.localScale = new Vector3(1, 1, 1);
+
+        if (Input.GetKeyDown("escape"))
+        {
+            if (Cursor.lockState == CursorLockMode.Locked)
+                Cursor.lockState = CursorLockMode.None;
+            else if(Cursor.lockState == CursorLockMode.None)
+                Cursor.lockState = CursorLockMode.Locked;
+        }
+
     }
 
     private void FixedUpdate()
@@ -102,13 +106,13 @@ public class PlayerController : MonoBehaviour
         if (onGravityMultiplier)
             if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
             {
-                rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
+                rgdBody.velocity += Vector3.up * Physics.gravity.y * 2 * Time.deltaTime;
             }
         rgdBody.MovePosition(rgdBody.position + FinalMove * Time.fixedDeltaTime);
     }
 
     void RayTrace()
-    {     
+    {
         Ray ray = new Ray(transform.position, Vector3.down);
         Debug.DrawRay(ray.origin, transform.up * (rayLengthVertical + 0.15f), Color.black);
         Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.black);
@@ -127,8 +131,8 @@ public class PlayerController : MonoBehaviour
         onLeftWall = Physics.Raycast(ray.origin, -transform.right, out horizHit, rayLengthHorizontal, wallLayer);
         onRightWall = Physics.Raycast(ray.origin, transform.right, out horizHit, rayLengthHorizontal, wallLayer);
         onForwardWall = Physics.Raycast(ray.origin, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);
-        
-        if(!onLeftWall && !onRightWall)
+
+        if (!onLeftWall && !onRightWall)
         {
             onLeftWall = Physics.Raycast(ray.origin, (-transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
             onRightWall = Physics.Raycast(ray.origin, (transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
@@ -162,4 +166,9 @@ public class PlayerController : MonoBehaviour
         rgdBody.AddForce(transform.up * magnitude);
     }
 
+    public void AppendFinalMove(Vector3 move)
+    {
+        FinalMove += move;
+        FinalMove = Vector3.ClampMagnitude(FinalMove, maxSpeed);
+    }
 }

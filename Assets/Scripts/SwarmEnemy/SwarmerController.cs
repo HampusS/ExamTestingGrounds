@@ -5,10 +5,6 @@ using UnityEngine;
 public class SwarmerController : EnemyController
 {
     public EnemySpawner spawner;
-    
-    // Make a ray to player to check line of sight - then add to NavMove enter
-    // Make a range check for attack
-    // Make an idle behavior
 
     private void Start()
     {

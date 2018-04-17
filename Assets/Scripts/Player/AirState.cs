@@ -39,7 +39,7 @@ public class AirState : BaseState
             {
                 if (Input.GetButtonDown("Jump"))
                 {
-                    AppendFinalMove(controller.HorizontalHit().normal * controller.jumpStrength);
+                    controller.AppendFinalMove(controller.HorizontalHit().normal * controller.jumpStrength);
                     Jump(controller.jumpHeight);
                 }
             }
@@ -48,7 +48,7 @@ public class AirState : BaseState
             if (strafe != Vector3.zero)
             {
                 strafe = transform.TransformDirection(strafe);
-                AppendFinalMove(strafe * (controller.moveSpeed * Time.deltaTime));
+                controller.AppendFinalMove(strafe * (controller.moveSpeed * Time.deltaTime));
             }
 
         }
