@@ -111,7 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 3
   blastRadius: 50
-  force: 400
+  force: 700
   effect: {fileID: 0}
 --- !u!135 &135732493817734382
 SphereCollider:
