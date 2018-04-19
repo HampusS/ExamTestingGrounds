@@ -22,7 +22,7 @@ public class Shoot : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        Debug.Log(timer);
+        //Debug.Log(timer);
         if (timer >= fireRate && Input.GetButtonDown("Fire1"))
         {
             timer = 0;

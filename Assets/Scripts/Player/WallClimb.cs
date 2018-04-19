@@ -6,7 +6,7 @@ public class WallClimb : BaseState
 {
     float timer = 0;
     float timeSpan = 0.8f;
-    float runHeight = 100;
+    public float runHeight = 100;
 
     bool initOnce;
     bool turning;

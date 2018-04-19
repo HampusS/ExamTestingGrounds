@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight = 300;
     public float turnAroundSpeed = 6;
 
-    float rayLengthHorizontal = 0.7f;
+    float rayLengthHorizontal = 0.6f;
     float rayLengthVertical = 1.25f;
 
     public MoveStates currMoveState { get; private set; }

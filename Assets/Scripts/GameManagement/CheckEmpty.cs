@@ -9,6 +9,7 @@ public class CheckEmpty : MonoBehaviour
     public Color color0;
     public Color color1;
     public float lerpFloat = 13;
+    public bool empty = false;
     void ChangeLightColor()
     {
         if (isEmpty())// && spotlight.color != color1)
@@ -20,6 +21,7 @@ public class CheckEmpty : MonoBehaviour
     {
         if (count <= 0)
         {
+            empty = true;
             return true;
         }
         return false;
@@ -37,7 +39,6 @@ public class CheckEmpty : MonoBehaviour
         {
             count--;
         }
-        Debug.Log(count);
         if (isEmpty())
         {
             Invoke("ChangeLightColor", 3);
