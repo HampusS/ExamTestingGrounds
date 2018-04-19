@@ -24,7 +24,7 @@ public class LedgeGrab : BaseState
         onTryClimbUp = false;
         EnableGravity(false);
         controller.onGravityMultiplier = false;
-        ResetAllMovement();
+        //controller.ResetAllMovement();
     }
 
     public override bool Enter()
@@ -73,7 +73,7 @@ public class LedgeGrab : BaseState
 
         if (Input.GetButtonDown("Jump") && !inReachOfLedge())
         {
-            JumpFromWall((transform.forward + (controller.HorizontalHit().normal * 0.5f)).normalized, 150, 8);
+            //controller.JumpAway((transform.forward + (controller.HorizontalHit().normal * 0.5f)).normalized, 150, 8);
             onLedge = false;
         }
     }
@@ -109,7 +109,7 @@ public class LedgeGrab : BaseState
                     onTryClimbUp = false;
                     rgdBody.isKinematic = false;
                     GetComponent<CapsuleCollider>().enabled = true;
-                    ResetAllMovement();
+                    //controller.ResetAllMovement();
                 }
 
             }

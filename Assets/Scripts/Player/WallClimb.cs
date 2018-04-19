@@ -23,9 +23,9 @@ public class WallClimb : BaseState
         if (initOnce)
         {
             controller.onGravityMultiplier = false;
-            UpdateMoveAmount(0, Vector3.zero);
+            //controller.UpdateMoveAmount(0, Vector3.zero);
             EnableGravity(false);
-            Jump(runHeight);
+            controller.Jump(runHeight);
             turning = false;
             initOnce = false;
             timer = 0;
@@ -57,7 +57,7 @@ public class WallClimb : BaseState
         {
             if (timer > 0 && Input.GetButtonDown("Jump"))
             {
-                Jump(0);
+                controller.Jump(0);
                 turning = true;
             }
 
@@ -71,7 +71,7 @@ public class WallClimb : BaseState
         }
         else if (TurnTowardsVector(controller.turnAroundSpeed, controller.HorizontalHit().normal))
         {
-            JumpFromWall(controller.jumpHeight, controller.jumpStrength);
+            //controller.JumpFromWall(controller.jumpHeight, controller.jumpStrength);
             timer += timeSpan;
             turning = false;
         }

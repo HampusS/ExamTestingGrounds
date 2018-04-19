@@ -50,6 +50,6 @@ public class EnemyAttackState : EnemyBase {
     void Attack()
     {
         PlayerController control = controller.player.GetComponent<PlayerController>();
-        control.JumpAway((control.transform.position - transform.position).normalized, 700, 5);
+        //control.JumpAway((control.transform.position - transform.position).normalized, 700, 5);
     }
 }

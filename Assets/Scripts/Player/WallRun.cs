@@ -24,12 +24,12 @@ public class WallRun : BaseState
     {
         if (initOnce)
         {
-            SetMoveAmount(Vector3.ProjectOnPlane(transform.forward * controller.moveSpeed, currNormal));
+            //controller.SetMoveAmount(Vector3.ProjectOnPlane(transform.forward * controller.moveSpeed, currNormal));
             GetComponent<Renderer>().material.color = Color.green;
             controller.onGravityMultiplier = false;
             EnableGravity(false);
             initOnce = false;
-            Jump(runHeight);
+            controller.Jump(runHeight);
             timer = 0;
             cam.ResetCamera();
             if (controller.onLeftWall)
@@ -69,7 +69,7 @@ public class WallRun : BaseState
         {
             Vector3 result;
             result = Vector3.ProjectOnPlane(transform.forward, controller.HorizontalHit().normal) + transform.forward + controller.HorizontalHit().normal;
-            JumpFromWall(result.normalized, controller.jumpHeight, controller.jumpStrength);
+            //controller.JumpAway(result.normalized, controller.jumpHeight, controller.jumpStrength);
             timer += timeSpan;
         }
 

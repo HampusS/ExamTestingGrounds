@@ -14,29 +14,26 @@ public enum MoveStates
 
 public class PlayerController : MonoBehaviour
 {
+    public MoveStates currMoveState { get; private set; }
+    public MoveStates prevMoveState { get; private set; }
+    public BaseState currentState { get; private set; }
+    List<BaseState> states;
+
     [SerializeField]
     LayerMask wallLayer;
     [SerializeField]
     float health;
 
-    float maxSpeed = 10;
     public float moveSpeed = 10;
     public float jumpStrength = 8;
     public float jumpHeight = 300;
     public float turnAroundSpeed = 6;
+    Vector3 direction;
+
 
     float rayLengthHorizontal = 0.6f;
     float rayLengthVertical = 1.25f;
 
-    public MoveStates currMoveState { get; private set; }
-    public MoveStates prevMoveState { get; private set; }
-
-    public BaseState currentState { get; private set; }
-    List<BaseState> states;
-
-    public Vector3 FinalMove { get; set; }
-    public Vector3 moveAmount { get; set; }
-    public Vector3 targetMove { get; set; }
     public bool onForwardWall { get; private set; }
     public bool onRightWall { get; private set; }
     public bool onLeftWall { get; private set; }
@@ -50,9 +47,6 @@ public class PlayerController : MonoBehaviour
     RaycastHit bottomHit, topHit, horizHit;
     Rigidbody rgdBody;
 
-    // Add invincibility frames
-    // Add Ammo
-    // Add Health
 
     void Start()
     {
@@ -92,12 +86,7 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
 
         if (Input.GetKeyDown("escape"))
-        {
-            if (Cursor.lockState == CursorLockMode.Locked)
-                Cursor.lockState = CursorLockMode.None;
-            else if(Cursor.lockState == CursorLockMode.None)
-                Cursor.lockState = CursorLockMode.Locked;
-        }
+            Cursor.lockState = CursorLockMode.None;
 
     }
 
@@ -108,8 +97,12 @@ public class PlayerController : MonoBehaviour
             {
                 rgdBody.velocity += Vector3.up * Physics.gravity.y * 2 * Time.deltaTime;
             }
-        rgdBody.MovePosition(rgdBody.position + FinalMove * Time.fixedDeltaTime);
+        direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
+        //rgdBody.AddForce(direction * moveSpeed, ForceMode.Acceleration);
+        rgdBody.MovePosition(rgdBody.position + direction * moveSpeed * Time.fixedDeltaTime);
     }
+
+
 
     void RayTrace()
     {
@@ -146,29 +139,79 @@ public class PlayerController : MonoBehaviour
 
 
 
-    public void JumpAway(Vector3 direction, float height, float perpendicularStrength)
+    //public void JumpAway(Vector3 direction, float height, float perpendicularStrength)
+    //{
+    //    //SetMoveAmount(direction * perpendicularStrength);
+    //    rgdBody.velocity = Vector3.zero;
+    //    rgdBody.AddForce((transform.up * height) + (direction * perpendicularStrength), ForceMode.VelocityChange);
+    //    Jump(height);
+    //}
+
+    public void Jump(float magnitude)
     {
-        SetMoveAmount(direction * perpendicularStrength);
-        Jump(height);
-        //moveAmount = Vector3.Project(-moveAmount, controller.HorizontalHit().normal);
+        //rgdBody.velocity = Vector3.zero;
+        rgdBody.AddForce(transform.up * magnitude, ForceMode.VelocityChange);
     }
 
-    void SetMoveAmount(Vector3 newVect)
-    {
-        targetMove = Vector3.zero;
-        moveAmount = newVect;
-        FinalMove = newVect;
-    }
+    //public void AppendFinalMove(Vector3 move)
+    //{
+    //    FinalMove += move;
+    //    FinalMove = Vector3.ClampMagnitude(FinalMove, maxSpeed);
+    //}
 
-    void Jump(float magnitude)
-    {
-        rgdBody.velocity = Vector3.zero;
-        rgdBody.AddForce(transform.up * magnitude);
-    }
+    //public void ResetAllMovement()
+    //{
+    //    SetMoveAmount(Vector3.zero);
+    //    rgdBody.angularVelocity = Vector3.zero;
+    //    rgdBody.velocity = Vector3.zero;
+    //}
 
-    public void AppendFinalMove(Vector3 move)
-    {
-        FinalMove += move;
-        FinalMove = Vector3.ClampMagnitude(FinalMove, maxSpeed);
-    }
+    //public void JumpFromWall(float height, float perpendicularStrength)
+    //{
+    //    AppendFinalMove(HorizontalHit().normal * perpendicularStrength);
+    //    Jump(height);
+    //}
+
+    //// ----------------------------------------------------------------------------------------------------------------
+
+    //public void UpdateMoveAmount(float moveFloatiness, Vector3 targetMove)
+    //{
+    //    moveAmount = Vector3.SmoothDamp(moveAmount, targetMove, ref smoothMove, moveFloatiness);
+    //    FinalMove = transform.TransformDirection(moveAmount);
+    //}
+
+    //public void SetMoveAmount(Vector3 newVect)
+    //{
+    //    targetMove = Vector3.zero;
+    //    moveAmount = newVect;
+    //    FinalMove = newVect;
+    //}
+
+    //// ----------------------------------------------------------------------------------------------------------------
+    //// ---------------------------------------------TESTING------------------------------------------------------------
+
+    //public void UpdateMoveInput(float speed)
+    //{
+    //    Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+    //    targetMove = strafe * speed;
+    //}
+
+    //public Vector3 TransformVector(Vector3 inVect)
+    //{
+    //    return transform.TransformDirection(inVect);
+    //}
+
+    //public Vector3 ProjectVectorToPlane(Vector3 inVect, Vector3 normal)
+    //{
+    //    return Vector3.ProjectOnPlane(inVect, normal);
+    //}
+
+    //public void UpdateMovement(float moveFloatiness)
+    //{
+    //    float dot = Vector3.Dot(FinalMove.normalized, moveAmount.normalized);
+    //    if (dot < 0)
+    //        moveAmount = -moveAmount;
+    //    moveAmount = Vector3.SmoothDamp(moveAmount, targetMove, ref smoothMove, moveFloatiness);
+    //    FinalMove = moveAmount;
+    //}
 }
