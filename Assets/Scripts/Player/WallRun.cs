@@ -6,7 +6,7 @@ public class WallRun : BaseState
 {
     float timer = 0;
     float timeSpan = 1.0f;
-    float runHeight = 45;
+    float runHeight = 2;
     float runTimeMultiplier = 2f;
 
     Vector3 prevNormal, currNormal;
@@ -24,12 +24,13 @@ public class WallRun : BaseState
     {
         if (initOnce)
         {
-            //controller.SetMoveAmount(Vector3.ProjectOnPlane(transform.forward * controller.moveSpeed, currNormal));
-            GetComponent<Renderer>().material.color = Color.green;
+            rgdBody.velocity = Vector3.zero;
+            rgdBody.AddForce(Vector3.ProjectOnPlane(transform.forward * controller.moveSpeed, currNormal), ForceMode.VelocityChange);
+            rgdBody.AddForce(transform.up * controller.jumpHeight, ForceMode.Impulse);
+
             controller.onGravityMultiplier = false;
-            EnableGravity(false);
+            rgdBody.useGravity = false;
             initOnce = false;
-            controller.Jump(runHeight);
             timer = 0;
             cam.ResetCamera();
             if (controller.onLeftWall)
@@ -67,9 +68,8 @@ public class WallRun : BaseState
 
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {
-            Vector3 result;
-            result = Vector3.ProjectOnPlane(transform.forward, controller.HorizontalHit().normal) + transform.forward + controller.HorizontalHit().normal;
-            //controller.JumpAway(result.normalized, controller.jumpHeight, controller.jumpStrength);
+            Vector3 result = (transform.forward + controller.HorizontalHit().normal + (transform.up * 0.5f)).normalized;
+            rgdBody.velocity = Vector3.Project(rgdBody.velocity, result);
             timer += timeSpan;
         }
 
@@ -88,11 +88,10 @@ public class WallRun : BaseState
     {
         if (timer >= timeSpan)
         {
-            GetComponent<Renderer>().material.color = Color.red;
             prevNormal = currNormal;
-            EnableGravity(true);
-            timer = 0;
+            rgdBody.useGravity = true;
             cam.ResetCamera();
+            timer = 0;
             return true;
         }
         return false;

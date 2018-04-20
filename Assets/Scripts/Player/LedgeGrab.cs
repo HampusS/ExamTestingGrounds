@@ -22,9 +22,9 @@ public class LedgeGrab : BaseState
     {
         onLedge = true;
         onTryClimbUp = false;
-        EnableGravity(false);
+        rgdBody.useGravity = false;
         controller.onGravityMultiplier = false;
-        //controller.ResetAllMovement();
+        rgdBody.velocity = Vector3.zero;
     }
 
     public override bool Enter()
@@ -43,9 +43,6 @@ public class LedgeGrab : BaseState
             CheckForInput();
         else
             ClimbUp();
-        Debug.DrawRay(posToDown, Vector3.down, Color.red);
-        Debug.DrawRay(posToDown, Vector3.up, Color.black);
-        Debug.DrawRay(posToForward, transform.forward, Color.red);
     }
 
     public override bool Exit()
@@ -53,7 +50,7 @@ public class LedgeGrab : BaseState
         if (onLedge)
             return false;
 
-        EnableGravity(true);
+        rgdBody.useGravity = true;
         controller.onGravityMultiplier = true;
         return true;
     }
@@ -109,7 +106,6 @@ public class LedgeGrab : BaseState
                     onTryClimbUp = false;
                     rgdBody.isKinematic = false;
                     GetComponent<CapsuleCollider>().enabled = true;
-                    //controller.ResetAllMovement();
                 }
 
             }

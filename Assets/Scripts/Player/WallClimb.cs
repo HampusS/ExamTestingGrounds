@@ -22,10 +22,10 @@ public class WallClimb : BaseState
     {
         if (initOnce)
         {
-            controller.onGravityMultiplier = false;
-            //controller.UpdateMoveAmount(0, Vector3.zero);
-            EnableGravity(false);
-            controller.Jump(runHeight);
+            rgdBody.velocity = Vector3.zero;
+            rgdBody.useGravity = false;
+            rgdBody.AddForce(transform.up * controller.jumpHeight, ForceMode.Impulse);
+
             turning = false;
             initOnce = false;
             timer = 0;
@@ -57,7 +57,7 @@ public class WallClimb : BaseState
         {
             if (timer > 0 && Input.GetButtonDown("Jump"))
             {
-                controller.Jump(0);
+                rgdBody.velocity = Vector3.zero;
                 turning = true;
             }
 
@@ -71,7 +71,8 @@ public class WallClimb : BaseState
         }
         else if (TurnTowardsVector(controller.turnAroundSpeed, controller.HorizontalHit().normal))
         {
-            //controller.JumpFromWall(controller.jumpHeight, controller.jumpStrength);
+            Vector3 result = controller.HorizontalHit().normal + transform.up;
+            rgdBody.AddForce(result.normalized * controller.jumpStrength, ForceMode.Impulse);
             timer += timeSpan;
             turning = false;
         }
@@ -82,9 +83,7 @@ public class WallClimb : BaseState
     {
         if (timer >= timeSpan)
         {
-            rgdBody.velocity = Vector3.zero;
             prevNormal = currNormal;
-            EnableGravity(true);
             timer = 0;
             return true;
         }

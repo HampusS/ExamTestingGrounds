@@ -28,8 +28,7 @@ public class PlayerController : MonoBehaviour
     public float jumpStrength = 8;
     public float jumpHeight = 300;
     public float turnAroundSpeed = 6;
-    Vector3 direction;
-
+    public float maxSpeed = 15;
 
     float rayLengthHorizontal = 0.6f;
     float rayLengthVertical = 1.25f;
@@ -93,16 +92,13 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         if (onGravityMultiplier)
+        {
             if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
             {
                 rgdBody.velocity += Vector3.up * Physics.gravity.y * 2 * Time.deltaTime;
             }
-        direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
-        //rgdBody.AddForce(direction * moveSpeed, ForceMode.Acceleration);
-        rgdBody.MovePosition(rgdBody.position + direction * moveSpeed * Time.fixedDeltaTime);
+        }
     }
-
-
 
     void RayTrace()
     {
@@ -136,82 +132,5 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-
-
-    //public void JumpAway(Vector3 direction, float height, float perpendicularStrength)
-    //{
-    //    //SetMoveAmount(direction * perpendicularStrength);
-    //    rgdBody.velocity = Vector3.zero;
-    //    rgdBody.AddForce((transform.up * height) + (direction * perpendicularStrength), ForceMode.VelocityChange);
-    //    Jump(height);
-    //}
-
-    public void Jump(float magnitude)
-    {
-        //rgdBody.velocity = Vector3.zero;
-        rgdBody.AddForce(transform.up * magnitude, ForceMode.VelocityChange);
-    }
-
-    //public void AppendFinalMove(Vector3 move)
-    //{
-    //    FinalMove += move;
-    //    FinalMove = Vector3.ClampMagnitude(FinalMove, maxSpeed);
-    //}
-
-    //public void ResetAllMovement()
-    //{
-    //    SetMoveAmount(Vector3.zero);
-    //    rgdBody.angularVelocity = Vector3.zero;
-    //    rgdBody.velocity = Vector3.zero;
-    //}
-
-    //public void JumpFromWall(float height, float perpendicularStrength)
-    //{
-    //    AppendFinalMove(HorizontalHit().normal * perpendicularStrength);
-    //    Jump(height);
-    //}
-
-    //// ----------------------------------------------------------------------------------------------------------------
-
-    //public void UpdateMoveAmount(float moveFloatiness, Vector3 targetMove)
-    //{
-    //    moveAmount = Vector3.SmoothDamp(moveAmount, targetMove, ref smoothMove, moveFloatiness);
-    //    FinalMove = transform.TransformDirection(moveAmount);
-    //}
-
-    //public void SetMoveAmount(Vector3 newVect)
-    //{
-    //    targetMove = Vector3.zero;
-    //    moveAmount = newVect;
-    //    FinalMove = newVect;
-    //}
-
-    //// ----------------------------------------------------------------------------------------------------------------
-    //// ---------------------------------------------TESTING------------------------------------------------------------
-
-    //public void UpdateMoveInput(float speed)
-    //{
-    //    Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-    //    targetMove = strafe * speed;
-    //}
-
-    //public Vector3 TransformVector(Vector3 inVect)
-    //{
-    //    return transform.TransformDirection(inVect);
-    //}
-
-    //public Vector3 ProjectVectorToPlane(Vector3 inVect, Vector3 normal)
-    //{
-    //    return Vector3.ProjectOnPlane(inVect, normal);
-    //}
-
-    //public void UpdateMovement(float moveFloatiness)
-    //{
-    //    float dot = Vector3.Dot(FinalMove.normalized, moveAmount.normalized);
-    //    if (dot < 0)
-    //        moveAmount = -moveAmount;
-    //    moveAmount = Vector3.SmoothDamp(moveAmount, targetMove, ref smoothMove, moveFloatiness);
-    //    FinalMove = moveAmount;
-    //}
+    
 }

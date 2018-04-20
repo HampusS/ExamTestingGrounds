@@ -17,6 +17,7 @@ public class AirState : BaseState
         if (!controller.onBottom)
         {
             controller.onGravityMultiplier = true;
+            rgdBody.useGravity = true;
             turning = false;
             return true;
         }
@@ -27,11 +28,14 @@ public class AirState : BaseState
     {
         if (!turning)
         {
+            Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
+            rgdBody.AddForce(direction * controller.moveSpeed * 0.25f, ForceMode.Acceleration);
+
             if (controller.onForwardWall && Input.GetButtonDown("Jump"))
             {
                 controller.onGravityMultiplier = false;
-                EnableGravity(false);
-                controller.Jump(0);
+                rgdBody.useGravity = false;
+                rgdBody.velocity = Vector3.zero;
                 turning = true;
             }
 
@@ -39,24 +43,17 @@ public class AirState : BaseState
             {
                 if (Input.GetButtonDown("Jump"))
                 {
-                    //controller.AppendFinalMove(controller.HorizontalHit().normal * controller.jumpStrength);
-                    controller.Jump(controller.jumpHeight);
+                    Vector3 result = transform.forward + controller.HorizontalHit().normal + transform.up;
+                    rgdBody.velocity = Vector3.Project(rgdBody.velocity, result);
                 }
-            }
-
-            Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-            if (strafe != Vector3.zero)
-            {
-                strafe = transform.TransformDirection(strafe);
-                //controller.AppendFinalMove(strafe * (controller.moveSpeed * Time.deltaTime));
             }
 
         }
         else if (TurnTowardsVector(controller.turnAroundSpeed, controller.HorizontalHit().normal))
         {
-            //controller.JumpFromWall(controller.jumpHeight, controller.jumpStrength);
+            Vector3 result = controller.HorizontalHit().normal + transform.up;
+            rgdBody.AddForce(result.normalized * controller.jumpStrength, ForceMode.Impulse);
             turning = false;
-            EnableGravity(true);
         }
 
     }
