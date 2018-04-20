@@ -8,8 +8,8 @@ public class LedgeGrab : BaseState
     bool onLedge;
     bool onMoveUp;
     float animSpeed = 2;
-    Vector3 targetPos;
 
+    Vector3 targetPos;
     Vector3 posToDown;
     Vector3 posToForward;
 
@@ -49,9 +49,6 @@ public class LedgeGrab : BaseState
     {
         if (onLedge)
             return false;
-
-        rgdBody.useGravity = true;
-        controller.onGravityMultiplier = true;
         return true;
     }
 
@@ -70,7 +67,8 @@ public class LedgeGrab : BaseState
 
         if (Input.GetButtonDown("Jump") && !inReachOfLedge())
         {
-            //controller.JumpAway((transform.forward + (controller.HorizontalHit().normal * 0.5f)).normalized, 150, 8);
+            Vector3 result = transform.up + transform.forward;
+            rgdBody.AddForce(result.normalized * controller.jumpStrength * 0.75f, ForceMode.VelocityChange);
             onLedge = false;
         }
     }

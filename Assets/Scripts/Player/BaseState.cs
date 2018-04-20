@@ -32,7 +32,7 @@ abstract public class BaseState : MonoBehaviour
 
     public bool inReachOfLedge()
     {
-        Vector3 position = new Vector3(transform.position.x, transform.position.y + 0.75f, transform.position.z);
+        Vector3 position = new Vector3(transform.position.x, transform.position.y + 0.85f, transform.position.z);
 
         if (controller.onForwardWall && !Physics.Raycast(position, transform.forward, 1))
             return true;

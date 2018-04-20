@@ -26,25 +26,27 @@ public class PlayerController : MonoBehaviour
 
     public float moveSpeed = 10;
     public float jumpStrength = 8;
-    public float jumpHeight = 300;
+    public float jumpHeight = 30;
     public float turnAroundSpeed = 6;
     public float maxSpeed = 15;
 
     float rayLengthHorizontal = 0.6f;
-    float rayLengthVertical = 1.25f;
+    float rayLengthVertical = 1.1f;
 
     public bool onForwardWall { get; private set; }
     public bool onRightWall { get; private set; }
     public bool onLeftWall { get; private set; }
     public bool onBottom { get; private set; }
-    public bool onTop { get; private set; }
+
     public bool onGravityMultiplier { get; set; }
 
     public RaycastHit HorizontalHit() { return horizHit; }
     public RaycastHit BottomRayHit() { return bottomHit; }
-    public RaycastHit TopRayHit() { return topHit; }
-    RaycastHit bottomHit, topHit, horizHit;
+    RaycastHit bottomHit, horizHit;
     Rigidbody rgdBody;
+
+
+    bool crouched = false;
 
 
     void Start()
@@ -78,15 +80,13 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        Debug.Log(currMoveState);
         currentState.Run();
-        if (Input.GetKey(KeyCode.LeftControl))
-            transform.localScale = new Vector3(1, 0.65f, 1);
-        else if (!onTop)
-            transform.localScale = new Vector3(1, 1, 1);
+        Crouching();
+
 
         if (Input.GetKeyDown("escape"))
             Cursor.lockState = CursorLockMode.None;
-
     }
 
     private void FixedUpdate()
@@ -95,7 +95,31 @@ public class PlayerController : MonoBehaviour
         {
             if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
             {
-                rgdBody.velocity += Vector3.up * Physics.gravity.y * 2 * Time.deltaTime;
+                rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
+            }
+        }
+    }
+
+    void Crouching()
+    {
+        if (!crouched && Input.GetKey(KeyCode.LeftControl))
+        {
+            CapsuleCollider capsule = GetComponent<CapsuleCollider>();
+            capsule.height = 1;
+            crouched = true;
+        }
+        else
+        {
+            if (crouched)
+            {
+                Debug.DrawRay(transform.position, transform.up * (rayLengthVertical + 0.5f), Color.black);
+                bool onTop = Physics.Raycast(transform.position, transform.up, (rayLengthVertical + 0.5f));
+                if (!onTop && !Input.GetKey(KeyCode.LeftControl))
+                {
+                    CapsuleCollider capsule = GetComponent<CapsuleCollider>();
+                    capsule.height = 2;
+                    crouched = false;
+                }
             }
         }
     }
@@ -103,23 +127,24 @@ public class PlayerController : MonoBehaviour
     void RayTrace()
     {
         Ray ray = new Ray(transform.position, Vector3.down);
-        Debug.DrawRay(ray.origin, transform.up * (rayLengthVertical + 0.15f), Color.black);
-        Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.black);
 
+        Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.black);
+        onBottom = Physics.Raycast(ray.origin, -transform.up, out bottomHit, rayLengthVertical);
+        
         Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.black);
+        onLeftWall = Physics.Raycast(ray.origin, -transform.right, out horizHit, rayLengthHorizontal, wallLayer);
+
         Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.black);
+        onRightWall = Physics.Raycast(ray.origin, transform.right, out horizHit, rayLengthHorizontal, wallLayer);
+
         Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
+        onForwardWall = Physics.Raycast(ray.origin, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);
 
         Debug.DrawRay(ray.origin, (-transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
         Debug.DrawRay(ray.origin, (transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
         Debug.DrawRay(ray.origin, (-transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
         Debug.DrawRay(ray.origin, (transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
 
-        onBottom = Physics.Raycast(ray.origin, -transform.up, out bottomHit, rayLengthVertical);
-        onTop = Physics.Raycast(ray.origin, transform.up, out topHit, (rayLengthVertical + 0.15f));
-        onLeftWall = Physics.Raycast(ray.origin, -transform.right, out horizHit, rayLengthHorizontal, wallLayer);
-        onRightWall = Physics.Raycast(ray.origin, transform.right, out horizHit, rayLengthHorizontal, wallLayer);
-        onForwardWall = Physics.Raycast(ray.origin, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);
 
         if (!onLeftWall && !onRightWall)
         {
@@ -132,5 +157,5 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
+
 }
