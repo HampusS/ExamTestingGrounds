@@ -25,11 +25,21 @@ public class Shoot : MonoBehaviour
         //Debug.Log(timer);
         if (timer >= fireRate && Input.GetButtonDown("Fire1"))
         {
+            FindObjectOfType<AudioM>().Play("launch");
             timer = 0;
             GameObject clone = Instantiate(grenade, transform.position, transform.rotation);
             Rigidbody rb = clone.GetComponent<Rigidbody>();
             rb.AddForce(camHolder.transform.forward * strength);
+            Invoke("Reload", fireRate/2);
         }
+        else
+        {
+            //FindObjectOfType<AudioM>().Play("click");
+        }
+    }
+    void Reload()
+    {
+            FindObjectOfType<AudioM>().Play("reload");
     }
 
 
