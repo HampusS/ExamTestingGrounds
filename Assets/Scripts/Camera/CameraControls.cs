@@ -38,11 +38,10 @@ public class CameraControls : MonoBehaviour
         }
     }
 
-    public void RotateToVector(Vector3 target)
+    public void TurnToVector(Vector3 target)
     {
         player.rotation = Quaternion.Lerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * 2);
-        //player.rotation = Quaternion.LookRotation(target);
-        //transform.localRotation = Quaternion.Lerp(transform.localRotation, new Quaternion(0, 0, 0, 1), Time.deltaTime);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(0, Vector3.right), Time.deltaTime);
     }
 
 

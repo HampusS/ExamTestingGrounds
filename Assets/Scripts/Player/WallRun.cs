@@ -31,7 +31,7 @@ public class WallRun : BaseState
             exit = false;
             timer = 0;
             rgdBody.velocity = Vector3.zero;
-            Vector3 result = (transform.forward + transform.up * 0.15f).normalized * controller.jumpStrength;
+            Vector3 result = (transform.forward + transform.up * 0.15f).normalized * controller.jumpStrength * 2;
             rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
             camTilt.ResetCamera();
             if (controller.onLeftWall)
@@ -48,7 +48,7 @@ public class WallRun : BaseState
 
         if (controller.onLeftWall || controller.onRightWall)
         {
-            if (Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
+            if (Input.GetButton("Jump") && Vector3.Dot(transform.forward, rgdBody.velocity.normalized) > 0.5f)
             {
                 currNormal = controller.HorizontalHit().normal;
                 if (currNormal != prevNormal)
@@ -65,14 +65,15 @@ public class WallRun : BaseState
     public override void Run()
     {
         InitializeRun();
-        camControl.RotateToVector(new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z));
+        SupportRun();
+        camControl.TurnToVector(new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z));
 
         Debug.Log(controller.HorizontalHit().normal);
 
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {
-            Vector3 result = (transform.forward + transform.up * 0.75f + controller.HorizontalHit().normal).normalized * controller.jumpStrength;
-            rgdBody.velocity = result;
+            Vector3 result = (transform.forward + transform.up * 0.75f + controller.HorizontalHit().normal).normalized;
+            rgdBody.velocity = Vector3.Project(rgdBody.velocity, result);
             exit = true;
         }
 
@@ -100,6 +101,12 @@ public class WallRun : BaseState
             return true;
         }
         return false;
+    }
+
+    void SupportRun()
+    {
+        if (!controller.onLeftWall && !controller.onRightWall)
+            controller.UpdateRays();
     }
 
 }

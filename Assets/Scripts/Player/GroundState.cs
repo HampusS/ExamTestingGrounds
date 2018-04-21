@@ -28,16 +28,29 @@ public class GroundState : BaseState
             rgdBody.AddForce(transform.up * controller.jumpHeight, ForceMode.VelocityChange);
         Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
 
-        friction = -rgdBody.velocity * frictionCoefficient;
-
-        if (controller.BottomRayHit().normal != Vector3.up)
+        if (controller.Crouch)
         {
-            direction = Vector3.ProjectOnPlane(direction, controller.BottomRayHit().normal);
-            friction = Vector3.ProjectOnPlane(friction, controller.BottomRayHit().normal);
+            if (rgdBody.velocity.magnitude > controller.crouchSpeed)
+                friction = -rgdBody.velocity * 0.25f;
+            else
+            {
+                friction = -rgdBody.velocity * frictionCoefficient;
+                rgdBody.AddForce(direction * controller.crouchSpeed * 2, ForceMode.Acceleration);
+            }
+            rgdBody.AddForce(friction, ForceMode.Acceleration);
+        }
+        else
+        {
+            rgdBody.AddForce(direction * controller.moveSpeed, ForceMode.Acceleration);
+            friction = -rgdBody.velocity * frictionCoefficient;
+            rgdBody.AddForce(friction, ForceMode.Acceleration);
         }
 
-        rgdBody.AddForce(direction * controller.moveSpeed, ForceMode.Acceleration);
-        rgdBody.AddForce(friction, ForceMode.Acceleration);
+        //if (controller.BottomRayHit().normal != Vector3.up)
+        //{
+        //    direction = Vector3.ProjectOnPlane(direction, controller.BottomRayHit().normal);
+        //    friction = Vector3.ProjectOnPlane(friction, controller.BottomRayHit().normal);
+        //}
     }
 
     public override bool Exit()

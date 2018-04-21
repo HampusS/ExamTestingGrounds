@@ -19,13 +19,11 @@ abstract public class BaseState : MonoBehaviour
     public abstract void Run();
     public abstract bool Exit();
 
-    protected bool TurnTowardsVector(float rotateSpeed, Vector3 targetVector)
+    protected bool TurnTowardsVector(float rotateSpeed, Vector3 target)
     {
-        float step = rotateSpeed * Time.deltaTime;
-        Vector3 newDir = Vector3.RotateTowards(transform.forward, targetVector, step, 0.0f);
-        transform.rotation = Quaternion.LookRotation(newDir);
-        
-        if (Vector3.Dot(transform.forward, targetVector) < 0.999f)
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * rotateSpeed);
+
+        if (Vector3.Dot(transform.forward, target) < 0.999f)
             return false;
         return true;       
     }

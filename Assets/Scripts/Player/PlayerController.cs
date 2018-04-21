@@ -33,9 +33,9 @@ public class PlayerController : MonoBehaviour
     float rayLengthVertical = 1.1f;
 
     public bool onForwardWall { get; private set; }
-    public bool onRightWall { get; private set; }
-    public bool onLeftWall { get; private set; }
     public bool onBottom { get; private set; }
+    public bool onRightWall { get; set; }
+    public bool onLeftWall { get; set; }
 
     public bool onGravityMultiplier { get; set; }
 
@@ -45,8 +45,8 @@ public class PlayerController : MonoBehaviour
     Rigidbody rgdBody;
 
 
-    bool crouched = false;
-
+    public bool Crouch = false;
+    public float crouchSpeed = 2;
 
     void Start()
     {
@@ -67,6 +67,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         RayTrace();
+        Crouching();
         prevMoveState = currMoveState;
         if (currentState.Exit())
         {
@@ -81,7 +82,6 @@ public class PlayerController : MonoBehaviour
         }
         //Debug.Log(currMoveState);
         currentState.Run();
-        Crouching();
 
 
         if (Input.GetKeyDown("escape"))
@@ -101,26 +101,18 @@ public class PlayerController : MonoBehaviour
 
     void Crouching()
     {
-        if (!crouched && Input.GetKey(KeyCode.LeftControl))
-        {
-            CapsuleCollider capsule = GetComponent<CapsuleCollider>();
+        Crouch = Input.GetKey(KeyCode.LeftControl);
+        CapsuleCollider capsule = GetComponent<CapsuleCollider>();
+        //Up
+        Debug.DrawRay(transform.position, transform.up * (rayLengthVertical + 0.5f), Color.black);
+        bool onTop = Physics.Raycast(transform.position, transform.up, (rayLengthVertical + 0.5f));
+        
+        if (Crouch)
             capsule.height = 1;
-            crouched = true;
-        }
+        else if (!onTop)
+            capsule.height = 2;
         else
-        {
-            if (crouched)
-            {
-                Debug.DrawRay(transform.position, transform.up * (rayLengthVertical + 0.5f), Color.black);
-                bool onTop = Physics.Raycast(transform.position, transform.up, (rayLengthVertical + 0.5f));
-                if (!onTop && !Input.GetKey(KeyCode.LeftControl))
-                {
-                    CapsuleCollider capsule = GetComponent<CapsuleCollider>();
-                    capsule.height = 2;
-                    crouched = false;
-                }
-            }
-        }
+            Crouch = true;
     }
 
     void RayTrace()
@@ -142,24 +134,22 @@ public class PlayerController : MonoBehaviour
         //Forward
         Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
         onForwardWall = Physics.Raycast(ray.origin, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);
-
-        //Extras
-        Debug.DrawRay(ray.origin, (-transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
-        Debug.DrawRay(ray.origin, (transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
-        Debug.DrawRay(ray.origin, (-transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
-        Debug.DrawRay(ray.origin, (transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
-
-
-        if (!onLeftWall && !onRightWall)
-        {
-            onLeftWall = Physics.Raycast(ray.origin, (-transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
-            onRightWall = Physics.Raycast(ray.origin, (transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
-            if (!onLeftWall && !onRightWall)
-            {
-                onLeftWall = Physics.Raycast(ray.origin, (-transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
-                onRightWall = Physics.Raycast(ray.origin, (transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
-            }
-        }
     }
 
+    public void UpdateRays()
+    {
+        Ray ray = new Ray(transform.position, Vector3.down);
+
+        Debug.DrawRay(ray.origin, (-transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
+        Debug.DrawRay(ray.origin, (transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
+        onLeftWall = Physics.Raycast(ray.origin, (-transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
+        onRightWall = Physics.Raycast(ray.origin, (transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
+        if (!onLeftWall && !onRightWall)
+        {
+            Debug.DrawRay(ray.origin, (-transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
+            Debug.DrawRay(ray.origin, (transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
+            onLeftWall = Physics.Raycast(ray.origin, (-transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
+            onRightWall = Physics.Raycast(ray.origin, (transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
+        }
+    }
 }
