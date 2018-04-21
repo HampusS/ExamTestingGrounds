@@ -23,6 +23,7 @@ public class Respawn : MonoBehaviour
     void RespawnPlayer()
     {
         player.transform.position = respawn.transform.position;
+        player.GetComponent<Rigidbody>().velocity = Vector3.zero;
         deathScreen.GetComponent<DeathVisual>().Alive();
     }
 }

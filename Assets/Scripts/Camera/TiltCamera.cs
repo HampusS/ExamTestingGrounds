@@ -7,7 +7,7 @@ public class TiltCamera : MonoBehaviour
     [SerializeField]
     float lerpSpeed = 2;
     [SerializeField]
-    float degrees = 10;
+    float degrees = 20;
 
     public bool Left { get; set; }
     public bool Right { get; set; }
@@ -25,15 +25,11 @@ public class TiltCamera : MonoBehaviour
     void TiltCameraLeft()
     {
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(degrees, Vector3.forward), Time.deltaTime * lerpSpeed);
-        if (transform.localRotation == Quaternion.AngleAxis(degrees, Vector3.forward))
-            Left = false;
     }
 
     void TiltCameraRight()
     {
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(-degrees, Vector3.forward), Time.deltaTime * lerpSpeed);
-        if (transform.localRotation == Quaternion.AngleAxis(-degrees, Vector3.forward))
-            Right = false;
     }
 
     void AlignCamera()

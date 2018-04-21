@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class WallClimb : BaseState
 {
-    float timer = 0;
-    float timeSpan = 0.8f;
-    public float runHeight = 100;
-
+    public float timeBeforeFall = 0.2f;
+    float timer;
     bool initOnce;
     bool turning;
+    bool exit;
     Vector3 prevNormal, currNormal;
-
-    // Use this for initialization
+    
     void Start()
     {
         myStateType = MoveStates.WALLCLIMB;
@@ -22,13 +20,14 @@ public class WallClimb : BaseState
     {
         if (initOnce)
         {
-            controller.onGravityMultiplier = false;
-            UpdateMoveAmount(0, Vector3.zero);
-            EnableGravity(false);
-            Jump(runHeight);
-            turning = false;
+            controller.onGravityMultiplier = true;
+            rgdBody.useGravity = false;
             initOnce = false;
+            turning = false;
+            exit = false;
             timer = 0;
+            rgdBody.velocity = Vector3.zero;
+            rgdBody.AddForce(Vector3.up * controller.jumpHeight, ForceMode.VelocityChange);
         }
     }
 
@@ -37,7 +36,7 @@ public class WallClimb : BaseState
         if (controller.onBottom)
             prevNormal = Vector3.zero;
 
-        if (controller.onForwardWall && !inReachOfLedge())
+        if (controller.onForwardWall && !inReachOfLedge() && Vector3.Dot(controller.HorizontalHit().normal, transform.forward) < -0.9f)
         {
             currNormal = controller.HorizontalHit().normal;
             if (currNormal != prevNormal && Input.GetButton("Jump"))
@@ -55,10 +54,17 @@ public class WallClimb : BaseState
         InitializeRun();
         if (!turning)
         {
+            if (timer >= timeBeforeFall)
+                rgdBody.useGravity = true;
+
             if (timer > 0 && Input.GetButtonDown("Jump"))
             {
-                Jump(0);
+                controller.onGravityMultiplier = false;
+                rgdBody.useGravity = false;
+                rgdBody.velocity = Vector3.zero;
                 turning = true;
+                CameraControls camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
+                camControl.LockTurning = true;
             }
 
             if (Input.GetButton("Jump"))
@@ -66,26 +72,29 @@ public class WallClimb : BaseState
             else
                 timer += Time.deltaTime * 2;
 
+            if (controller.onBottom && rgdBody.velocity.y < 0)
+                exit = true;
+
             if (inReachOfLedge())
-                timer += timeSpan;
+                exit = true;
         }
         else if (TurnTowardsVector(controller.turnAroundSpeed, controller.HorizontalHit().normal))
         {
-            JumpFromWall(controller.jumpHeight, controller.jumpStrength);
-            timer += timeSpan;
+            CameraControls camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
+            camControl.LockTurning = false;
+            Vector3 result = (controller.HorizontalHit().normal + transform.up).normalized;
+            rgdBody.velocity = result * controller.jumpStrength;
             turning = false;
+            exit = true;
         }
 
     }
 
     public override bool Exit()
     {
-        if (timer >= timeSpan)
+        if (exit)
         {
-            rgdBody.velocity = Vector3.zero;
             prevNormal = currNormal;
-            EnableGravity(true);
-            timer = 0;
             return true;
         }
         return false;

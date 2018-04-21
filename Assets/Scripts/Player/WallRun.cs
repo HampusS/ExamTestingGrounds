@@ -4,39 +4,40 @@ using UnityEngine;
 
 public class WallRun : BaseState
 {
-    float timer = 0;
-    float timeSpan = 1.0f;
-    float runHeight = 45;
+    public float timeBeforeFall = 1.6f;
     float runTimeMultiplier = 2f;
+    float timer = 0;
+    bool initOnce;
+    bool exit;
 
     Vector3 prevNormal, currNormal;
-    bool initOnce;
-    TiltCamera cam;
-
+    TiltCamera camTilt;
+    CameraControls camControl;
 
     private void Start()
     {
         myStateType = MoveStates.WALLRUN;
-        cam = Camera.main.GetComponent<TiltCamera>();
+        camTilt = Camera.main.GetComponent<TiltCamera>();
+        camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
     }
 
     void InitializeRun()
     {
         if (initOnce)
         {
-            SetMoveAmount(Vector3.ProjectOnPlane(transform.forward * controller.moveSpeed, currNormal));
-            GetComponent<Renderer>().material.color = Color.green;
             controller.onGravityMultiplier = false;
-            EnableGravity(false);
+            rgdBody.useGravity = false;
             initOnce = false;
-            Jump(runHeight);
+            exit = false;
             timer = 0;
-            cam.ResetCamera();
+            rgdBody.velocity = Vector3.zero;
+            Vector3 result = (transform.forward + transform.up * 0.15f).normalized * controller.jumpStrength * 1.75f;
+            rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
+            camTilt.ResetCamera();
             if (controller.onLeftWall)
-                cam.Right = true;
+                camTilt.Right = true;
             else if (controller.onRightWall)
-                cam.Left = true;
-
+                camTilt.Left = true;
         }
     }
 
@@ -47,8 +48,10 @@ public class WallRun : BaseState
 
         if (controller.onLeftWall || controller.onRightWall)
         {
-            if (Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0)
+            Debug.Log(Vector3.Dot(transform.forward, rgdBody.velocity.normalized));
+            if (Input.GetButton("Jump") && Vector3.Dot(transform.forward, rgdBody.velocity.normalized) > 0)
             {
+                Debug.Log("Sight");
                 currNormal = controller.HorizontalHit().normal;
                 if (currNormal != prevNormal)
                 {
@@ -64,38 +67,46 @@ public class WallRun : BaseState
     public override void Run()
     {
         InitializeRun();
+        SupportRun();
+        camControl.TurnToVector(new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z));
 
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {
-            Vector3 result;
-            result = Vector3.ProjectOnPlane(transform.forward, controller.HorizontalHit().normal) + transform.forward + controller.HorizontalHit().normal;
-            JumpFromWall(result.normalized, controller.jumpHeight, controller.jumpStrength);
-            timer += timeSpan;
+            Vector3 result = (transform.forward + transform.up * 0.65f + controller.HorizontalHit().normal * 1.35f).normalized;
+            rgdBody.velocity = Vector3.Project(rgdBody.velocity, result);
+            exit = true;
         }
 
-        if (!controller.onLeftWall && !controller.onRightWall)
-        {
-            timer += timeSpan;
-        }
+        if (controller.HorizontalHit().normal != currNormal)
+            exit = true;
 
         if (Input.GetButton("Jump"))
             timer += Time.deltaTime;
         else
             timer += Time.deltaTime * runTimeMultiplier;
+
+        if (timer >= timeBeforeFall * 0.5f)
+            rgdBody.useGravity = true;
+
+        if (!controller.onLeftWall && !controller.onRightWall || controller.onBottom && rgdBody.velocity.y < 0)
+            exit = true;
     }
 
     public override bool Exit()
     {
-        if (timer >= timeSpan)
+        if (exit)
         {
-            GetComponent<Renderer>().material.color = Color.red;
             prevNormal = currNormal;
-            EnableGravity(true);
-            timer = 0;
-            cam.ResetCamera();
+            camTilt.ResetCamera();
             return true;
         }
         return false;
+    }
+
+    void SupportRun()
+    {
+        if (!controller.onLeftWall && !controller.onRightWall)
+            controller.UpdateRays();
     }
 
 }

@@ -4,24 +4,19 @@ using UnityEngine;
 
 public class GroundState : BaseState
 {
-    [SerializeField]
-    float moveFloatiness = .15f;
-    [SerializeField]
-    float sprint = 3;
-    float speed;
+    public float frictionCoefficient = 4;
+    Vector3 friction;
 
     private void Start()
     {
         myStateType = MoveStates.GROUND;
-        speed = controller.moveSpeed;
     }
 
     public override bool Enter()
     {
         if (controller.onBottom)
         {
-            //if (controller.prevMoveState != myStateType && controller.onBottom)
-            //    UpdateMoveAmount(0.05f, Vector3.zero);
+            controller.onGravityMultiplier = false;
             return true;
         }
         return false;
@@ -29,23 +24,33 @@ public class GroundState : BaseState
 
     public override void Run()
     {
-        speed = controller.moveSpeed;
-        if (Input.GetButton("Action"))
-        {
-            speed *= sprint;
-        }
-        
-
-        UpdateMoveInput(speed);
-        controller.targetMove = TransformVector(controller.targetMove);
-        controller.targetMove = ProjectVectorToPlane(controller.targetMove, controller.BottomRayHit().normal);
-        UpdateMovement(moveFloatiness);
-
         if (Input.GetButtonDown("Jump"))
+            rgdBody.AddForce(transform.up * controller.jumpHeight, ForceMode.VelocityChange);
+        Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
+
+        if (controller.Crouch)
         {
-            //transform.position += Vector3.up * 0.15f;
-            Jump(controller.jumpHeight);
+            if (rgdBody.velocity.magnitude > controller.crouchSpeed)
+                friction = -rgdBody.velocity * 0.25f;
+            else
+            {
+                friction = -rgdBody.velocity * frictionCoefficient;
+                rgdBody.AddForce(direction * controller.crouchSpeed * 2, ForceMode.Acceleration);
+            }
+            rgdBody.AddForce(friction, ForceMode.Acceleration);
         }
+        else
+        {
+            rgdBody.AddForce(direction * controller.moveSpeed, ForceMode.Acceleration);
+            friction = -rgdBody.velocity * frictionCoefficient;
+            rgdBody.AddForce(friction, ForceMode.Acceleration);
+        }
+
+        //if (controller.BottomRayHit().normal != Vector3.up)
+        //{
+        //    direction = Vector3.ProjectOnPlane(direction, controller.BottomRayHit().normal);
+        //    friction = Vector3.ProjectOnPlane(friction, controller.BottomRayHit().normal);
+        //}
     }
 
     public override bool Exit()

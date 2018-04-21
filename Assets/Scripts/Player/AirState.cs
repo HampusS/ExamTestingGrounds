@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class AirState : BaseState
 {
-    bool turning;
+    public float airResistance = 3;
+    Vector3 drag;
 
-    // Use this for initialization
     void Start()
     {
         myStateType = MoveStates.AIR;
@@ -17,7 +17,7 @@ public class AirState : BaseState
         if (!controller.onBottom)
         {
             controller.onGravityMultiplier = true;
-            turning = false;
+            rgdBody.useGravity = true;
             return true;
         }
         return false;
@@ -25,46 +25,14 @@ public class AirState : BaseState
 
     public override void Run()
     {
-        if (!turning)
-        {
-            if (controller.onForwardWall && Input.GetButtonDown("Jump"))
-            {
-                controller.onGravityMultiplier = false;
-                EnableGravity(false);
-                Jump(0);
-                turning = true;
-            }
-
-            if (controller.onLeftWall || controller.onRightWall)
-            {
-                if (Input.GetButtonDown("Jump"))
-                {
-                    controller.AppendFinalMove(controller.HorizontalHit().normal * controller.jumpStrength);
-                    Jump(controller.jumpHeight);
-                }
-            }
-
-            Vector3 strafe = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-            if (strafe != Vector3.zero)
-            {
-                strafe = transform.TransformDirection(strafe);
-                controller.AppendFinalMove(strafe * (controller.moveSpeed * Time.deltaTime));
-            }
-
-        }
-        else if (TurnTowardsVector(controller.turnAroundSpeed, controller.HorizontalHit().normal))
-        {
-            JumpFromWall(controller.jumpHeight, controller.jumpStrength);
-            turning = false;
-            EnableGravity(true);
-        }
-
+        Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
+        rgdBody.AddForce(direction * controller.moveSpeed * 0.25f, ForceMode.Acceleration);
+        drag = -direction * airResistance;
+        rgdBody.AddForce(drag, ForceMode.Acceleration);
     }
 
     public override bool Exit()
     {
-        if (turning)
-            return false;
         return true;
     }
 }
