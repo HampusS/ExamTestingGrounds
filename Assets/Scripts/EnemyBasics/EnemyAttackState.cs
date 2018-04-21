@@ -7,6 +7,7 @@ public class EnemyAttackState : EnemyBase {
 
 
     public float attackRate = 0.5f;
+    public float knockBackStrength = 25;
     float timer;
 
 
@@ -50,6 +51,7 @@ public class EnemyAttackState : EnemyBase {
     void Attack()
     {
         PlayerController control = controller.player.GetComponent<PlayerController>();
+        control.KnockBack((control.transform.position - transform.position).normalized, knockBackStrength);
         //control.JumpAway((control.transform.position - transform.position).normalized, 700, 5);
     }
 }

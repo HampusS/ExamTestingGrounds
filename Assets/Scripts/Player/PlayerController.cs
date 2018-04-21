@@ -99,6 +99,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void KnockBack(Vector3 direction, float amount)
+    {
+        rgdBody.velocity = direction * amount;
+    }
+
     void Crouching()
     {
         Crouch = Input.GetKey(KeyCode.LeftControl);

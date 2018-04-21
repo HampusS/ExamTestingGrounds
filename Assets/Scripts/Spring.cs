@@ -6,6 +6,8 @@ public class Spring : MonoBehaviour {
     Rigidbody player;
     [SerializeField]
     float impulse = 12;
+    [SerializeField]
+    Vector3 direction;
 
 	// Use this for initialization
 	void Start () {
@@ -22,7 +24,6 @@ public class Spring : MonoBehaviour {
 
     void AddImpulse()
     {
-        player.velocity += Vector3.up * impulse;
-        player.GetComponent<PlayerController>().onGravityMultiplier = false;
+        player.velocity = direction.normalized * impulse;
     }
 }

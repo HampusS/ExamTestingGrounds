@@ -5,6 +5,7 @@ using UnityEngine;
 public class WallRun : BaseState
 {
     public float timeBeforeFall = 1.6f;
+    public float jumpStrengthMultiplier = 1.75f;
     float runTimeMultiplier = 2f;
     float timer = 0;
     bool initOnce;
@@ -30,9 +31,15 @@ public class WallRun : BaseState
             initOnce = false;
             exit = false;
             timer = 0;
-            rgdBody.velocity = Vector3.zero;
-            Vector3 result = (transform.forward + transform.up * 0.15f).normalized * controller.jumpStrength * 1.75f;
-            rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
+
+            Vector3 result = (transform.forward + transform.up * 0.15f).normalized * controller.jumpStrength * jumpStrengthMultiplier;
+            if (result.magnitude > rgdBody.velocity.magnitude)
+                rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
+            else
+            {
+                rgdBody.velocity = Vector3.Project(rgdBody.velocity, result.normalized);
+                rgdBody.velocity = Vector3.ProjectOnPlane(rgdBody.velocity, controller.HorizontalHit().normal);
+            }
             camTilt.ResetCamera();
             if (controller.onLeftWall)
                 camTilt.Right = true;
@@ -72,8 +79,12 @@ public class WallRun : BaseState
 
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {
-            Vector3 result = (transform.forward + transform.up * 0.65f + controller.HorizontalHit().normal * 1.35f).normalized;
-            rgdBody.velocity = Vector3.Project(rgdBody.velocity, result);
+            Vector3 result = (transform.forward + transform.up * 0.75f + controller.HorizontalHit().normal * 1.35f).normalized * controller.jumpStrength * jumpStrengthMultiplier;
+            if (result.magnitude > rgdBody.velocity.magnitude)
+                rgdBody.velocity = result.normalized * controller.jumpStrength;
+            else
+                rgdBody.velocity = Vector3.Project(rgdBody.velocity, result.normalized);
+
             exit = true;
         }
 

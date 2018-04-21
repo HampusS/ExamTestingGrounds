@@ -52,7 +52,10 @@ public class Grenade : MonoBehaviour
                     Rigidbody rb = nearObj.GetComponent<Rigidbody>();
                     if (rb != null)
                     {
-                        rb.AddExplosionForce(force, transform.position, blastRadius);
+                        if (rb.tag == "Enemy")
+                            rb.velocity = ((rb.position - transform.position).normalized * 500) / (blastRadius + Vector3.Distance(rb.position, transform.position));
+                        else
+                            rb.AddExplosionForce(force, transform.position, blastRadius);
                     }
                 }
             }

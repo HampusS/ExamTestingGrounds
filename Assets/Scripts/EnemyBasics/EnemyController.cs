@@ -83,5 +83,7 @@ public class EnemyController : MonoBehaviour
         }
         //Debug.Log(currentTask);
         currentState.Run();
+        if (GetComponent<Rigidbody>().velocity.magnitude > 0)
+            GetComponent<Rigidbody>().AddForce(-GetComponent<Rigidbody>().velocity * 4, ForceMode.Acceleration);
     }
 }
