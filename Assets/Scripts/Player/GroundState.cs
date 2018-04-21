@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class GroundState : BaseState
 {
-    public float kineticFrictionCoefficient = 2;
-    public float staticFrictionCoefficient = 4;
+    public float frictionCoefficient = 4;
     Vector3 friction;
 
     private void Start()
@@ -17,8 +16,7 @@ public class GroundState : BaseState
     {
         if (controller.onBottom)
         {
-            //rgdBody.useGravity = false;
-            //controller.onGravityMultiplier = false;
+            controller.onGravityMultiplier = false;
             return true;
         }
         return false;
@@ -27,14 +25,11 @@ public class GroundState : BaseState
     public override void Run()
     {
         if (Input.GetButtonDown("Jump"))
-            rgdBody.AddForce(transform.up * controller.jumpHeight, ForceMode.Impulse);
+            rgdBody.AddForce(transform.up * controller.jumpHeight, ForceMode.VelocityChange);
         Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
 
-        if (rgdBody.velocity == Vector3.zero)
-            friction = -rgdBody.velocity * staticFrictionCoefficient;
-        else
-            friction = -rgdBody.velocity * kineticFrictionCoefficient;
-        
+        friction = -rgdBody.velocity * frictionCoefficient;
+
         if (controller.BottomRayHit().normal != Vector3.up)
         {
             direction = Vector3.ProjectOnPlane(direction, controller.BottomRayHit().normal);
@@ -43,7 +38,6 @@ public class GroundState : BaseState
 
         rgdBody.AddForce(direction * controller.moveSpeed, ForceMode.Acceleration);
         rgdBody.AddForce(friction, ForceMode.Acceleration);
-        rgdBody.velocity = Vector3.ClampMagnitude(rgdBody.velocity, controller.maxSpeed);
     }
 
     public override bool Exit()

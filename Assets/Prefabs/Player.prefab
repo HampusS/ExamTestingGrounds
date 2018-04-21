@@ -126,8 +126,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1239035602709756}
-  m_LocalRotation: {x: -0, y: 0.98322016, z: -0, w: -0.18242319}
-  m_LocalPosition: {x: 1.51, y: 10.679, z: 20.07}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.66, y: 5.32, z: -12.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4845286964991380}
@@ -359,8 +359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bfa89a684f320f4295b19d77cb47edb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  kineticFrictionCoefficient: 3
-  staticFrictionCoefficient: 4
+  frictionCoefficient: 4
 --- !u!114 &114330684156297996
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -383,6 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0d7f30311496c54ea7ef5bc7d87581a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeBeforeFall: 0.2
 --- !u!114 &114577665959372434
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -422,6 +422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a34864ba4cb27364482628ddd1264c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  airResistance: 5
 --- !u!114 &114670052691895574
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -437,11 +438,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   health: 0
-  moveSpeed: 30
-  jumpStrength: 15
-  jumpHeight: 5
+  moveSpeed: 50
+  jumpStrength: 10
+  jumpHeight: 6
   turnAroundSpeed: 6
-  maxSpeed: 15
 --- !u!114 &114757508819226032
 MonoBehaviour:
   m_ObjectHideFlags: 1

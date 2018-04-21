@@ -65,10 +65,11 @@ public class LedgeGrab : BaseState
         else if (forward < 0 || forward > 0 && !controller.onForwardWall)
             onLedge = false;
 
-        if (Input.GetButtonDown("Jump") && !inReachOfLedge())
+        if (Input.GetButtonDown("Jump") && !controller.onForwardWall)
         {
-            Vector3 result = transform.up + transform.forward;
-            rgdBody.AddForce(result.normalized * controller.jumpStrength * 0.75f, ForceMode.VelocityChange);
+            Vector3 result = (transform.up + transform.forward).normalized;
+            rgdBody.velocity = result * controller.jumpStrength;
+            //rgdBody.AddForce(result.normalized * controller.jumpStrength * 0.75f, ForceMode.VelocityChange);
             onLedge = false;
         }
     }

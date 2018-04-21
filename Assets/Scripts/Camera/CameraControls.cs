@@ -38,4 +38,13 @@ public class CameraControls : MonoBehaviour
         }
     }
 
+    public void LerpToVector(float speed, Vector3 target)
+    {
+        if (Vector3.Dot(player.transform.forward, target) < 1)
+        {
+            player.transform.rotation = /*Quaternion.Lerp(player.transform.rotation, Quaternion., Time.deltaTime * speed);*/Quaternion.FromToRotation(player.transform.forward, target);
+        }
+    }
+
+
 }

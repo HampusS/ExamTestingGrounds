@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class WallClimb : BaseState
 {
+    public float timeBeforeFall = 0.2f;
     float timer = 0;
-    float timeSpan = 0.8f;
     bool initOnce;
     bool turning;
     bool exit;
@@ -21,14 +21,14 @@ public class WallClimb : BaseState
     {
         if (initOnce)
         {
-            controller.onGravityMultiplier = false;
+            controller.onGravityMultiplier = true;
             rgdBody.useGravity = false;
             initOnce = false;
             turning = false;
             exit = false;
             timer = 0;
             rgdBody.velocity = Vector3.zero;
-            rgdBody.AddForce(Vector3.up * controller.jumpHeight * 0.75f, ForceMode.VelocityChange);
+            rgdBody.AddForce(Vector3.up * controller.jumpHeight, ForceMode.VelocityChange);
         }
     }
 
@@ -37,7 +37,7 @@ public class WallClimb : BaseState
         if (controller.onBottom)
             prevNormal = Vector3.zero;
 
-        if (controller.onForwardWall && !inReachOfLedge())
+        if (controller.onForwardWall && !inReachOfLedge() && Vector3.Dot(controller.HorizontalHit().normal, transform.forward) < -0.9f)
         {
             currNormal = controller.HorizontalHit().normal;
             if (currNormal != prevNormal && Input.GetButton("Jump"))
@@ -55,19 +55,8 @@ public class WallClimb : BaseState
         InitializeRun();
         if (!turning)
         {
-            if (Input.GetButton("Jump"))
-                timer += Time.deltaTime;
-            else
-                timer += Time.deltaTime * 2;
-
-            if (timer >= timeSpan)
-            {
+            if (timer >= timeBeforeFall)
                 rgdBody.useGravity = true;
-            }
-
-            if (controller.onBottom && rgdBody.velocity.y < 0)
-                exit = true;
-
 
             if (timer > 0 && Input.GetButtonDown("Jump"))
             {
@@ -77,13 +66,21 @@ public class WallClimb : BaseState
                 turning = true;
             }
 
+            if (Input.GetButton("Jump"))
+                timer += Time.deltaTime;
+            else
+                timer += Time.deltaTime * 2;
+
+            if (controller.onBottom && rgdBody.velocity.y < 0)
+                exit = true;
+
             if (inReachOfLedge())
                 exit = true;
         }
         else if (TurnTowardsVector(controller.turnAroundSpeed, controller.HorizontalHit().normal))
         {
-            Vector3 result = (controller.HorizontalHit().normal + transform.up).normalized;
-            rgdBody.AddForce(result * controller.jumpStrength * 0.75f, ForceMode.VelocityChange);
+            Vector3 result = (controller.HorizontalHit().normal + transform.up).normalized * controller.jumpStrength;
+            rgdBody.velocity = result;
             turning = false;
             exit = true;
         }

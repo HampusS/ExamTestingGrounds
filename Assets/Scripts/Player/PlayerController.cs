@@ -26,11 +26,10 @@ public class PlayerController : MonoBehaviour
 
     public float moveSpeed = 10;
     public float jumpStrength = 8;
-    public float jumpHeight = 30;
+    public float jumpHeight = 6;
     public float turnAroundSpeed = 6;
-    public float maxSpeed = 15;
 
-    float rayLengthHorizontal = 0.6f;
+    float rayLengthHorizontal = 0.7f;
     float rayLengthVertical = 1.1f;
 
     public bool onForwardWall { get; private set; }
@@ -80,7 +79,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        Debug.Log(currMoveState);
+        //Debug.Log(currMoveState);
         currentState.Run();
         Crouching();
 
@@ -128,18 +127,23 @@ public class PlayerController : MonoBehaviour
     {
         Ray ray = new Ray(transform.position, Vector3.down);
 
+        //Down
         Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.black);
         onBottom = Physics.Raycast(ray.origin, -transform.up, out bottomHit, rayLengthVertical);
-        
+
+        //Left
         Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.black);
         onLeftWall = Physics.Raycast(ray.origin, -transform.right, out horizHit, rayLengthHorizontal, wallLayer);
 
+        //Right
         Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.black);
         onRightWall = Physics.Raycast(ray.origin, transform.right, out horizHit, rayLengthHorizontal, wallLayer);
 
+        //Forward
         Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
         onForwardWall = Physics.Raycast(ray.origin, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);
 
+        //Extras
         Debug.DrawRay(ray.origin, (-transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
         Debug.DrawRay(ray.origin, (transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
         Debug.DrawRay(ray.origin, (-transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);

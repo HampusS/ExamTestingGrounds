@@ -11,12 +11,14 @@ public class WallRun : BaseState
     bool exit;
 
     Vector3 prevNormal, currNormal;
-    TiltCamera cam;
+    TiltCamera camTilt;
+    CameraControls camControl;
 
     private void Start()
     {
         myStateType = MoveStates.WALLRUN;
-        cam = Camera.main.GetComponent<TiltCamera>();
+        camTilt = Camera.main.GetComponent<TiltCamera>();
+        camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
     }
 
     void InitializeRun()
@@ -31,11 +33,11 @@ public class WallRun : BaseState
             rgdBody.velocity = Vector3.zero;
             Vector3 result = (transform.forward + transform.up * 0.15f).normalized * controller.jumpStrength;
             rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
-            cam.ResetCamera();
+            camTilt.ResetCamera();
             if (controller.onLeftWall)
-                cam.Right = true;
+                camTilt.Right = true;
             else if (controller.onRightWall)
-                cam.Left = true;
+                camTilt.Left = true;
         }
     }
 
@@ -91,7 +93,7 @@ public class WallRun : BaseState
         if (exit)
         {
             prevNormal = currNormal;
-            cam.ResetCamera();
+            camTilt.ResetCamera();
             return true;
         }
         return false;
