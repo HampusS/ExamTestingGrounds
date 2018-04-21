@@ -45,8 +45,8 @@ public class PlayerController : MonoBehaviour
     Rigidbody rgdBody;
 
 
-    public bool Crouch = false;
-    public float crouchSpeed = 2;
+    public bool Crouch { get; set; }
+    public float crouchSpeed = 8;
 
     void Start()
     {

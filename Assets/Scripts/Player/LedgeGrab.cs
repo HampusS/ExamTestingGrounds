@@ -69,7 +69,6 @@ public class LedgeGrab : BaseState
         {
             Vector3 result = (transform.up + transform.forward).normalized;
             rgdBody.velocity = result * controller.jumpStrength;
-            //rgdBody.AddForce(result.normalized * controller.jumpStrength * 0.75f, ForceMode.VelocityChange);
             onLedge = false;
         }
     }

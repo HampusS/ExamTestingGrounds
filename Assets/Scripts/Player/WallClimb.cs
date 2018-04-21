@@ -5,13 +5,12 @@ using UnityEngine;
 public class WallClimb : BaseState
 {
     public float timeBeforeFall = 0.2f;
-    float timer = 0;
+    float timer;
     bool initOnce;
     bool turning;
     bool exit;
     Vector3 prevNormal, currNormal;
-
-    // Use this for initialization
+    
     void Start()
     {
         myStateType = MoveStates.WALLCLIMB;
@@ -64,6 +63,8 @@ public class WallClimb : BaseState
                 rgdBody.useGravity = false;
                 rgdBody.velocity = Vector3.zero;
                 turning = true;
+                CameraControls camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
+                camControl.LockTurning = true;
             }
 
             if (Input.GetButton("Jump"))
@@ -79,8 +80,10 @@ public class WallClimb : BaseState
         }
         else if (TurnTowardsVector(controller.turnAroundSpeed, controller.HorizontalHit().normal))
         {
-            Vector3 result = (controller.HorizontalHit().normal + transform.up).normalized * controller.jumpStrength;
-            rgdBody.velocity = result;
+            CameraControls camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
+            camControl.LockTurning = false;
+            Vector3 result = (controller.HorizontalHit().normal + transform.up).normalized;
+            rgdBody.velocity = result * controller.jumpStrength;
             turning = false;
             exit = true;
         }

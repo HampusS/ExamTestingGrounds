@@ -4658,7 +4658,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-2415292
+  m_Name: pb_Mesh69044
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -7287,7 +7287,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-2941042
+  m_Name: pb_Mesh69694
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -19353,7 +19353,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-2394180
+  m_Name: pb_Mesh70506
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -47722,7 +47722,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-2293340
+  m_Name: pb_Mesh69586
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -51054,15 +51054,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1.51
+      value: -3.1
       objectReference: {fileID: 0}
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 10.679
+      value: -73.1
       objectReference: {fileID: 0}
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 20.07
+      value: -194.5
       objectReference: {fileID: 0}
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_LocalRotation.x
@@ -51083,16 +51083,6 @@ Prefab:
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 23516333066015678, guid: a76ac625abdc38c4498d99e68aba330c,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114670052691895574, guid: a76ac625abdc38c4498d99e68aba330c,
-        type: 2}
-      propertyPath: crouchSpeed
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}

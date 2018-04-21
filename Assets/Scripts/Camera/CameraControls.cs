@@ -14,6 +14,8 @@ public class CameraControls : MonoBehaviour
     float camUpDown;
     float camLeftRight;
 
+    public float turnAssistSpeed = 3;
+
 
     public bool LockTurning { get; set; }
 
@@ -40,8 +42,7 @@ public class CameraControls : MonoBehaviour
 
     public void TurnToVector(Vector3 target)
     {
-        player.rotation = Quaternion.Lerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * 2);
-        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(0, Vector3.right), Time.deltaTime);
+        player.rotation = Quaternion.Lerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * turnAssistSpeed);
     }
 
 

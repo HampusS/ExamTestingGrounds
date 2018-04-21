@@ -31,7 +31,7 @@ public class WallRun : BaseState
             exit = false;
             timer = 0;
             rgdBody.velocity = Vector3.zero;
-            Vector3 result = (transform.forward + transform.up * 0.15f).normalized * controller.jumpStrength * 2;
+            Vector3 result = (transform.forward + transform.up * 0.15f).normalized * controller.jumpStrength * 1.75f;
             rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
             camTilt.ResetCamera();
             if (controller.onLeftWall)
@@ -48,8 +48,10 @@ public class WallRun : BaseState
 
         if (controller.onLeftWall || controller.onRightWall)
         {
-            if (Input.GetButton("Jump") && Vector3.Dot(transform.forward, rgdBody.velocity.normalized) > 0.5f)
+            Debug.Log(Vector3.Dot(transform.forward, rgdBody.velocity.normalized));
+            if (Input.GetButton("Jump") && Vector3.Dot(transform.forward, rgdBody.velocity.normalized) > 0)
             {
+                Debug.Log("Sight");
                 currNormal = controller.HorizontalHit().normal;
                 if (currNormal != prevNormal)
                 {
@@ -68,11 +70,9 @@ public class WallRun : BaseState
         SupportRun();
         camControl.TurnToVector(new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z));
 
-        Debug.Log(controller.HorizontalHit().normal);
-
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {
-            Vector3 result = (transform.forward + transform.up * 0.75f + controller.HorizontalHit().normal).normalized;
+            Vector3 result = (transform.forward + transform.up * 0.65f + controller.HorizontalHit().normal * 1.35f).normalized;
             rgdBody.velocity = Vector3.Project(rgdBody.velocity, result);
             exit = true;
         }
