@@ -24,6 +24,6 @@ public class Spring : MonoBehaviour {
 
     void AddImpulse()
     {
-        player.velocity = direction.normalized * impulse;
+        player.AddForce(direction.normalized * impulse, ForceMode.VelocityChange);
     }
 }
