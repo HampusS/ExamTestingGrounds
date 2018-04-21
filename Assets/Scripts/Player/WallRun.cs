@@ -65,6 +65,9 @@ public class WallRun : BaseState
     public override void Run()
     {
         InitializeRun();
+        camControl.RotateToVector(new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z));
+
+        Debug.Log(controller.HorizontalHit().normal);
 
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {

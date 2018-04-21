@@ -13,7 +13,7 @@ public class CameraControls : MonoBehaviour
 
     float camUpDown;
     float camLeftRight;
-    
+
 
     public bool LockTurning { get; set; }
 
@@ -34,16 +34,15 @@ public class CameraControls : MonoBehaviour
         if (!LockTurning)
         {
             camLeftRight = Input.GetAxis("Mouse X") * sensX;
-            player.transform.Rotate(Vector3.up, camLeftRight);
+            player.Rotate(Vector3.up, camLeftRight);
         }
     }
 
-    public void LerpToVector(float speed, Vector3 target)
+    public void RotateToVector(Vector3 target)
     {
-        if (Vector3.Dot(player.transform.forward, target) < 1)
-        {
-            player.transform.rotation = /*Quaternion.Lerp(player.transform.rotation, Quaternion., Time.deltaTime * speed);*/Quaternion.FromToRotation(player.transform.forward, target);
-        }
+        player.rotation = Quaternion.Lerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * 2);
+        //player.rotation = Quaternion.LookRotation(target);
+        //transform.localRotation = Quaternion.Lerp(transform.localRotation, new Quaternion(0, 0, 0, 1), Time.deltaTime);
     }
 
 
