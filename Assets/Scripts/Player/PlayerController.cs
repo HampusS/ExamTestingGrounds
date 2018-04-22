@@ -129,9 +129,15 @@ public class PlayerController : MonoBehaviour
         bool onTop = Physics.Raycast(transform.position, transform.up, (rayLengthVertical + 0.5f));
 
         if (Crouch)
+        {
             capsule.height = 1;
+            onGravityMultiplier = true;
+        }
         else if (!onTop)
+        {
             capsule.height = 2;
+            onGravityMultiplier = false;
+        }
         else
             Crouch = true;
     }

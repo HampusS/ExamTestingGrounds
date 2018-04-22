@@ -7,7 +7,7 @@ public class LedgeGrab : BaseState
     bool onTryClimbUp;
     bool onLedge;
     bool onMoveUp;
-    public float animSpeed = 4;
+    public float climbSpeed = 4;
 
     Vector3 targetPos;
     Vector3 posToDown;
@@ -95,7 +95,7 @@ public class LedgeGrab : BaseState
             }
             else
             {
-                transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * animSpeed);
+                transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * climbSpeed);
 
                 if (Vector3.Distance(transform.position, targetPos) < 0.15f)
                 {

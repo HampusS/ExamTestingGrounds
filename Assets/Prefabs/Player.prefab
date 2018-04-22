@@ -673,8 +673,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd584859bf53a044b9c10f471b2ed78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBeforeFall: 1.6
-  jumpStrengthMultiplier: 2
+  timeBeforeFall: 1.25
+  jumpStrengthMultiplier: 1.75
 --- !u!114 &114270374417033792
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -698,7 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8900c3d4d872644449c20c7e53c7e109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animSpeed: 4
+  climbSpeed: 4
 --- !u!114 &114333286336361408
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -750,7 +750,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a34864ba4cb27364482628ddd1264c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  airResistance: 3
+  airResistance: 0.3
+  airSpeed: 8
 --- !u!114 &114670052691895574
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -765,7 +766,7 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 1024
-  moveSpeed: 45
+  moveSpeed: 75
   jumpStrength: 10
   jumpHeight: 6
   turnAroundSpeed: 6

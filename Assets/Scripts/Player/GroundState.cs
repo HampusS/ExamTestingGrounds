@@ -5,6 +5,7 @@ using UnityEngine;
 public class GroundState : BaseState
 {
     public float frictionCoefficient = 4;
+
     Vector3 friction;
 
     private void Start()
@@ -15,10 +16,7 @@ public class GroundState : BaseState
     public override bool Enter()
     {
         if (controller.onBottom)
-        {
-            controller.onGravityMultiplier = false;
             return true;
-        }
         return false;
     }
 
@@ -41,8 +39,12 @@ public class GroundState : BaseState
         }
         else
         {
+            if (direction == Vector3.zero)
+                friction = -rgdBody.velocity * frictionCoefficient * 2;
+            else
+                friction = -rgdBody.velocity * frictionCoefficient;
+
             rgdBody.AddForce(direction * controller.moveSpeed, ForceMode.Acceleration);
-            friction = -rgdBody.velocity * frictionCoefficient;
             rgdBody.AddForce(friction, ForceMode.Acceleration);
         }
 
