@@ -55,10 +55,8 @@ public class WallRun : BaseState
 
         if (controller.onLeftWall || controller.onRightWall)
         {
-            Debug.Log(Vector3.Dot(transform.forward, rgdBody.velocity.normalized));
             if (Input.GetButton("Jump") && Vector3.Dot(transform.forward, rgdBody.velocity.normalized) > 0)
             {
-                Debug.Log("Sight");
                 currNormal = controller.HorizontalHit().normal;
                 if (currNormal != prevNormal)
                 {

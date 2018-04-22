@@ -26,6 +26,10 @@ public class AirState : BaseState
     public override void Run()
     {
         Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
+
+        //if (controller.onForceLockMovement)
+        //    direction = Vector3.zero;
+
         rgdBody.AddForce(direction * controller.moveSpeed * 0.25f, ForceMode.Acceleration);
         drag = -direction * airResistance;
         rgdBody.AddForce(drag, ForceMode.Acceleration);

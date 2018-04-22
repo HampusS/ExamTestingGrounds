@@ -52,6 +52,7 @@ public class EnemyAttackState : EnemyBase {
     {
         PlayerController control = controller.player.GetComponent<PlayerController>();
         control.KnockBack((control.transform.position - transform.position).normalized, knockBackStrength);
+        control.onDamaged = true;
         //control.JumpAway((control.transform.position - transform.position).normalized, 700, 5);
     }
 }

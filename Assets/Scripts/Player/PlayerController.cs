@@ -38,6 +38,10 @@ public class PlayerController : MonoBehaviour
     public bool onLeftWall { get; set; }
 
     public bool onGravityMultiplier { get; set; }
+    public bool onForceLockMovement { get; set; }
+    public bool onDamaged { get; set; }
+    float invulnerableTimer = 0;
+    float invulnerableLimit = 0.5f;
 
     public RaycastHit HorizontalHit() { return horizHit; }
     public RaycastHit BottomRayHit() { return bottomHit; }
@@ -62,12 +66,14 @@ public class PlayerController : MonoBehaviour
 
         currentState = states[0];
         currMoveState = MoveStates.AIR;
+        onForceLockMovement = false;
     }
 
     void Update()
     {
         RayTrace();
         Crouching();
+        CheckDamaged();
         prevMoveState = currMoveState;
         if (currentState.Exit())
         {
@@ -82,7 +88,6 @@ public class PlayerController : MonoBehaviour
         }
         //Debug.Log(currMoveState);
         currentState.Run();
-
 
         if (Input.GetKeyDown("escape"))
             Cursor.lockState = CursorLockMode.None;
@@ -99,6 +104,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void CheckDamaged()
+    {
+        if (onDamaged)
+        {
+            invulnerableTimer += Time.deltaTime;
+            if(invulnerableTimer > invulnerableLimit)
+            {
+                onDamaged = false;
+                invulnerableTimer = 0;
+            }
+        }
+    }
+
     public void KnockBack(Vector3 direction, float amount)
     {
         rgdBody.velocity = direction * amount;
@@ -111,7 +129,7 @@ public class PlayerController : MonoBehaviour
         //Up
         Debug.DrawRay(transform.position, transform.up * (rayLengthVertical + 0.5f), Color.black);
         bool onTop = Physics.Raycast(transform.position, transform.up, (rayLengthVertical + 0.5f));
-        
+
         if (Crouch)
             capsule.height = 1;
         else if (!onTop)

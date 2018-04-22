@@ -3765,7 +3765,7 @@ Prefab:
     - target: {fileID: 114850743000819358, guid: 817a67cd86c5d534b8defaff02f8be26,
         type: 2}
       propertyPath: impulse
-      value: 25
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1178356066242586, guid: 817a67cd86c5d534b8defaff02f8be26, type: 2}
       propertyPath: m_IsActive
@@ -12680,6 +12680,11 @@ Prefab:
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114653560817539702, guid: a76ac625abdc38c4498d99e68aba330c,
+        type: 2}
+      propertyPath: airResistance
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
