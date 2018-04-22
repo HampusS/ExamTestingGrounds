@@ -15,7 +15,8 @@ public class CameraControls : MonoBehaviour
     float camLeftRight;
 
     public float turnAssistSpeed = 3;
-
+    float assistDelay = 0.25f;
+    float assistTimer;
 
     public bool LockTurning { get; set; }
 
@@ -42,7 +43,14 @@ public class CameraControls : MonoBehaviour
 
     public void TurnToVector(Vector3 target)
     {
-        player.rotation = Quaternion.Lerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * turnAssistSpeed);
+        assistTimer += Time.deltaTime;
+        if (assistTimer > assistDelay)
+        {
+            if (Input.GetAxis("Mouse X") == 0)
+                player.rotation = Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * turnAssistSpeed);
+            else
+                assistTimer = 0;
+        }
     }
 
 

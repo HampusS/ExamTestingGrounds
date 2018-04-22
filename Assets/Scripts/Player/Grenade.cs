@@ -8,7 +8,6 @@ public class Grenade : MonoBehaviour
     public float blastRadius = 5;
     public float force = 700;
     public GameObject effect;
-
     Rigidbody rb;
 
     bool exploded;
@@ -16,7 +15,10 @@ public class Grenade : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Explode();
+        if (collision.gameObject.layer != LayerMask.NameToLayer("InvisWallLayer"))
+            Explode();
+        else
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("InvisWallLayer"), 0);
     }
 
     // Use this for initialization
@@ -34,7 +36,6 @@ public class Grenade : MonoBehaviour
             countdown -= Time.deltaTime;
             if (countdown <= 0)
                 Explode();
-            transform.rotation = Quaternion.LookRotation(transform.forward);
         }
     }
 

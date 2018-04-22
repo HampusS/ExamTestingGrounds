@@ -16,10 +16,10 @@ TagManager:
   - UI
   - 
   - 
-  - Culling Layer
-  - Ground Layer
-  - Wall Layer
   - 
+  - 
+  - Wall Layer
+  - InvisWallLayer
   - 
   - 
   - 

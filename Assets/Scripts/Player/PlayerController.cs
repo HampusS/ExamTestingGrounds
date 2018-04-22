@@ -21,8 +21,6 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     LayerMask wallLayer;
-    [SerializeField]
-    float health;
 
     public float moveSpeed = 10;
     public float jumpStrength = 8;

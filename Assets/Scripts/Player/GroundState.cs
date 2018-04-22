@@ -28,13 +28,8 @@ public class GroundState : BaseState
             rgdBody.AddForce(transform.up * controller.jumpHeight, ForceMode.VelocityChange);
         Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
 
-        //if (controller.onForceLockMovement)
-        //    direction = Vector3.zero;
-
         if (controller.Crouch)
         {
-            Debug.Log("Crouching");
-
             if (rgdBody.velocity.magnitude > controller.crouchSpeed)
                 friction = -rgdBody.velocity * 0.25f;
             else
@@ -46,9 +41,8 @@ public class GroundState : BaseState
         }
         else
         {
-            Debug.Log("Running");
             rgdBody.AddForce(direction * controller.moveSpeed, ForceMode.Acceleration);
-            friction = -rgdBody.velocity * (frictionCoefficient / rgdBody.velocity.magnitude);
+            friction = -rgdBody.velocity * frictionCoefficient;
             rgdBody.AddForce(friction, ForceMode.Acceleration);
         }
 

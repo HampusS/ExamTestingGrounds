@@ -7,7 +7,7 @@ public class LedgeGrab : BaseState
     bool onTryClimbUp;
     bool onLedge;
     bool onMoveUp;
-    float animSpeed = 2;
+    public float animSpeed = 4;
 
     Vector3 targetPos;
     Vector3 posToDown;

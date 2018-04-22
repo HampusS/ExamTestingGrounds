@@ -10,12 +10,15 @@ public class Shoot : MonoBehaviour
     [SerializeField]
     float fireRate = 0.25f;
     float timer;
+    Rigidbody player;
 
 
     // Use this for initialization
     void Start()
     {
         camHolder = GameObject.Find("CameraHolder");
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
+
     }
 
     // Update is called once per frame
@@ -29,7 +32,7 @@ public class Shoot : MonoBehaviour
             timer = 0;
             GameObject clone = Instantiate(grenade, transform.position, transform.rotation);
             Rigidbody rb = clone.GetComponent<Rigidbody>();
-            rb.AddForce(camHolder.transform.forward * strength);
+            rb.AddForce(camHolder.transform.forward * strength + player.velocity);
             Invoke("Reload", fireRate/2);
         }
         else

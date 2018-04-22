@@ -32,14 +32,9 @@ public class WallRun : BaseState
             exit = false;
             timer = 0;
 
-            Vector3 result = (transform.forward + transform.up * 0.15f).normalized * controller.jumpStrength * jumpStrengthMultiplier;
-            if (result.magnitude > rgdBody.velocity.magnitude)
-                rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
-            else
-            {
-                rgdBody.velocity = Vector3.Project(rgdBody.velocity, result.normalized);
-                rgdBody.velocity = Vector3.ProjectOnPlane(rgdBody.velocity, controller.HorizontalHit().normal);
-            }
+            Vector3 result = (transform.forward + (transform.up * 0.1f)).normalized * controller.jumpStrength * jumpStrengthMultiplier;
+            rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
+
             camTilt.ResetCamera();
             if (controller.onLeftWall)
                 camTilt.Right = true;
@@ -77,11 +72,8 @@ public class WallRun : BaseState
 
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {
-            Vector3 result = (transform.forward + transform.up * 0.75f + controller.HorizontalHit().normal * 1.35f).normalized * controller.jumpStrength * jumpStrengthMultiplier;
-            if (result.magnitude > rgdBody.velocity.magnitude)
-                rgdBody.velocity = result.normalized * controller.jumpStrength;
-            else
-                rgdBody.velocity = Vector3.Project(rgdBody.velocity, result.normalized);
+            Vector3 result = (transform.forward + transform.up * 0.5f + controller.HorizontalHit().normal * 1.35f);
+            rgdBody.velocity = result.normalized * controller.jumpStrength * jumpStrengthMultiplier;
 
             exit = true;
         }

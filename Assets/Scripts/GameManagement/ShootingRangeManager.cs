@@ -36,5 +36,10 @@ public class ShootingRangeManager : MonoBehaviour
     void Fall()
     {
         fallPlatform.GetComponent<FallPlatform>().Fall();
+        GameObject[] cubes = GameObject.FindGameObjectsWithTag("GoalCubeTag");
+        foreach (GameObject cube in cubes)
+        {
+            Destroy(cube, 1);
+        }
     }
 }
