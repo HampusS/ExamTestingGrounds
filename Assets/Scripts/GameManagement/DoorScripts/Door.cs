@@ -12,6 +12,7 @@ public class Door : MonoBehaviour
     {
        anim = GetComponent<Animator>();
     }
+
     public void Open()
     {
         Debug.Log(anim);
