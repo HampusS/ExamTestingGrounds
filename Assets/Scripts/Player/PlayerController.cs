@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum MoveStates
 {
@@ -37,9 +38,8 @@ public class PlayerController : MonoBehaviour
 
     public bool onGravityMultiplier { get; set; }
     public bool onForceLockMovement { get; set; }
-    public bool onDamaged { get; set; }
     float invulnerableTimer = 0;
-    float invulnerableLimit = 0.5f;
+    float invulnerableLimit = 1.75f;
 
     public RaycastHit HorizontalHit() { return horizHit; }
     public RaycastHit BottomRayHit() { return bottomHit; }
@@ -50,10 +50,21 @@ public class PlayerController : MonoBehaviour
     public bool Crouch { get; set; }
     public float crouchSpeed = 8;
 
+    float lerpHp = 100;
+    float trueHp = 100;
+    public bool isDamaged { get; set; }
+    public Text hpText;
+    FlickerHealth flicker;
+
+    public bool isAlive()
+    {
+        return trueHp != 0;
+    }
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-
+        flicker = GameObject.Find("Canvas").GetComponent<FlickerHealth>();
         rgdBody = GetComponent<Rigidbody>();
         states = new List<BaseState>();
         states.Add(GetComponent<AirState>());
@@ -65,13 +76,14 @@ public class PlayerController : MonoBehaviour
         currentState = states[0];
         currMoveState = MoveStates.AIR;
         onForceLockMovement = false;
+        hpText.text = lerpHp.ToString();       
     }
 
     void Update()
     {
         RayTrace();
         Crouching();
-        CheckDamaged();
+        Invulnerable();
         prevMoveState = currMoveState;
         if (currentState.Exit())
         {
@@ -102,17 +114,38 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void CheckDamaged()
+    void Invulnerable()
     {
-        if (onDamaged)
+        if (isDamaged)
         {
             invulnerableTimer += Time.deltaTime;
-            if(invulnerableTimer > invulnerableLimit)
+            flicker.FlickerHp();
+            if (invulnerableTimer > invulnerableLimit)
             {
-                onDamaged = false;
+                isDamaged = false;
                 invulnerableTimer = 0;
+                flicker.ResetColor();
             }
         }
+
+        if (lerpHp != trueHp)
+        {
+            lerpHp = Mathf.Lerp(lerpHp, trueHp, Time.deltaTime * 5);
+            hpText.text = ((int)lerpHp).ToString();
+            if ((int)lerpHp == trueHp)
+                lerpHp = trueHp;
+        }
+    }
+
+
+
+    public void DamagePlayer(float amount)
+    {
+        isDamaged = true;
+        if (trueHp > 0 && trueHp - amount < 0)
+            trueHp = 0;
+        else
+            trueHp -= amount;
     }
 
     public void KnockBack(Vector3 direction, float amount)
@@ -161,18 +194,21 @@ public class PlayerController : MonoBehaviour
         //Forward
         Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
         onForwardWall = Physics.Raycast(ray.origin, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);
+
+        if (!onLeftWall && !onRightWall)
+        {
+            Debug.DrawRay(ray.origin, (-transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
+            Debug.DrawRay(ray.origin, (transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
+            onLeftWall = Physics.Raycast(ray.origin, (-transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
+            onRightWall = Physics.Raycast(ray.origin, (transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
+        }
     }
 
     public void UpdateRays()
     {
-        Ray ray = new Ray(transform.position, Vector3.down);
-
-        Debug.DrawRay(ray.origin, (-transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
-        Debug.DrawRay(ray.origin, (transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
-        onLeftWall = Physics.Raycast(ray.origin, (-transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
-        onRightWall = Physics.Raycast(ray.origin, (transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
         if (!onLeftWall && !onRightWall)
         {
+            Ray ray = new Ray(transform.position, Vector3.down);
             Debug.DrawRay(ray.origin, (-transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
             Debug.DrawRay(ray.origin, (transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
             onLeftWall = Physics.Raycast(ray.origin, (-transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);

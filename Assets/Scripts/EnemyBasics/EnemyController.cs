@@ -13,8 +13,7 @@ public enum EnemyTasks
 public class EnemyController : MonoBehaviour
 {
     public GameObject player { get; private set; }
-    [SerializeField]
-    protected int health = 2;
+    public float health = 2;
     [SerializeField]
     protected float aggroRange = 180;
     [SerializeField]
@@ -26,15 +25,18 @@ public class EnemyController : MonoBehaviour
 
     public Vector3 Destination { get; set; }
 
+    public bool isAlive()
+    {
+        return health != 0;
+    }
+
     public bool InAttackRange()
     {
-        Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * attackRange, Color.green);
         return (Vector3.Distance(transform.position, player.transform.position) < attackRange);
     }
 
     public bool InAggroRange()
     {
-        //Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * aggroRange, Color.red);
         return (Vector3.Distance(transform.position, player.transform.position) < aggroRange);
     }
 
@@ -60,7 +62,11 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         currentTask = EnemyTasks.ERROR;
-        player = GameObject.FindGameObjectWithTag("Player");
+        states = new List<EnemyBase>();
+        states.Add(GetComponent<EnemyIdleState>());
+        states.Add(GetComponent<EnemyNavMoveState>());
+        states.Add(GetComponent<EnemyAttackState>());
+        currentState = states[0];
     }
 
     void Update()
@@ -81,9 +87,25 @@ public class EnemyController : MonoBehaviour
                 }
             }
         }
-        //Debug.Log(currentTask);
+        //Debug.Log(currentState);
         currentState.Run();
         if (GetComponent<Rigidbody>().velocity.magnitude > 0)
             GetComponent<Rigidbody>().AddForce(-GetComponent<Rigidbody>().velocity * 4, ForceMode.Acceleration);
+
+        if (!isAlive())
+            KillMe();
+    }
+
+    public void Damage(float amount)
+    {
+        if (health > 0 && health - amount <= 0)
+            health = 0;
+        else
+            health -= amount;
+    }
+
+    public void KillMe()
+    {
+        Destroy(gameObject);
     }
 }

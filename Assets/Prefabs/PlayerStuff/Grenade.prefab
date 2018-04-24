@@ -208,6 +208,7 @@ MonoBehaviour:
   lifeTime: 5
   blastRadius: 10
   force: 1000
+  damage: 1
   effect: {fileID: 1535279215683900, guid: be8b46634d003f94eaab73428999d76c, type: 2}
 --- !u!135 &135732493817734382
 SphereCollider:

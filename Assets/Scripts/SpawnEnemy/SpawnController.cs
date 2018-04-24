@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwarmerController : EnemyController
+public class SpawnController : EnemyController
 {
     public EnemySpawner spawner;
 
@@ -19,15 +19,12 @@ public class SwarmerController : EnemyController
     {
         StateMachine();
 
-        if(health <= 0)
+        if (!isAlive())
         {
+            spawner.amount--;
             KillMe();
         }
     }
 
-    public void KillMe()
-    {
-        spawner.amount--;
-        Destroy(this);
-    }
+
 }

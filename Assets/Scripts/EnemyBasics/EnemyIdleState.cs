@@ -5,68 +5,34 @@ using UnityEngine.AI;
 
 public class EnemyIdleState : EnemyBase
 {
-    float startY;
-    float endY;
-    float targetY;
+    public Transform OptionalDestination;
+    Vector3 safeSpace;
 
-    float speed;
-
-    bool moveUp;
-
-    // Use this for initialization
     void Start()
     {
-        controller = GetComponent<EnemyController>();
         taskType = EnemyTasks.IDLE;
-        startY = transform.position.y;
-        endY = transform.position.y + 0.7f;
+        if (OptionalDestination != null)
+            safeSpace = OptionalDestination.position;
     }
 
     public override bool Enter()
     {
-        if (!controller.InAggroRange() || !controller.InAggroRange() && !controller.InAggroSight())
+        if (safeSpace != Vector3.zero && !navMesh.hasPath)
         {
-            gameObject.GetComponent<NavMeshAgent>().enabled = false;
-            moveUp = true;
-            return true;
+            navMesh.SetDestination(safeSpace);
+            return false;
         }
-        return false;
+        return true;
     }
 
     public override void Run()
     {
-        if (moveUp)
-        {
-            if (targetY != endY)
-            {
-                targetY = endY;
-                speed = 5;
-            }
-            else if (transform.position.y >= endY * 0.8f)
-                moveUp = false;
-        }
-        else
-        {
-            if (targetY != startY)
-            {
-                targetY = startY;
-                speed = 7;
-            }
-            else if (transform.position.y <= startY * 1.2f)
-                moveUp = true;
-        }
-
-        transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, targetY, transform.position.z), Time.deltaTime * speed);
+        
     }
 
     public override bool Exit()
     {
-        if (controller.InAggroRange() && controller.InAggroSight())
-        {
-            gameObject.GetComponent<NavMeshAgent>().enabled = true;
-            return true;
-        }
-        return false;
+        return true;
     }
 
 

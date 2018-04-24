@@ -44,13 +44,14 @@ public class CameraControls : MonoBehaviour
     public void TurnToVector(Vector3 target)
     {
         assistTimer += Time.deltaTime;
-        if (assistTimer > assistDelay)
+        bool assist = Input.GetAxis("Mouse X") == 0;
+        if (assist)
         {
-            if (Input.GetAxis("Mouse X") == 0)
+            if (assistTimer > assistDelay)
                 player.rotation = Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * turnAssistSpeed);
-            else
-                assistTimer = 0;
         }
+        else
+            assistTimer = 0;
     }
 
 

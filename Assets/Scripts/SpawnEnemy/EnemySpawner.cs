@@ -37,6 +37,7 @@ public class EnemySpawner : MonoBehaviour
         float z = Random.Range(player.position.z - 10, player.position.z + 10);
         /*GameObject clone = */
         Instantiate(enemy, new Vector3(x, player.position.y, z), enemy.transform.rotation);
+        enemy.GetComponent<SpawnController>().spawner = this;
     }
 
 }

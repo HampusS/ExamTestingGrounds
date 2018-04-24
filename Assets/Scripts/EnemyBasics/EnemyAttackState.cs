@@ -4,24 +4,23 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyAttackState : EnemyBase {
-
-
     public float attackRate = 0.5f;
     public float knockBackStrength = 25;
+    public float damage = 25;
     float timer;
-
-
-	// Use this for initialization
-	void Start () {
-        controller = GetComponent<EnemyController>();
+    PlayerController playerControl;
+    // Use this for initialization
+    void Start () {
         taskType = EnemyTasks.ATTACK;
+        playerControl = controller.player.GetComponent<PlayerController>();
     }
 
     public override bool Enter()
     {
         if (controller.InAttackRange())
         {
-            gameObject.GetComponent<NavMeshAgent>().enabled = false;
+            navMesh.isStopped = true;
+            navMesh.ResetPath();
             timer = 0;
             return true;
         }
@@ -42,7 +41,6 @@ public class EnemyAttackState : EnemyBase {
     {
         if (!controller.InAttackRange())
         {
-            gameObject.GetComponent<NavMeshAgent>().enabled = true;
             return true;
         }
         return false;
@@ -50,8 +48,10 @@ public class EnemyAttackState : EnemyBase {
 
     void Attack()
     {
-        PlayerController control = controller.player.GetComponent<PlayerController>();
-        control.KnockBack((control.transform.position - transform.position).normalized, knockBackStrength);
-        control.onDamaged = true;
+        if (!playerControl.isDamaged)
+        {
+            playerControl.KnockBack((playerControl.transform.position - transform.position).normalized, knockBackStrength);
+            playerControl.DamagePlayer(damage);
+        }
     }
 }

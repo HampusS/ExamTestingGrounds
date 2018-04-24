@@ -5,12 +5,9 @@ using UnityEngine.AI;
 
 public class EnemyNavMoveState : EnemyBase
 {
-    NavMeshAgent navMesh;
 
     void Start()
     {
-        navMesh = GetComponent<NavMeshAgent>();
-        controller = GetComponent<EnemyController>();
         taskType = EnemyTasks.MOVE;
     }
 
@@ -27,11 +24,7 @@ public class EnemyNavMoveState : EnemyBase
 
     public override void Run()
     {
-        if (controller.InAttackRange())
-        {
-            navMesh.isStopped = true;
-            navMesh.ResetPath();
-        }
+
     }
 
     public override bool Exit()

@@ -7,6 +7,7 @@ public class Grenade : MonoBehaviour
     public float lifeTime = 3;
     public float blastRadius = 5;
     public float force = 700;
+    public float damage = 1;
     public GameObject effect;
     Rigidbody rb;
 
@@ -15,7 +16,7 @@ public class Grenade : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer != LayerMask.NameToLayer("InvisWallLayer"))
+        if (collision.gameObject.layer != LayerMask.NameToLayer("InvisWallLayer") && collision.collider.tag != ("Player"))
             Explode();
         else
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("InvisWallLayer"), 0);
@@ -54,7 +55,10 @@ public class Grenade : MonoBehaviour
                     if (rb != null)
                     {
                         if (rb.tag == "Enemy")
+                        {
                             rb.velocity = ((rb.position - transform.position).normalized * 500) / (blastRadius + Vector3.Distance(rb.position, transform.position));
+                            rb.GetComponent<EnemyController>().Damage(damage);
+                        }
                         else
                             rb.AddExplosionForce(force, transform.position, blastRadius);
                     }

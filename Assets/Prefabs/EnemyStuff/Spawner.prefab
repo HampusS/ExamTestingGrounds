@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4084aedb168698a4795ab76f8317765e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
-  enemy: {fileID: 1948377084217480, guid: 2c8fcba34690b684baefe8b068276be7, type: 2}
-  Capacity: 7
-  spawnRate: 0.45
+  player: {fileID: 0}
+  enemy: {fileID: 1060617648849806, guid: 4b31fb53a22d0a5479875abb3bd2e06c, type: 2}
+  Capacity: 25
+  spawnRate: 0.3

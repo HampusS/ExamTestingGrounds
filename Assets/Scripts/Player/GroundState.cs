@@ -23,7 +23,7 @@ public class GroundState : BaseState
     public override void Run()
     {
         if (Input.GetButtonDown("Jump"))
-            rgdBody.AddForce(transform.up * controller.jumpHeight, ForceMode.VelocityChange);
+            rgdBody.AddForce(transform.up * (controller.jumpHeight * 0.925f), ForceMode.VelocityChange);
         Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
 
         if (controller.Crouch)
