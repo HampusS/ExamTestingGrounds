@@ -32,7 +32,7 @@ public class AirState : BaseState
         //if (controller.onForceLockMovement)
         //    direction = Vector3.zero;
         Vector3 horiz = new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z).normalized;
-        Debug.Log(Vector3.Dot(direction, horiz));
+        //Debug.Log(Vector3.Dot(direction, horiz));
         if (Vector3.Dot(direction, horiz) < -0.5)
             drag = -horiz * airResistance * 100;
         else
