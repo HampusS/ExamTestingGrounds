@@ -40,7 +40,7 @@ public class GroundState : BaseState
         else
         {
             if (direction == Vector3.zero)
-                friction = -rgdBody.velocity * frictionCoefficient * 2;
+                friction = -rgdBody.velocity * frictionCoefficient * 3;
             else
                 friction = -rgdBody.velocity * frictionCoefficient;
 
