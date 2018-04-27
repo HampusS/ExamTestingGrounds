@@ -10,14 +10,17 @@ public class LockScript : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.tag == "Player" && door.GetComponent<Door>().haskey == true)
+        if (collider.gameObject.tag == "Player"
+            && door.GetComponent<Door>().haskey == true
+            && door.GetComponent<Door>().keys.Contains(key))
         {
-            door.GetComponent<Door>().locked = false;
+            door.GetComponent<Door>().currentKeys++;
             GetComponent<Renderer>().material = key.GetComponent<Renderer>().material;
 
             key.transform.position = transform.position + (Vector3.up * 0.3f);
             key.GetComponent<MeshRenderer>().enabled = true;
-            door.GetComponent<Animator>().SetTrigger("Open");
+            door.GetComponent<Door>().Open();
+            door.GetComponent<Door>().haskey = false;
         }
     }
 }

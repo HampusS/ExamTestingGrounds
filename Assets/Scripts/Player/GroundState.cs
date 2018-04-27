@@ -5,6 +5,7 @@ using UnityEngine;
 public class GroundState : BaseState
 {
     public float frictionCoefficient = 4;
+    public float staticFrictionCoefficient = 4;
 
     Vector3 friction;
 
@@ -40,7 +41,7 @@ public class GroundState : BaseState
         else
         {
             if (direction == Vector3.zero)
-                friction = -rgdBody.velocity * frictionCoefficient * 3;
+                friction = -rgdBody.velocity * frictionCoefficient * staticFrictionCoefficient;
             else
                 friction = -rgdBody.velocity * frictionCoefficient;
 

@@ -5,17 +5,25 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
 
+    public int nrOfLocks = 1;
     public bool locked = true;
     public bool haskey = false;
-     Animator anim; 
+    public int currentKeys { get; set; }
+    public List<GameObject> keys = new List<GameObject>();
+
+    Animator anim;
     void Awake()
     {
-       anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
     }
 
     public void Open()
     {
-        Debug.Log(anim);
-        anim.SetTrigger("Open");
+        Debug.Log(currentKeys + " " + nrOfLocks);
+        if (currentKeys == nrOfLocks)
+        {
+            locked = false;
+            anim.SetTrigger("Open");
+        }
     }
 }
