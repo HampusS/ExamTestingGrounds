@@ -15,8 +15,7 @@ public class PulseLight : MonoBehaviour
         lightObject = GetComponent<Light>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Pulse()
     {
         lightObject.range = minimum + Mathf.PingPong(Time.time * speed, maximum - minimum);
     }
