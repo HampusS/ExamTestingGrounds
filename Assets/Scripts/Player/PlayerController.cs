@@ -150,6 +150,7 @@ public class PlayerController : MonoBehaviour
 
     public void KnockBack(Vector3 direction, float amount)
     {
+        rgdBody.AddForce(transform.up * (jumpHeight * 0.9f), ForceMode.VelocityChange);
         rgdBody.velocity = direction * amount;
     }
 
