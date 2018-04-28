@@ -45,15 +45,15 @@ public class GroundState : BaseState
             else
                 friction = -rgdBody.velocity * frictionCoefficient;
 
+            if (controller.BottomRayHit().normal != Vector3.up)
+            {
+                direction = Vector3.ProjectOnPlane(direction, controller.BottomRayHit().normal);
+                friction = Vector3.ProjectOnPlane(friction, controller.BottomRayHit().normal);
+            }
             rgdBody.AddForce(direction * controller.moveSpeed, ForceMode.Acceleration);
             rgdBody.AddForce(friction, ForceMode.Acceleration);
         }
 
-        //if (controller.BottomRayHit().normal != Vector3.up)
-        //{
-        //    direction = Vector3.ProjectOnPlane(direction, controller.BottomRayHit().normal);
-        //    friction = Vector3.ProjectOnPlane(friction, controller.BottomRayHit().normal);
-        //}
     }
 
     public override bool Exit()
