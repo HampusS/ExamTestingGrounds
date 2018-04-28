@@ -78,11 +78,11 @@ public class WallClimb : BaseState
             if (inReachOfLedge())
                 exit = true;
         }
-        else if (TurnTowardsVector(controller.turnAroundSpeed, controller.HorizontalHit().normal))
+        else if (TurnTowardsVector(controller.turnAroundSpeed, currNormal))
         {
             CameraControls camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
             camControl.LockTurning = false;
-            Vector3 result = (controller.HorizontalHit().normal + transform.up).normalized;
+            Vector3 result = (currNormal + transform.up).normalized;
             rgdBody.velocity = result * controller.jumpStrength;
             turning = false;
             exit = true;

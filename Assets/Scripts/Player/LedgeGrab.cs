@@ -71,6 +71,10 @@ public class LedgeGrab : BaseState
             rgdBody.velocity = result * controller.jumpStrength;
             onLedge = false;
         }
+        if (!controller.onLeftWall && !controller.onRightWall)
+            controller.UpdateRays();
+        if (!controller.onForwardWall && !controller.onLeftWall && !controller.onRightWall)
+            onLedge = false;
     }
 
     public void ClimbUp()

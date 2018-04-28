@@ -181,25 +181,25 @@ public class PlayerController : MonoBehaviour
         Ray ray = new Ray(transform.position, Vector3.down);
 
         //Down
-        Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.black);
+        Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.white);
         onBottom = Physics.Raycast(ray.origin, -transform.up, out bottomHit, rayLengthVertical);
 
         //Left
-        Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.black);
+        Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.white);
         onLeftWall = Physics.Raycast(ray.origin, -transform.right, out horizHit, rayLengthHorizontal, wallLayer);
 
         //Right
-        Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.black);
+        Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.white);
         onRightWall = Physics.Raycast(ray.origin, transform.right, out horizHit, rayLengthHorizontal, wallLayer);
 
         //Forward
-        Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.black);
+        Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.white);
         onForwardWall = Physics.Raycast(ray.origin, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);
 
         if (!onLeftWall && !onRightWall)
         {
-            Debug.DrawRay(ray.origin, (-transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
-            Debug.DrawRay(ray.origin, (transform.right + transform.forward).normalized * rayLengthHorizontal, Color.black);
+            Debug.DrawRay(ray.origin, (-transform.right + transform.forward).normalized * rayLengthHorizontal, Color.white);
+            Debug.DrawRay(ray.origin, (transform.right + transform.forward).normalized * rayLengthHorizontal, Color.white);
             onLeftWall = Physics.Raycast(ray.origin, (-transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
             onRightWall = Physics.Raycast(ray.origin, (transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
         }
@@ -210,8 +210,8 @@ public class PlayerController : MonoBehaviour
         if (!onLeftWall && !onRightWall)
         {
             Ray ray = new Ray(transform.position, Vector3.down);
-            Debug.DrawRay(ray.origin, (-transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
-            Debug.DrawRay(ray.origin, (transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.black);
+            Debug.DrawRay(ray.origin, (-transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.white);
+            Debug.DrawRay(ray.origin, (transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.white);
             onLeftWall = Physics.Raycast(ray.origin, (-transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
             onRightWall = Physics.Raycast(ray.origin, (transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
         }
