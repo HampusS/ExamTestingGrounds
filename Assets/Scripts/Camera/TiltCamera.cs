@@ -11,6 +11,8 @@ public class TiltCamera : MonoBehaviour
 
     public bool Left { get; set; }
     public bool Right { get; set; }
+    public bool Align { get; set; }
+
 
     private void Update()
     {
@@ -42,5 +44,6 @@ public class TiltCamera : MonoBehaviour
     {
         Left = false;
         Right = false;
+        Align = true;
     }
 }
