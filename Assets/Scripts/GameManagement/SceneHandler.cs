@@ -8,7 +8,8 @@ public class SceneHandler : MonoBehaviour
 {
     public GameObject mainMenu;
     int[] order = new int[5];
-    int current= -1;
+    int current = -1;
+
     void Awake()
     {
         DontDestroyOnLoad(this);
@@ -25,9 +26,16 @@ public class SceneHandler : MonoBehaviour
             LoadNext();
         }
     }
-    void LoadNext()
+    public void LoadNext()
     {
         current++;
-        SceneManager.LoadScene(order[current]);
+        Debug.Log(current);
+        if (current == 4)
+        {
+            Debug.Log("quit");
+            Application.Quit();
+        }
+        else
+            SceneManager.LoadScene(order[current]);
     }
 }

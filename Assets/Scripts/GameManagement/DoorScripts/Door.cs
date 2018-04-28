@@ -19,7 +19,6 @@ public class Door : MonoBehaviour
 
     public void Open()
     {
-        Debug.Log(currentKeys + " " + nrOfLocks);
         if (currentKeys == nrOfLocks)
         {
             locked = false;
