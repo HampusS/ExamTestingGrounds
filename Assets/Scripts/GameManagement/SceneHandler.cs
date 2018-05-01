@@ -32,10 +32,19 @@ public class SceneHandler : MonoBehaviour
         Debug.Log(current);
         if (current == 4)
         {
-            Debug.Log("quit");
-            Application.Quit();
+            SceneManager.LoadScene(order[6]);
+            current = 6;
+            
         }
         else
             SceneManager.LoadScene(order[current]);
+    }
+    void CloseApplication()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("quit");
+            Application.Quit();
+        }  
     }
 }

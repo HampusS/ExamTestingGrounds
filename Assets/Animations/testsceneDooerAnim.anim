@@ -5,7 +5,7 @@ AnimationClip:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: bigDoorAnimation
+  m_Name: testsceneDooerAnim
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -19,32 +19,13 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: {x: 204.8, y: -1.7036285, z: 31.400002}
+        value: {x: 196.79796, y: 19.788237, z: 31.207504}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
       - serializedVersion: 2
         time: 2
-        value: {x: 221.8, y: -1.7036285, z: 31.400002}
-        inSlope: {x: 0, y: 0, z: 0}
-        outSlope: {x: 0, y: 0, z: 0}
-        tangentMode: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    path: DoorSection (3)
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: {x: 186.8, y: -1.7036285, z: 31.400002}
-        inSlope: {x: 0, y: 0, z: 0}
-        outSlope: {x: 0, y: 0, z: 0}
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 2
-        value: {x: 169.8, y: -1.7036285, z: 31.400002}
+        value: {x: 183.79796, y: 19.79637, z: 31.707504}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -52,6 +33,25 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     path: DoorSection (1)
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: {x: 215.79796, y: 19.788237, z: 31.207504}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 2
+        value: {x: 228.79796, y: 19.79637, z: 31.707504}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: DoorSection (3)
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves: []
@@ -63,14 +63,14 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 3602012307
+      path: 3833870865
       attribute: 1
       script: {fileID: 0}
       typeID: 4
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3833870865
+      path: 3602012307
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -103,79 +103,13 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: 204.8
+        value: 196.79796
         inSlope: 0
         outSlope: 0
         tangentMode: 136
       - serializedVersion: 2
         time: 2
-        value: 221.8
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalPosition.x
-    path: DoorSection (3)
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: -1.7036285
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-      - serializedVersion: 2
-        time: 2
-        value: -1.7036285
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalPosition.y
-    path: DoorSection (3)
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: 31.400002
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-      - serializedVersion: 2
-        time: 2
-        value: 31.400002
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalPosition.z
-    path: DoorSection (3)
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: 186.8
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-      - serializedVersion: 2
-        time: 2
-        value: 169.8
+        value: 183.79796
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -191,13 +125,13 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: -1.7036285
+        value: 19.788237
         inSlope: 0
         outSlope: 0
         tangentMode: 136
       - serializedVersion: 2
         time: 2
-        value: -1.7036285
+        value: 19.79637
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -213,13 +147,13 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: 31.400002
+        value: 31.207504
         inSlope: 0
         outSlope: 0
         tangentMode: 136
       - serializedVersion: 2
         time: 2
-        value: 31.400002
+        value: 31.707504
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -228,6 +162,72 @@ AnimationClip:
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
     path: DoorSection (1)
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 215.79796
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 2
+        value: 228.79796
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.x
+    path: DoorSection (3)
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 19.788237
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 2
+        value: 19.79637
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.y
+    path: DoorSection (3)
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 31.207504
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 2
+        value: 31.707504
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.z
+    path: DoorSection (3)
     classID: 4
     script: {fileID: 0}
   m_EulerEditorCurves: []
