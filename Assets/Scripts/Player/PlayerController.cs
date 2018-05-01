@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
     public RaycastHit BottomRayHit() { return bottomHit; }
     RaycastHit bottomHit, horizHit;
     Rigidbody rgdBody;
+    CapsuleCollider capsule;
 
 
     public bool Crouch { get; set; }
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        capsule = GetComponent<CapsuleCollider>();
         flicker = GameObject.Find("Canvas").GetComponent<FlickerHealth>();
         rgdBody = GetComponent<Rigidbody>();
         states = new List<BaseState>();
@@ -168,8 +170,7 @@ public class PlayerController : MonoBehaviour
 
     void Crouching()
     {
-        Crouch = Input.GetKey(KeyCode.LeftControl);
-        CapsuleCollider capsule = GetComponent<CapsuleCollider>();
+        bool input = Input.GetKey(KeyCode.LeftControl);
         //Up
         Debug.DrawRay(transform.position, transform.up * (rayLengthVertical + 0.5f), Color.red);
 
@@ -195,15 +196,19 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Crouch)
+        if (input)
         {
-            capsule.height = 0.5f;
+            capsule.height = 1;
             onGravityMultiplier = true;
+            Crouch = true;
+            GetComponentInChildren<CameraControls>().CrouchCam();
         }
         else if (!onTop)
         {
             capsule.height = 2;
             onGravityMultiplier = false;
+            Crouch = false;
+            GetComponentInChildren<CameraControls>().StandCam();
         }
 
     }
