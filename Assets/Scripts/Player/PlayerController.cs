@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum MoveStates
@@ -84,6 +85,7 @@ public class PlayerController : MonoBehaviour
         RayTrace();
         Crouching();
         Invulnerable();
+        PlayerDeath();
         prevMoveState = currMoveState;
         if (currentState.Exit())
         {
@@ -111,6 +113,16 @@ public class PlayerController : MonoBehaviour
             {
                 rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
             }
+        }
+    }
+
+    void PlayerDeath()
+    {
+        if (!isAlive())
+        {
+            Debug.Log("Died");
+            int scene = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(scene, LoadSceneMode.Single);
         }
     }
 
