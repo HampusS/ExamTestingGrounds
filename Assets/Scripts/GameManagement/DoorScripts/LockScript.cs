@@ -11,7 +11,6 @@ public class LockScript : MonoBehaviour {
     void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.tag == "Player"
-            && door.GetComponent<Door>().haskey == true
             && door.GetComponent<Door>().keys.Contains(key))
         {
             door.GetComponent<Door>().currentKeys++;

@@ -27485,7 +27485,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-1897236
+  m_Name: pb_Mesh365916
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -33633,7 +33633,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-1896158
+  m_Name: pb_Mesh366414
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -45293,7 +45293,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 719115407}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 135.06, y: 41, z: 118}
+  m_LocalPosition: {x: 135.06, y: 41, z: 116.9}
   m_LocalScale: {x: 0.9999999, y: 1, z: 0.9999999}
   m_Children: []
   m_Father: {fileID: 1758081248}
@@ -48040,8 +48040,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a6960b40e923a14795d57f59fddb627, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impulse: 12
-  direction: {x: -2, y: 1, z: -4}
+  impulse: 15
+  direction: {x: 0, y: 0, z: 4}
 --- !u!65 &766572078
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -85413,7 +85413,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-1896472
+  m_Name: pb_Mesh365822
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -105441,7 +105441,7 @@ RectTransform:
   m_GameObject: {fileID: 1889749532}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 27.598244, y: 12.19091, z: 12.19091}
+  m_LocalScale: {x: 1316.4999, y: 581.5344, z: 581.5344}
   m_Children: []
   m_Father: {fileID: 1747313314}
   m_RootOrder: 0
