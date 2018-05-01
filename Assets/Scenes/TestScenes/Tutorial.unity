@@ -42,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 11
   m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
-    serializedVersion: 8
+    serializedVersion: 9
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -87,7 +87,7 @@ LightmapSettings:
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_ShadowMaskMode: 2
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5482,7 +5482,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-9588
+  m_Name: pb_Mesh-4102
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -6238,7 +6238,7 @@ GameObject:
   - component: {fileID: 312920980}
   - component: {fileID: 312920979}
   - component: {fileID: 312920978}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Cube (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6565,7 +6565,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 6b509393dee0003458566d26974c1d7d, type: 2}
+  - {fileID: 2100000, guid: 3cc546e946db36c498f0568a66fdf83e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6603,7 +6603,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 312920977}
   m_LocalRotation: {x: -0.7071068, y: -0.7071068, z: 0.00000019861236, w: 0.00000019861236}
-  m_LocalPosition: {x: 58.17, y: -39.53, z: -60.47}
+  m_LocalPosition: {x: 57.88, y: -39.53, z: -60.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -13925,7 +13925,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh50074
+  m_Name: pb_Mesh17450
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -22803,15 +22803,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 59.11
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -76.47
+      value: 12.6
       objectReference: {fileID: 0}
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -48.7
+      value: 108.2
       objectReference: {fileID: 0}
     - target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
       propertyPath: m_LocalRotation.x
@@ -34283,7 +34283,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-645496
+  m_Name: pb_Mesh16686
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
