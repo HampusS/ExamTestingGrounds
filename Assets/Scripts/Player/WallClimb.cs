@@ -10,10 +10,12 @@ public class WallClimb : BaseState
     bool turning;
     bool exit;
     Vector3 prevNormal, currNormal;
-    
+    CameraControls camControl;
+
     void Start()
     {
         myStateType = MoveStates.WALLCLIMB;
+        camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
     }
 
     private void InitializeRun()
@@ -63,7 +65,6 @@ public class WallClimb : BaseState
                 rgdBody.useGravity = false;
                 rgdBody.velocity = Vector3.zero;
                 turning = true;
-                CameraControls camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
                 camControl.LockTurning = true;
             }
 
@@ -80,8 +81,6 @@ public class WallClimb : BaseState
         }
         else if (TurnTowardsVector(controller.turnAroundSpeed, currNormal))
         {
-            CameraControls camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
-            camControl.LockTurning = false;
             Vector3 result = (currNormal + transform.up).normalized;
             rgdBody.velocity = result * controller.jumpStrength;
             turning = false;
@@ -94,6 +93,7 @@ public class WallClimb : BaseState
     {
         if (exit)
         {
+            camControl.LockTurning = false;
             prevNormal = currNormal;
             return true;
         }

@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
         currentState = states[0];
         currMoveState = MoveStates.AIR;
         onForceLockMovement = false;
-        hpText.text = lerpHp.ToString();       
+        hpText.text = lerpHp.ToString();
     }
 
     void Update()
@@ -159,12 +159,33 @@ public class PlayerController : MonoBehaviour
         Crouch = Input.GetKey(KeyCode.LeftControl);
         CapsuleCollider capsule = GetComponent<CapsuleCollider>();
         //Up
-        Debug.DrawRay(transform.position, transform.up * (rayLengthVertical + 0.5f), Color.black);
+        Debug.DrawRay(transform.position, transform.up * (rayLengthVertical + 0.5f), Color.red);
+
         bool onTop = Physics.Raycast(transform.position, transform.up, (rayLengthVertical + 0.5f));
+        if (!onTop)
+        {
+            Debug.DrawRay(transform.position + (transform.forward * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
+            onTop = Physics.Raycast(transform.position + (transform.forward * 0.5f), transform.up, (rayLengthVertical + 0.5f));
+            if (!onTop)
+            {
+                Debug.DrawRay(transform.position + (-transform.forward * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
+                onTop = Physics.Raycast(transform.position + (-transform.forward * 0.5f), transform.up, (rayLengthVertical + 0.5f));
+                if (!onTop)
+                {
+                    Debug.DrawRay(transform.position + (transform.right * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
+                    onTop = Physics.Raycast(transform.position + (transform.right * 0.5f), transform.up, (rayLengthVertical + 0.5f));
+                    if(!onTop)
+                    {
+                        Debug.DrawRay(transform.position + (-transform.right * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
+                        onTop = Physics.Raycast(transform.position + (-transform.right * 0.5f), transform.up, (rayLengthVertical + 0.5f));
+                    }
+                }
+            }
+        }
 
         if (Crouch)
         {
-            capsule.height = 1;
+            capsule.height = 0.5f;
             onGravityMultiplier = true;
         }
         else if (!onTop)
@@ -172,8 +193,7 @@ public class PlayerController : MonoBehaviour
             capsule.height = 2;
             onGravityMultiplier = false;
         }
-        else
-            Crouch = true;
+
     }
 
     void RayTrace()
@@ -181,25 +201,25 @@ public class PlayerController : MonoBehaviour
         Ray ray = new Ray(transform.position, Vector3.down);
 
         //Down
-        Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.white);
+        Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.red);
         onBottom = Physics.Raycast(ray.origin, -transform.up, out bottomHit, rayLengthVertical);
 
         //Left
-        Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.white);
+        Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.red);
         onLeftWall = Physics.Raycast(ray.origin, -transform.right, out horizHit, rayLengthHorizontal, wallLayer);
 
         //Right
-        Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.white);
+        Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.red);
         onRightWall = Physics.Raycast(ray.origin, transform.right, out horizHit, rayLengthHorizontal, wallLayer);
 
         //Forward
-        Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.white);
+        Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.red);
         onForwardWall = Physics.Raycast(ray.origin, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);
 
         if (!onLeftWall && !onRightWall)
         {
-            Debug.DrawRay(ray.origin, (-transform.right + transform.forward).normalized * rayLengthHorizontal, Color.white);
-            Debug.DrawRay(ray.origin, (transform.right + transform.forward).normalized * rayLengthHorizontal, Color.white);
+            Debug.DrawRay(ray.origin, (-transform.right + transform.forward).normalized * rayLengthHorizontal, Color.red);
+            Debug.DrawRay(ray.origin, (transform.right + transform.forward).normalized * rayLengthHorizontal, Color.red);
             onLeftWall = Physics.Raycast(ray.origin, (-transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
             onRightWall = Physics.Raycast(ray.origin, (transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
         }
@@ -210,8 +230,8 @@ public class PlayerController : MonoBehaviour
         if (!onLeftWall && !onRightWall)
         {
             Ray ray = new Ray(transform.position, Vector3.down);
-            Debug.DrawRay(ray.origin, (-transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.white);
-            Debug.DrawRay(ray.origin, (transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.white);
+            Debug.DrawRay(ray.origin, (-transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.red);
+            Debug.DrawRay(ray.origin, (transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.red);
             onLeftWall = Physics.Raycast(ray.origin, (-transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
             onRightWall = Physics.Raycast(ray.origin, (transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
         }
