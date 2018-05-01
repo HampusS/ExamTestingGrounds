@@ -37,9 +37,9 @@ public class WallRun : BaseState
 
             camTilt.ResetCamera();
             if (controller.onLeftWall)
-                camTilt.Right = true;
+                camTilt.onRight = true;
             else if (controller.onRightWall)
-                camTilt.Left = true;
+                camTilt.onLeft = true;
         }
     }
 
@@ -89,7 +89,9 @@ public class WallRun : BaseState
         if (timer >= timeBeforeFall * 0.5f)
             rgdBody.useGravity = true;
 
-        if (!controller.onLeftWall && !controller.onRightWall || controller.onBottom && rgdBody.velocity.y < 0)
+        if (!controller.onLeftWall && !controller.onRightWall || 
+            controller.onBottom && rgdBody.velocity.y < 0 ||
+            Input.GetAxisRaw("Vertical") < 0)
             exit = true;
     }
 
@@ -99,6 +101,7 @@ public class WallRun : BaseState
         {
             prevNormal = currNormal;
             camTilt.ResetCamera();
+            camTilt.onAlign = true;
             return true;
         }
         return false;

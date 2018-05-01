@@ -54,5 +54,13 @@ public class CameraControls : MonoBehaviour
             assistTimer = 0;
     }
 
+    public void CrouchCam()
+    {
+        transform.localPosition = new Vector3(transform.localPosition.x, 0, transform.localPosition.z);
+    }
 
+    public void StandCam()
+    {
+        transform.localPosition = new Vector3(transform.localPosition.x, 0.5f, transform.localPosition.z);
+    }
 }
