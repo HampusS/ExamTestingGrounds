@@ -1,16 +1,40 @@
 fileFormatVersion: 2
-guid: 21805eab2d6825a4089c791219aa226a
-timeCreated: 1491404606
-licenseType: Pro
+guid: 05fa3370890953d4db0694b71d58ec5f
+timeCreated: 1525277849
+licenseType: Free
 ModelImporter:
-  serializedVersion: 20
+  serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: joint1
+    100004: joint2
+    100006: joint2 1
+    100008: joint3
+    100010: joint3 1
+    100012: joint4
+    100014: joint4 1
+    100016: joint5
+    100018: joint7
+    100020: joint8
+    100022: joint9
+    100024: pCone3
     400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: WallStraight
+    400002: joint1
+    400004: joint2
+    400006: joint2 1
+    400008: joint3
+    400010: joint3 1
+    400012: joint4
+    400014: joint4 1
+    400016: joint5
+    400018: joint7
+    400020: joint8
+    400022: joint9
+    400024: pCone3
+    4300000: pCone3
+    7400000: Take 001
     9500000: //RootNode
+    13700000: pCone3
   materials:
     importMaterials: 1
     materialName: 0
@@ -40,7 +64,6 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importVisibility: 0
     importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -57,7 +80,6 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-    normalCalculationMode: 4
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
