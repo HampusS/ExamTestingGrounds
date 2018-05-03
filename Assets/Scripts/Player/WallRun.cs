@@ -12,13 +12,13 @@ public class WallRun : BaseState
     bool exit;
 
     Vector3 prevNormal, currNormal;
-    TiltCamera camTilt;
+    CamStates camTilt;
     CameraControls camControl;
 
     private void Start()
     {
         myStateType = MoveStates.WALLRUN;
-        camTilt = Camera.main.GetComponent<TiltCamera>();
+        camTilt = Camera.main.GetComponent<CamStates>();
         camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
     }
 

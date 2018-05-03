@@ -8,10 +8,13 @@ public class GroundState : BaseState
     public float staticFrictionCoefficient = 4;
 
     Vector3 friction;
+    CamStates camTilt;
+
 
     private void Start()
     {
         myStateType = MoveStates.GROUND;
+        camTilt = Camera.main.GetComponent<CamStates>();
     }
 
     public override bool Enter()
@@ -21,6 +24,7 @@ public class GroundState : BaseState
             // New Entry on ground
             if (controller.prevMoveState != myStateType)
             {
+                camTilt.onShake = true;
                 rgdBody.velocity += new Vector3(-rgdBody.velocity.x * 0.5f, 0, -rgdBody.velocity.z * 0.5f);
             }
             return true;

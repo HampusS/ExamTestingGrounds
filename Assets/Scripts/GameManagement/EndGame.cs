@@ -21,7 +21,7 @@ public class EndGame : MonoBehaviour {
         {
             Debug.Log("quit");
             Application.Quit();
-            EditorApplication.isPlaying = false;
+            //EditorApplication.isPlaying = false;
         }
     }
 }
