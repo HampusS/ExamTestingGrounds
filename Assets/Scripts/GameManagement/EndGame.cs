@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
+//using UnityEditor;
 using UnityEngine;
 
 public class EndGame : MonoBehaviour {
@@ -21,7 +21,7 @@ public class EndGame : MonoBehaviour {
         {
             Debug.Log("quit");
             Application.Quit();
-            EditorApplication.isPlaying = false;
+            //EditorApplication.isPlaying = false;
         }
     }
 }

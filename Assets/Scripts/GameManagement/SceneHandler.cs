@@ -25,6 +25,11 @@ public class SceneHandler : MonoBehaviour
             Debug.Log("in loading next");
             LoadNext();
         }
+        if (Input.GetKeyDown("i") && 
+            Input.GetKeyDown("o"))
+        {
+            SceneManager.LoadScene(order[6]);
+        }
     }
     public void LoadNext()
     {
@@ -32,7 +37,7 @@ public class SceneHandler : MonoBehaviour
         Debug.Log(current);
         if (current == 4)
         {
-            SceneManager.LoadScene(order[6]);
+            SceneManager.LoadScene(6);
             current = 6;
         }
         else
