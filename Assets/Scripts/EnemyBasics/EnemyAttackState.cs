@@ -8,9 +8,11 @@ public class EnemyAttackState : EnemyBase {
     public float knockBackStrength = 25;
     public float damage = 25;
     float timer;
+    float animspeed;
     PlayerController playerControl;
     // Use this for initialization
     void Start () {
+        animspeed = navMesh.speed;
         taskType = EnemyTasks.ATTACK;
         playerControl = controller.player.GetComponent<PlayerController>();
     }
@@ -30,7 +32,9 @@ public class EnemyAttackState : EnemyBase {
     public override void Run()
     {
         timer += Time.deltaTime;
-        if(timer >= attackRate)
+        controller.anim.SetTrigger("Loading");
+        //controller.anim.speed = controller.anim.speed / attackRate;
+        if (timer >= attackRate)
         {
             timer = 0;
             Attack();
@@ -41,6 +45,7 @@ public class EnemyAttackState : EnemyBase {
     {
         if (!controller.InAttackRange())
         {
+            controller.anim.SetTrigger("Backdown");
             return true;
         }
         return false;
@@ -48,6 +53,7 @@ public class EnemyAttackState : EnemyBase {
 
     void Attack()
     {
+        controller.anim.SetTrigger("Hit");
         if (!playerControl.isDamaged)
         {
             playerControl.KnockBack((playerControl.transform.position - transform.position).normalized, knockBackStrength);
