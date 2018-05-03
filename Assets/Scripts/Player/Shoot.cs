@@ -11,14 +11,14 @@ public class Shoot : MonoBehaviour
     float fireRate = 0.25f;
     float timer;
     Rigidbody player;
-
+    CamStates camState;
 
     // Use this for initialization
     void Start()
     {
         camHolder = GameObject.Find("CameraHolder");
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
-
+        camState = Camera.main.GetComponent<CamStates>();
     }
 
     // Update is called once per frame
@@ -33,6 +33,7 @@ public class Shoot : MonoBehaviour
             GameObject clone = Instantiate(grenade, transform.position, transform.rotation);
             Rigidbody rb = clone.GetComponent<Rigidbody>();
             rb.AddForce(camHolder.transform.forward * strength + player.velocity);
+            camState.onShake = true;
             Invoke("Reload", fireRate/2);
         }
         else

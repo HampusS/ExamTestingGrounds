@@ -20,10 +20,12 @@ public class Respawn : MonoBehaviour
             Invoke("RespawnPlayer", 2);
         }
     }
+
     void RespawnPlayer()
     {
         player.transform.position = respawn.transform.position;
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        player.rotation = respawn.rotation;
         deathScreen.GetComponent<DeathVisual>().Alive();
     }
 }

@@ -38,9 +38,10 @@ public class PlayerController : MonoBehaviour
     public bool onLeftWall { get; set; }
 
     public bool onGravityMultiplier { get; set; }
+    public bool ForceGravity { get; set; }
     public bool onForceLockMovement { get; set; }
     float invulnerableTimer = 0;
-    float invulnerableLimit = 1.75f;
+    float invulnerableLimit = 1.5f;
 
     public RaycastHit HorizontalHit() { return horizHit; }
     public RaycastHit BottomRayHit() { return bottomHit; }
@@ -111,7 +112,7 @@ public class PlayerController : MonoBehaviour
     {
         if (onGravityMultiplier)
         {
-            if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump"))
+            if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump") || ForceGravity && rgdBody.velocity.y > 0)
             {
                 rgdBody.velocity += Vector3.up * Physics.gravity.y * 3 * Time.deltaTime;
             }

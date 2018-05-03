@@ -24,6 +24,7 @@ public class WallClimb : BaseState
         {
             controller.onGravityMultiplier = true;
             rgdBody.useGravity = false;
+            controller.ForceGravity = false;
             initOnce = false;
             turning = false;
             exit = false;

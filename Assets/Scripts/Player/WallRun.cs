@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WallRun : BaseState
 {
-    public float timeBeforeFall = 1.6f;
+    public float fallTime = 1.6f;
     public float jumpStrengthMultiplier = 1.75f;
     float runTimeMultiplier = 2f;
     float timer = 0;
@@ -50,13 +50,15 @@ public class WallRun : BaseState
 
         if (controller.onLeftWall || controller.onRightWall)
         {
-            if (Input.GetButton("Jump") && Vector3.Dot(transform.forward, rgdBody.velocity.normalized) > 0)
-            {
-                currNormal = controller.HorizontalHit().normal;
-                if (currNormal != prevNormal)
+            if (Vector3.Dot(transform.forward, rgdBody.velocity.normalized) > 0) {
+                if (Input.GetButton("Jump") || controller.prevMoveState == myStateType && !controller.onBottom)
                 {
-                    initOnce = true;
-                    return true;
+                    currNormal = controller.HorizontalHit().normal;
+                    if (currNormal != prevNormal)
+                    {
+                        initOnce = true;
+                        return true;
+                    }
                 }
             }
         }
@@ -74,25 +76,20 @@ public class WallRun : BaseState
         {
             Vector3 result = (transform.forward + transform.up * 0.5f + controller.HorizontalHit().normal * 1.35f);
             rgdBody.velocity = result.normalized * controller.jumpStrength * jumpStrengthMultiplier;
-
             exit = true;
         }
 
         if (controller.HorizontalHit().normal != currNormal)
             exit = true;
 
-        if (Input.GetButton("Jump"))
-            timer += Time.deltaTime;
-        else
-            timer += Time.deltaTime * runTimeMultiplier;
-
-        if (timer >= timeBeforeFall * 0.5f)
+        if (timer >= fallTime * 0.5f)
             rgdBody.useGravity = true;
 
         if (!controller.onLeftWall && !controller.onRightWall || 
             controller.onBottom && rgdBody.velocity.y < 0 ||
             Input.GetAxisRaw("Vertical") < 0)
             exit = true;
+        timer += Time.deltaTime;
     }
 
     public override bool Exit()

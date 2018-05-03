@@ -28,11 +28,13 @@ public class CamStates : MonoBehaviour
     public bool onRight { get; set; }
     public bool onAlign { get; set; }
 
+    public bool onBump { get; set; }
+
     public bool onShake { get; set; }
-    float shakeStrength;
-    float shakeLength, shakeTime = 0.5f;
+    float shakeStrength = 10;
+    float shakeLength, shakeTime = 0.25f;
 
-
+    float angle;
     List<State> states = new List<State>();
 
     void Start()
@@ -41,6 +43,7 @@ public class CamStates : MonoBehaviour
         states.Add(new State(TiltCameraLeft, Left));
         states.Add(new State(TiltCameraRight, Right));
         states.Add(new State(ShakeCamera, Shake));
+        states.Add(new State(BumpCamera, Bump));
     }
 
     private void Update()
@@ -58,6 +61,7 @@ public class CamStates : MonoBehaviour
         onRight = false;
         onAlign = false;
         onShake = false;
+        onBump = false;
     }
 
     bool Left()
@@ -107,18 +111,37 @@ public class CamStates : MonoBehaviour
     void ShakeCamera()
     {
         shakeLength += Time.deltaTime;
-        if (shakeLength == shakeTime)
+        if (shakeLength >= shakeTime)
         {
             shakeLength = 0;
             onShake = false;
             onAlign = true;
-            Debug.Log("End Shaking");
         }
         else
         {
-            Debug.Log("Shaking");
-            float test = Mathf.PingPong(0, 360);
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(test, Vector3.forward), Time.deltaTime * shakeStrength);
+            angle = Random.Range(-10, 10);
+            Debug.Log(angle);
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(angle, Vector3.forward), Time.deltaTime * shakeStrength);
+        }
+    }
+
+    bool Bump()
+    {
+        return onBump;
+    }
+
+    void BumpCamera()
+    {
+        shakeLength += Time.deltaTime;
+        if (shakeLength >= shakeTime)
+        {
+            shakeLength = 0;
+            onBump = false;
+            onAlign = true;
+        }
+        else
+        {
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(6, Vector3.right), Time.deltaTime * 20);
         }
     }
 }

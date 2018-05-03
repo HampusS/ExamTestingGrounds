@@ -24,7 +24,8 @@ public class GroundState : BaseState
             // New Entry on ground
             if (controller.prevMoveState != myStateType)
             {
-                camTilt.onShake = true;
+                camTilt.onBump = true;
+                controller.ForceGravity = false;
                 rgdBody.velocity += new Vector3(-rgdBody.velocity.x * 0.5f, 0, -rgdBody.velocity.z * 0.5f);
             }
             return true;

@@ -54,26 +54,24 @@ public class LedgeGrab : BaseState
 
     public void CheckForInput()
     {
+        rgdBody.velocity = Vector3.zero;
         float forward = Input.GetAxisRaw("Vertical");
-
-        if (forward > 0 && controller.onForwardWall)
+        bool moveForward = forward > 0;
+        bool jump = Input.GetButtonDown("Jump");
+        if (jump && controller.onForwardWall ||
+            controller.onForwardWall && Input.GetButton("Jump") && moveForward)
         {
             onTryClimbUp = true;
             posToDown = new Vector3(transform.localPosition.x - (controller.HorizontalHit().normal.x * 1.25f), transform.position.y + 1, transform.localPosition.z - (controller.HorizontalHit().normal.z * 1.25f));
             posToForward = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
         }
-        else if (forward < 0 || forward > 0 && !controller.onForwardWall)
-            onLedge = false;
-
-        if (Input.GetButtonDown("Jump") && !controller.onForwardWall)
+        else if (jump && !controller.onForwardWall)
         {
             Vector3 result = (transform.up + transform.forward).normalized;
             rgdBody.velocity = result * controller.jumpStrength;
             onLedge = false;
         }
-        if (!controller.onLeftWall && !controller.onRightWall)
-            controller.UpdateRays();
-        if (!controller.onForwardWall && !controller.onLeftWall && !controller.onRightWall)
+        else if (forward < 0 || moveForward && !controller.onForwardWall)
             onLedge = false;
     }
 
