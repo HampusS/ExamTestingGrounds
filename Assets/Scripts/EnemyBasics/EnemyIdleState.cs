@@ -27,7 +27,10 @@ public class EnemyIdleState : EnemyBase
 
     public override void Run()
     {
-        
+        if (controller.anim != null)
+        {
+            controller.anim.SetBool("Walking", false);
+        }
     }
 
     public override bool Exit()

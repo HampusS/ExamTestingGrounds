@@ -13,6 +13,8 @@ public enum EnemyTasks
 public class EnemyController : MonoBehaviour
 {
     public GameObject player { get; private set; }
+    public Animator anim;
+
     public float health = 2;
     [SerializeField]
     protected float aggroRange = 180;
@@ -24,7 +26,6 @@ public class EnemyController : MonoBehaviour
     protected List<EnemyBase> states;
 
     public Vector3 Destination { get; set; }
-
     public bool isAlive()
     {
         return health != 0;
