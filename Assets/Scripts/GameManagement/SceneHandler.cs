@@ -34,17 +34,8 @@ public class SceneHandler : MonoBehaviour
         {
             SceneManager.LoadScene(order[6]);
             current = 6;
-            
         }
         else
             SceneManager.LoadScene(order[current]);
-    }
-    void CloseApplication()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Debug.Log("quit");
-            Application.Quit();
-        }  
     }
 }
