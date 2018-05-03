@@ -44828,7 +44828,7 @@ Prefab:
     - target: {fileID: 114065548067443850, guid: 946dabe6559071b4d8947f7372b1305b,
         type: 2}
       propertyPath: Capacity
-      value: 50
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 114065548067443850, guid: 946dabe6559071b4d8947f7372b1305b,
         type: 2}
@@ -44838,7 +44838,7 @@ Prefab:
     - target: {fileID: 114065548067443850, guid: 946dabe6559071b4d8947f7372b1305b,
         type: 2}
       propertyPath: spawnRate
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 946dabe6559071b4d8947f7372b1305b, type: 2}
@@ -56498,8 +56498,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5bb4f36e4a4f01448e57cdbd5f35a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpSpeed: 2
-  degrees: 20
+  tiltSpeed: 2
+  tiltDegrees: 20
 --- !u!114 &1001324622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95119,7 +95119,7 @@ Prefab:
     - target: {fileID: 114065548067443850, guid: 946dabe6559071b4d8947f7372b1305b,
         type: 2}
       propertyPath: Capacity
-      value: 25
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 114065548067443850, guid: 946dabe6559071b4d8947f7372b1305b,
         type: 2}
@@ -95129,7 +95129,7 @@ Prefab:
     - target: {fileID: 114065548067443850, guid: 946dabe6559071b4d8947f7372b1305b,
         type: 2}
       propertyPath: spawnRate
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 946dabe6559071b4d8947f7372b1305b, type: 2}
