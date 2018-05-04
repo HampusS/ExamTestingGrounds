@@ -22,7 +22,7 @@ public class GroundState : BaseState
         if (controller.onBottom)
         {
             // New Entry on ground
-            if (controller.prevMoveState != myStateType)
+            if (controller.prevMoveState != myStateType && controller.prevMoveState != MoveStates.LEDGEGRAB)
             {
                 camTilt.onBump = true;
                 controller.ForceGravity = false;
