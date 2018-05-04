@@ -29,10 +29,8 @@ public class AirState : BaseState
         Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
         rgdBody.AddForce(direction * airSpeed, ForceMode.Acceleration);
 
-        //if (controller.onForceLockMovement)
-        //    direction = Vector3.zero;
         Vector3 horiz = new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z).normalized;
-        //Debug.Log(Vector3.Dot(direction, horiz));
+
         if (Vector3.Dot(direction, horiz) < -0.5)
             drag = -horiz * airResistance * 100;
         else

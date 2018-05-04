@@ -6,34 +6,30 @@ public class Shoot : MonoBehaviour
 {
     GameObject camHolder;
     public GameObject grenade;
-    public float strength = 500;
+    public float strength = 20;
     [SerializeField]
     float fireRate = 0.25f;
     float timer;
     Rigidbody player;
-    CamStates camState;
 
-    // Use this for initialization
     void Start()
     {
         camHolder = GameObject.Find("CameraHolder");
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
-        camState = Camera.main.GetComponent<CamStates>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         timer += Time.deltaTime;
-        //Debug.Log(timer);
         if (timer >= fireRate && Input.GetButtonDown("Fire1"))
         {
             FindObjectOfType<AudioM>().Play("launch");
             timer = 0;
             GameObject clone = Instantiate(grenade, transform.position, transform.rotation);
             Rigidbody rb = clone.GetComponent<Rigidbody>();
-            rb.AddForce(camHolder.transform.forward * strength + player.velocity);
-            camState.onShake = true;
+            rb.velocity = Vector3.Project(camHolder.transform.forward * strength, camHolder.transform.forward);
+            rb.velocity += Vector3.Project(player.velocity, camHolder.transform.forward);
+
             Invoke("Reload", fireRate/2);
         }
         else

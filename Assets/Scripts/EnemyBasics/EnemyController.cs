@@ -25,6 +25,8 @@ public class EnemyController : MonoBehaviour
     protected EnemyBase currentState;
     protected List<EnemyBase> states;
 
+    public PlayerController playerControl;
+
     public Vector3 Destination { get; set; }
     public bool isAlive()
     {
@@ -68,6 +70,7 @@ public class EnemyController : MonoBehaviour
         states.Add(GetComponent<EnemyNavMoveState>());
         states.Add(GetComponent<EnemyAttackState>());
         currentState = states[0];
+        playerControl = player.GetComponent<PlayerController>();
     }
 
     void Update()

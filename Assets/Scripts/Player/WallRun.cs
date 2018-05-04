@@ -31,7 +31,6 @@ public class WallRun : BaseState
             initOnce = false;
             exit = false;
             timer = 0;
-
             Vector3 result = (transform.forward + (transform.up * 0.1f)).normalized * controller.jumpStrength * jumpStrengthMultiplier;
             rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
 

@@ -9,20 +9,18 @@ public class EnemyAttackState : EnemyBase {
     public float damage = 25;
     float timer;
     float animspeed;
-    PlayerController playerControl;
-    // Use this for initialization
-    void Start () {
+
+    void Start()
+    {
         animspeed = navMesh.speed;
         taskType = EnemyTasks.ATTACK;
-        playerControl = controller.player.GetComponent<PlayerController>();
     }
 
     public override bool Enter()
     {
         if (controller.InAttackRange())
         {
-            navMesh.isStopped = true;
-            navMesh.ResetPath();
+            gameObject.GetComponent<NavMeshAgent>().enabled = false;
             timer = 0;
             return true;
         }
@@ -31,6 +29,7 @@ public class EnemyAttackState : EnemyBase {
 
     public override void Run()
     {
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(controller.playerControl.transform.position - transform.position), Time.deltaTime * 10);
         timer += Time.deltaTime;
         controller.anim.SetTrigger("Loading");
         //controller.anim.speed = controller.anim.speed / attackRate;
@@ -46,6 +45,8 @@ public class EnemyAttackState : EnemyBase {
         if (!controller.InAttackRange())
         {
             controller.anim.SetTrigger("Backdown");
+            gameObject.GetComponent<NavMeshAgent>().enabled = true;
+            navMesh.ResetPath();
             return true;
         }
         return false;
@@ -53,11 +54,11 @@ public class EnemyAttackState : EnemyBase {
 
     void Attack()
     {
-        controller.anim.SetTrigger("Hit");
-        if (!playerControl.isDamaged)
+        if (!controller.playerControl.isDamaged)
         {
-            playerControl.KnockBack((playerControl.transform.position - transform.position).normalized, knockBackStrength);
-            playerControl.DamagePlayer(damage);
+            controller.anim.SetTrigger("Hit");
+            controller.playerControl.KnockBack((controller.playerControl.transform.position - transform.position).normalized, knockBackStrength);
+            controller.playerControl.DamagePlayer(damage);
         }
     }
 }

@@ -56,7 +56,7 @@ public class Grenade : MonoBehaviour
                     {
                         if (rb.tag == "Enemy")
                         {
-                            rb.velocity = ((rb.position - transform.position).normalized * 500) / (blastRadius + Vector3.Distance(rb.position, transform.position));
+                            rb.velocity = ((rb.position - transform.position).normalized * force) / (blastRadius + Vector3.Distance(rb.position, transform.position));
                             rb.GetComponent<EnemyController>().Damage(damage);
                         }
                         else

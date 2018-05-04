@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight = 6;
     public float turnAroundSpeed = 6;
 
-    float rayLengthHorizontal = 0.7f;
+    public float rayLengthHorizontal = 0.7f;
     float rayLengthVertical = 1.1f;
 
     public bool onForwardWall { get; private set; }
@@ -54,14 +54,15 @@ public class PlayerController : MonoBehaviour
     public float crouchSpeed = 8;
 
     float lerpHp = 100;
-    float trueHp = 100;
+    float Health = 100;
+    float maxHp;
     public bool isDamaged { get; set; }
     public Text hpText;
     FlickerHealth flicker;
 
     public bool isAlive()
     {
-        return trueHp != 0;
+        return Health != 0;
     }
 
     void Start()
@@ -81,6 +82,7 @@ public class PlayerController : MonoBehaviour
         currMoveState = MoveStates.AIR;
         onForceLockMovement = false;
         hpText.text = lerpHp.ToString();
+        maxHp = Health;
     }
 
     void Update()
@@ -88,6 +90,7 @@ public class PlayerController : MonoBehaviour
         RayTrace();
         Crouching();
         Invulnerable();
+        UpdateHudHp();
         PlayerDeath();
         prevMoveState = currMoveState;
         if (currentState.Exit())
@@ -143,24 +146,35 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (lerpHp != trueHp)
+    }
+
+    private void UpdateHudHp()
+    {
+        if (lerpHp != Health)
         {
-            lerpHp = Mathf.Lerp(lerpHp, trueHp, Time.deltaTime * 5);
+            lerpHp = Mathf.Lerp(lerpHp, Health, Time.deltaTime * 5);
+            if (Mathf.RoundToInt(lerpHp) == Health)
+                lerpHp = Health;
             hpText.text = ((int)lerpHp).ToString();
-            if ((int)lerpHp == trueHp)
-                lerpHp = trueHp;
         }
     }
 
-
+    public void AddHealth(float amount)
+    {
+        if (Health + amount < maxHp)
+            Health += amount;
+        else
+            Health = maxHp;
+    }
 
     public void DamagePlayer(float amount)
     {
+        GetComponentInChildren<CamStates>().onShake = true;
         isDamaged = true;
-        if (trueHp > 0 && trueHp - amount < 0)
-            trueHp = 0;
+        if (Health > 0 && Health - amount < 0)
+            Health = 0;
         else
-            trueHp -= amount;
+            Health -= amount;
     }
 
     public void KnockBack(Vector3 direction, float amount)
@@ -188,7 +202,7 @@ public class PlayerController : MonoBehaviour
                 {
                     Debug.DrawRay(transform.position + (transform.right * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
                     onTop = Physics.Raycast(transform.position + (transform.right * 0.5f), transform.up, (rayLengthVertical + 0.5f));
-                    if(!onTop)
+                    if (!onTop)
                     {
                         Debug.DrawRay(transform.position + (-transform.right * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
                         onTop = Physics.Raycast(transform.position + (-transform.right * 0.5f), transform.up, (rayLengthVertical + 0.5f));
@@ -248,6 +262,7 @@ public class PlayerController : MonoBehaviour
         if (!onLeftWall && !onRightWall)
         {
             Ray ray = new Ray(transform.position, Vector3.down);
+
             Debug.DrawRay(ray.origin, (-transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.red);
             Debug.DrawRay(ray.origin, (transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.red);
             onLeftWall = Physics.Raycast(ray.origin, (-transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);

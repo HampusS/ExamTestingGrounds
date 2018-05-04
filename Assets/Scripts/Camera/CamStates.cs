@@ -31,7 +31,7 @@ public class CamStates : MonoBehaviour
     public bool onBump { get; set; }
 
     public bool onShake { get; set; }
-    float shakeStrength = 10;
+    float shakeStrength = 20;
     float shakeLength, shakeTime = 0.25f;
 
     float angle;
@@ -119,9 +119,10 @@ public class CamStates : MonoBehaviour
         }
         else
         {
-            angle = Random.Range(-10, 10);
-            Debug.Log(angle);
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(angle, Vector3.forward), Time.deltaTime * shakeStrength);
+            angle = Random.Range(-1, 2) * shakeStrength;
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(angle, Vector3.forward), Time.deltaTime * 10);
+            angle = Random.Range(-1, 2) * shakeStrength;
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(angle, -Vector3.right), Time.deltaTime * 10);
         }
     }
 

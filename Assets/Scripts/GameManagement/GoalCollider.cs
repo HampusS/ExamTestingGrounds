@@ -10,6 +10,7 @@ public class GoalCollider : MonoBehaviour {
     }
     void OnTriggerEnter(Collider collider)
     {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().AddHealth(100);
         gloabaSettings.GetComponent<SceneHandler>().LoadNext();
     }
 }

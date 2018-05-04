@@ -14,7 +14,7 @@ public class EnemyNavMoveState : EnemyBase
 
     public override bool Enter()
     {
-        if (controller.InAggroRange() && controller.InAggroSight() && !controller.InAttackRange())
+        if (controller.InAggroRange() && controller.InAggroSight() && !navMesh.pathPending)
         {
             controller.Destination = controller.player.transform.position;
             navMesh.SetDestination(controller.Destination);
