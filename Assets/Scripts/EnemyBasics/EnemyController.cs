@@ -33,44 +33,6 @@ public class EnemyController : MonoBehaviour
     public PlayerController playerControl { get; set; }
 
     public Vector3 Destination { get; set; }
-    public bool isAlive()
-    {
-        return health != 0;
-    }
-
-    public void ShowDamaged()
-    {
-        if (!damaged && health <= startHealth * 0.5f)
-        {
-            damaged = true;
-            smoke = Instantiate(DamagedEffect, new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z), transform.rotation);
-            smoke.transform.parent = gameObject.transform;
-        }
-    }
-
-    public bool InAttackRange()
-    {
-        return (Vector3.Distance(transform.position, player.transform.position) < attackRange);
-    }
-
-    public bool InAggroRange()
-    {
-        return (Vector3.Distance(transform.position, player.transform.position) < aggroRange);
-    }
-
-    public bool InAggroSight()
-    {
-        RaycastHit hit;
-        Physics.Raycast(transform.position, (player.transform.position - transform.position), out hit);
-        if (hit.transform != null && hit.transform.tag != null)
-            return (hit.transform.tag == "Player");
-        return false;
-    }
-
-    public void UpdateDestination()
-    {
-        Destination = player.transform.position;
-    }
 
     private void Awake()
     {
@@ -109,7 +71,6 @@ public class EnemyController : MonoBehaviour
         }
         //Debug.Log(currentState);
         currentState.Run();
-        ShowDamaged();
         if (GetComponent<Rigidbody>().velocity.magnitude > 0)
             GetComponent<Rigidbody>().AddForce(-GetComponent<Rigidbody>().velocity * 4, ForceMode.Acceleration);
         if (!isAlive())
@@ -122,6 +83,15 @@ public class EnemyController : MonoBehaviour
             health = 0;
         else
             health -= amount;
+        if (!damaged)
+        {
+            damaged = true;
+            smoke = Instantiate(DamagedEffect, new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z), transform.rotation);
+            smoke.transform.parent = gameObject.transform;
+        }
+        ParticleSystem.EmissionModule em = smoke.GetComponent<ParticleSystem>().emission;
+        Debug.Log(100 * ((startHealth - health) / startHealth) + " " + health);
+        em.rateOverTime = 100 * ((startHealth - health) / startHealth);
     }
 
     public void KillMe()
@@ -130,5 +100,34 @@ public class EnemyController : MonoBehaviour
         Destroy(gameObject);
         Destroy(clone, 5);
         Destroy(smoke);
+    }
+
+    public bool isAlive()
+    {
+        return health != 0;
+    }
+
+    public bool InAttackRange()
+    {
+        return (Vector3.Distance(transform.position, player.transform.position) < attackRange);
+    }
+
+    public bool InAggroRange()
+    {
+        return (Vector3.Distance(transform.position, player.transform.position) < aggroRange);
+    }
+
+    public bool InAggroSight()
+    {
+        RaycastHit hit;
+        Physics.Raycast(transform.position, (player.transform.position - transform.position), out hit);
+        if (hit.transform != null && hit.transform.tag != null)
+            return (hit.transform.tag == "Player");
+        return false;
+    }
+
+    public void UpdateDestination()
+    {
+        Destination = player.transform.position;
     }
 }

@@ -16,10 +16,8 @@ public class Grenade : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer != LayerMask.NameToLayer("InvisWallLayer") && collision.collider.tag != ("Player"))
+        if (/*collision.gameObject.layer != LayerMask.NameToLayer("InvisWallLayer") && */collision.collider.tag != ("Player"))
             Explode();
-        else
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("InvisWallLayer"), LayerMask.NameToLayer("InvisWallLayer"));
     }
 
     // Use this for initialization
@@ -27,6 +25,7 @@ public class Grenade : MonoBehaviour
     {
         countdown = lifeTime;
         rb = GetComponent<Rigidbody>();
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("InvisWallLayer"), LayerMask.NameToLayer("InvisWallLayer"));
     }
 
     // Update is called once per frame

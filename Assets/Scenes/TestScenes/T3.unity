@@ -85031,7 +85031,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensX: 3
   sensY: 3
-  WallRunAssist: 0
+  WallRunAssist: 1
   turnAssistSpeed: 5
 --- !u!1 &1400210929
 GameObject:

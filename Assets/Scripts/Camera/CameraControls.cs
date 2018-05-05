@@ -44,15 +44,18 @@ public class CameraControls : MonoBehaviour
 
     public void TurnToVector(Vector3 target)
     {
-        assistTimer += Time.deltaTime;
-        bool assist = Input.GetAxis("Mouse X") == 0;
-        if (assist)
+        if (WallRunAssist)
         {
-            if (assistTimer > assistDelay)
-                player.rotation = Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * turnAssistSpeed);
+            assistTimer += Time.deltaTime;
+            bool assist = Input.GetAxis("Mouse X") == 0;
+            if (assist)
+            {
+                if (assistTimer > assistDelay)
+                    player.rotation = Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * turnAssistSpeed);
+            }
+            else
+                assistTimer = 0;
         }
-        else
-            assistTimer = 0;
     }
 
     public void CrouchCam()

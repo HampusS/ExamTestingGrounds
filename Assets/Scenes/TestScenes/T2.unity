@@ -46247,7 +46247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensX: 3
   sensY: 3
-  WallRunAssist: 0
+  WallRunAssist: 1
   turnAssistSpeed: 5
 --- !u!1 &773221044
 GameObject:
@@ -122255,5 +122255,5 @@ Transform:
   - {fileID: 448411646}
   - {fileID: 2074385433}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 140.128, z: 0}
