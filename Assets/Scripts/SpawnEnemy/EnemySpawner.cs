@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public Transform target;
+    public Transform spawnArea;
     public GameObject enemy;
     public int Capacity;
     public float spawnRate;
@@ -14,6 +14,8 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         amount = 0;
+        if (spawnArea == null)
+            spawnArea = transform;
     }
 
     void Update()
@@ -33,9 +35,9 @@ public class EnemySpawner : MonoBehaviour
     {
         amount++;
         // Improve spawn grounds to check if the ground is available
-        float x = Random.Range(target.position.x - 10, target.position.x + 10);
-        float z = Random.Range(target.position.z - 10, target.position.z + 10);
-        GameObject clone = Instantiate(enemy, new Vector3(x, target.position.y, z), enemy.transform.rotation);
+        float x = Random.Range(spawnArea.position.x - 10, spawnArea.position.x + 10);
+        float z = Random.Range(spawnArea.position.z - 10, spawnArea.position.z + 10);
+        GameObject clone = Instantiate(enemy, new Vector3(x, spawnArea.position.y, z), enemy.transform.rotation);
         clone.GetComponent<SpawnController>().spawner = this;
     }
 
