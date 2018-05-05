@@ -14,6 +14,7 @@ public class CameraControls : MonoBehaviour
     float camUpDown;
     float camLeftRight;
 
+    public bool WallRunAssist;
     public float turnAssistSpeed = 3;
     float assistDelay = 0.25f;
     float assistTimer;
