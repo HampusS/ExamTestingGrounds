@@ -86,11 +86,10 @@ public class EnemyController : MonoBehaviour
         if (!damaged)
         {
             damaged = true;
-            smoke = Instantiate(DamagedEffect, new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z), transform.rotation);
+            smoke = Instantiate(DamagedEffect, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
             smoke.transform.parent = gameObject.transform;
         }
         ParticleSystem.EmissionModule em = smoke.GetComponent<ParticleSystem>().emission;
-        Debug.Log(100 * ((startHealth - health) / startHealth) + " " + health);
         em.rateOverTime = 100 * ((startHealth - health) / startHealth);
     }
 

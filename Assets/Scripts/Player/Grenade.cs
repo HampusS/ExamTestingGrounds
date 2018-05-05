@@ -16,7 +16,7 @@ public class Grenade : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (/*collision.gameObject.layer != LayerMask.NameToLayer("InvisWallLayer") && */collision.collider.tag != ("Player"))
+        if (collision.collider.tag != ("Player"))
             Explode();
     }
 

@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class WallRun : BaseState
 {
-    public float fallTime = 1.6f;
+    public float runTimeLength = 1.6f;
     public float jumpStrengthMultiplier = 1.75f;
-    float runTimeMultiplier = 2f;
     float timer = 0;
-    bool initOnce;
     bool exit;
 
-    Vector3 prevNormal, currNormal;
+    public bool WallRunAssisting = true;
+
+    Vector3 prevNormal, currNormal, snapPos;
     CamStates camTilt;
     CameraControls camControl;
 
@@ -24,22 +24,17 @@ public class WallRun : BaseState
 
     void InitializeRun()
     {
-        if (initOnce)
-        {
-            controller.onGravityMultiplier = false;
-            rgdBody.useGravity = false;
-            initOnce = false;
-            exit = false;
-            timer = 0;
-            Vector3 result = (transform.forward + (transform.up * 0.1f)).normalized * controller.jumpStrength * jumpStrengthMultiplier;
-            rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
-
-            camTilt.ResetCamera();
-            if (controller.onLeftWall)
-                camTilt.onRight = true;
-            else if (controller.onRightWall)
-                camTilt.onLeft = true;
-        }
+        Vector3 result = (transform.forward + (transform.up * 0.1f)).normalized * controller.jumpStrength * jumpStrengthMultiplier;
+        rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
+        controller.onGravityMultiplier = false;
+        rgdBody.useGravity = false;
+        exit = false;
+        timer = 0;
+        camTilt.ResetCamera();
+        if (controller.onLeftWall)
+            camTilt.onRight = true;
+        else if (controller.onRightWall)
+            camTilt.onLeft = true;
     }
 
     public override bool Enter()
@@ -49,13 +44,14 @@ public class WallRun : BaseState
 
         if (controller.onLeftWall || controller.onRightWall)
         {
-            if (Vector3.Dot(transform.forward, rgdBody.velocity.normalized) > 0) {
+            if (Vector3.Dot(transform.forward, rgdBody.velocity.normalized) > 0)
+            {
                 if (Input.GetButton("Jump") || controller.prevMoveState == myStateType && !controller.onBottom)
                 {
                     currNormal = controller.HorizontalHit().normal;
                     if (currNormal != prevNormal)
                     {
-                        initOnce = true;
+                        InitializeRun();
                         return true;
                     }
                 }
@@ -67,9 +63,12 @@ public class WallRun : BaseState
 
     public override void Run()
     {
-        InitializeRun();
-        SupportRun();
-        camControl.TurnToVector(new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z));
+        if (WallRunAssisting)
+        {
+            SupportRun();
+            SnapToWall();
+            camControl.TurnToVector(new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z));
+        }
 
         if (timer > 0 && Input.GetButtonDown("Jump"))
         {
@@ -81,10 +80,10 @@ public class WallRun : BaseState
         if (controller.HorizontalHit().normal != currNormal)
             exit = true;
 
-        if (timer >= fallTime * 0.5f)
+        if (timer >= runTimeLength * 0.5f)
             rgdBody.useGravity = true;
 
-        if (!controller.onLeftWall && !controller.onRightWall || 
+        if (!controller.onLeftWall && !controller.onRightWall ||
             controller.onBottom && rgdBody.velocity.y < 0 ||
             Input.GetAxisRaw("Vertical") < 0)
             exit = true;
@@ -109,4 +108,9 @@ public class WallRun : BaseState
             controller.UpdateRays();
     }
 
+    void SnapToWall()
+    {
+        snapPos = controller.HorizontalHit().point + (currNormal * controller.capsule.radius);
+        transform.position = Vector3.Lerp(transform.position, snapPos, Time.deltaTime * 5);
+    }
 }

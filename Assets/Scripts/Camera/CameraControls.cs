@@ -14,7 +14,6 @@ public class CameraControls : MonoBehaviour
     float camUpDown;
     float camLeftRight;
 
-    public bool WallRunAssist;
     public float turnAssistSpeed = 3;
     float assistDelay = 0.25f;
     float assistTimer;
@@ -44,8 +43,6 @@ public class CameraControls : MonoBehaviour
 
     public void TurnToVector(Vector3 target)
     {
-        if (WallRunAssist)
-        {
             assistTimer += Time.deltaTime;
             bool assist = Input.GetAxis("Mouse X") == 0;
             if (assist)
@@ -55,7 +52,6 @@ public class CameraControls : MonoBehaviour
             }
             else
                 assistTimer = 0;
-        }
     }
 
     public void CrouchCam()
