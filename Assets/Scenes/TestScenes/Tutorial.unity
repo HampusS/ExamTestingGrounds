@@ -9220,6 +9220,12 @@ Transform:
   m_Father: {fileID: 1058401738}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &445935605 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114990749482646020, guid: 4af5732a574205c4f97ed34edc738685,
+    type: 2}
+  m_PrefabInternal: {fileID: 793721842}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!43 &447031757
 Mesh:
   m_ObjectHideFlags: 0
@@ -21349,7 +21355,7 @@ Prefab:
     - target: {fileID: 114620755385128362, guid: 37c77b4bd2f0bed4eb8117c587c33658,
         type: 2}
       propertyPath: health
-      value: -1
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 195489252610505342, guid: 37c77b4bd2f0bed4eb8117c587c33658,
         type: 2}
@@ -21360,6 +21366,11 @@ Prefab:
         type: 2}
       propertyPath: m_Constraints
       value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 114620755385128362, guid: 37c77b4bd2f0bed4eb8117c587c33658,
+        type: 2}
+      propertyPath: aggroRange
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 37c77b4bd2f0bed4eb8117c587c33658, type: 2}
@@ -39763,6 +39774,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114670052691895574, guid: a76ac625abdc38c4498d99e68aba330c,
+        type: 2}
+      propertyPath: hpText
+      value: 
+      objectReference: {fileID: 445935605}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
   m_IsPrefabParent: 0
