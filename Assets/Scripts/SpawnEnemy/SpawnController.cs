@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnController : EnemyController
 {
-    public EnemySpawner spawner;
+    public EnemySpawner spawner { get; set; }
 
     private void Start()
     {
@@ -17,13 +17,11 @@ public class SpawnController : EnemyController
 
     void Update()
     {
-        StateMachine();
-
         if (!isAlive())
         {
             spawner.amount--;
-            KillMe();
         }
+        StateMachine();
     }
 
 

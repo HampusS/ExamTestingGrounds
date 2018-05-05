@@ -13,7 +13,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        amount = 1;
+        amount = 0;
     }
 
     void Update()
@@ -35,9 +35,8 @@ public class EnemySpawner : MonoBehaviour
         // Improve spawn grounds to check if the ground is available
         float x = Random.Range(target.position.x - 10, target.position.x + 10);
         float z = Random.Range(target.position.z - 10, target.position.z + 10);
-        /*GameObject clone = */
-        Instantiate(enemy, new Vector3(x, target.position.y, z), enemy.transform.rotation);
-        enemy.GetComponent<SpawnController>().spawner = this;
+        GameObject clone = Instantiate(enemy, new Vector3(x, target.position.y, z), enemy.transform.rotation);
+        clone.GetComponent<SpawnController>().spawner = this;
     }
 
 }

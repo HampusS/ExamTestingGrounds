@@ -14,8 +14,13 @@ public class EnemyController : MonoBehaviour
 {
     public GameObject player { get; private set; }
     public Animator anim;
+    public GameObject DeathEffect;
+    public GameObject DamagedEffect;
+    GameObject smoke;
+    bool damaged = false;
 
     public float health = 2;
+    float startHealth;
     [SerializeField]
     protected float aggroRange = 180;
     [SerializeField]
@@ -25,12 +30,22 @@ public class EnemyController : MonoBehaviour
     protected EnemyBase currentState;
     protected List<EnemyBase> states;
 
-    public PlayerController playerControl;
+    public PlayerController playerControl { get; set; }
 
     public Vector3 Destination { get; set; }
     public bool isAlive()
     {
         return health != 0;
+    }
+
+    public void ShowDamaged()
+    {
+        if (!damaged && health <= startHealth * 0.5f)
+        {
+            damaged = true;
+            smoke = Instantiate(DamagedEffect, new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z), transform.rotation);
+            smoke.transform.parent = gameObject.transform;
+        }
     }
 
     public bool InAttackRange()
@@ -60,6 +75,8 @@ public class EnemyController : MonoBehaviour
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        playerControl = player.GetComponent<PlayerController>();
+        startHealth = health;
     }
 
     void Start()
@@ -70,7 +87,6 @@ public class EnemyController : MonoBehaviour
         states.Add(GetComponent<EnemyNavMoveState>());
         states.Add(GetComponent<EnemyAttackState>());
         currentState = states[0];
-        playerControl = player.GetComponent<PlayerController>();
     }
 
     void Update()
@@ -93,9 +109,9 @@ public class EnemyController : MonoBehaviour
         }
         //Debug.Log(currentState);
         currentState.Run();
+        ShowDamaged();
         if (GetComponent<Rigidbody>().velocity.magnitude > 0)
             GetComponent<Rigidbody>().AddForce(-GetComponent<Rigidbody>().velocity * 4, ForceMode.Acceleration);
-
         if (!isAlive())
             KillMe();
     }
@@ -110,6 +126,9 @@ public class EnemyController : MonoBehaviour
 
     public void KillMe()
     {
+        GameObject clone = Instantiate(DeathEffect, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
         Destroy(gameObject);
+        Destroy(clone, 5);
+        Destroy(smoke);
     }
 }

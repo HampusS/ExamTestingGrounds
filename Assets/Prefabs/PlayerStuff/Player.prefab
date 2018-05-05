@@ -217,14 +217,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1239035602709756}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 71.8, y: -79.2, z: -157.1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 1.4, y: 12.6, z: 108.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4845286964991380}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4320216201335210
 Transform:
   m_ObjectHideFlags: 1
@@ -660,8 +660,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5bb4f36e4a4f01448e57cdbd5f35a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpSpeed: 2
-  degrees: 20
+  tiltSpeed: 2
+  tiltDegrees: 20
 --- !u!114 &114200250366922516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -673,7 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd584859bf53a044b9c10f471b2ed78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBeforeFall: 1.25
+  fallTime: 1.6
   jumpStrengthMultiplier: 1.75
 --- !u!114 &114270374417033792
 MonoBehaviour:
@@ -687,6 +687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frictionCoefficient: 6
+  staticFrictionCoefficient: 4
 --- !u!114 &114330684156297996
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -723,7 +724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grenade: {fileID: 1412026154105546, guid: 457bd3dc51c5c4e47b8b4e97c300749f, type: 2}
-  strength: 1500
+  strength: 20
   fireRate: 0.5
 --- !u!114 &114601326988085836
 MonoBehaviour:
@@ -770,6 +771,7 @@ MonoBehaviour:
   jumpStrength: 10
   jumpHeight: 6
   turnAroundSpeed: 6
+  rayLengthHorizontal: 0.7
   crouchSpeed: 8
   hpText: {fileID: 0}
 --- !u!114 &114757508819226032
