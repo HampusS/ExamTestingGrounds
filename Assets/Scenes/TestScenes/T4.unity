@@ -49861,6 +49861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7fcecc6aa466646a9605547a381dc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceleration: 15
 --- !u!114 &791646710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90246,7 +90247,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensX: 3
   sensY: 3
-  WallRunAssist: 0
   turnAssistSpeed: 5
 --- !u!43 &1606425977
 Mesh:
@@ -118807,8 +118807,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd584859bf53a044b9c10f471b2ed78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallTime: 1.6
+  runTimeLength: 1.6
   jumpStrengthMultiplier: 1.75
+  WallRunAssisting: 0
 --- !u!114 &2103740921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118856,7 +118857,6 @@ MonoBehaviour:
   jumpStrength: 10
   jumpHeight: 6
   turnAroundSpeed: 4
-  rayLengthHorizontal: 0.7
   crouchSpeed: 8
   hpText: {fileID: 326245284}
 --- !u!54 &2103740924
