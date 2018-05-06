@@ -20,8 +20,7 @@ public class EnemyAttackState : EnemyBase {
     {
         if (controller.InAttackRange())
         {
-            //navMesh.isStopped = true;
-            //navMesh.enabled = false;
+            navMesh.enabled = false;
             timer = 0;
             return true;
         }
@@ -46,9 +45,7 @@ public class EnemyAttackState : EnemyBase {
         if (!controller.InAttackRange())
         {
             controller.anim.SetTrigger("Backdown");
-            //navMesh.enabled = true;
-            //navMesh.isStopped = false;
-            //navMesh.ResetPath();
+            navMesh.enabled = true;
             return true;
         }
         return false;

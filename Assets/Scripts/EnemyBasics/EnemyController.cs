@@ -18,7 +18,7 @@ public class EnemyController : MonoBehaviour
     public GameObject DamagedEffect;
     GameObject smoke;
     bool damaged = false;
-
+    public Rigidbody rgdBody { get; set; }
     public float health = 2;
     float startHealth;
     [SerializeField]
@@ -38,6 +38,7 @@ public class EnemyController : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         playerControl = player.GetComponent<PlayerController>();
+        rgdBody = GetComponent<Rigidbody>();
         startHealth = health;
     }
 
@@ -71,8 +72,8 @@ public class EnemyController : MonoBehaviour
         }
         //Debug.Log(currentState);
         currentState.Run();
-        if (GetComponent<Rigidbody>().velocity.magnitude > 0)
-            GetComponent<Rigidbody>().AddForce(-GetComponent<Rigidbody>().velocity * 4, ForceMode.Acceleration);
+        if (rgdBody.velocity.magnitude > 0)
+            rgdBody.AddForce(-rgdBody.velocity * 4, ForceMode.Acceleration);
         if (!isAlive())
             KillMe();
     }
