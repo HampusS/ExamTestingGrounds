@@ -51,8 +51,8 @@ public class EnemyController : MonoBehaviour
         states.Add(GetComponent<EnemyAttackState>());
         currentState = states[0];
 
-        smoke = Instantiate(DamagedEffect, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
-        smoke.transform.parent = gameObject.transform;
+        //smoke = Instantiate(DamagedEffect, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+        //smoke.transform.parent = gameObject.transform;
         //ParticleSystem.EmissionModule em = smoke.GetComponent<ParticleSystem>().emission;
         //em.rateOverTime = 0;
     }

@@ -7,6 +7,7 @@ public class LedgeGrab : BaseState
     bool onTryClimbUp;
     bool onLedge;
     bool onMoveUp;
+    bool init = true;
     public float climbSpeed = 4;
 
     Vector3 targetPos;
@@ -25,13 +26,14 @@ public class LedgeGrab : BaseState
         rgdBody.useGravity = false;
         controller.onGravityMultiplier = false;
         rgdBody.velocity = Vector3.zero;
+        init = false;
     }
 
     public override bool Enter()
     {
         if (inReachOfLedge())
         {
-            Initialize();
+            init = true;
             return true;
         }
         return false;
@@ -39,6 +41,8 @@ public class LedgeGrab : BaseState
 
     public override void Run()
     {
+        if(init)
+            Initialize();
         CheckForInput();
         if (onTryClimbUp)
             ClimbUp();

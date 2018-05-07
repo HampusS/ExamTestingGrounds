@@ -13,7 +13,7 @@ public class EnemyNavMoveState : EnemyBase
     {
         taskType = EnemyTasks.MOVE;
         animspeed = navMesh.speed;
-        deceleration = acceleration * 5;
+        deceleration = acceleration * 10;
     }
 
     public override bool Enter()
