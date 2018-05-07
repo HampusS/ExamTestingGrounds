@@ -39,9 +39,8 @@ public class LedgeGrab : BaseState
 
     public override void Run()
     {
-        if (!onTryClimbUp)
-            CheckForInput();
-        else
+        CheckForInput();
+        if (onTryClimbUp)
             ClimbUp();
     }
 
@@ -49,29 +48,37 @@ public class LedgeGrab : BaseState
     {
         if (onLedge)
             return false;
+        ResetPlayer();
         return true;
+    }
+
+    void ResetPlayer()
+    {
+        onMoveUp = false;
+        onLedge = false;
+        onTryClimbUp = false;
+        rgdBody.isKinematic = false;
+        GetComponent<CapsuleCollider>().enabled = true;
     }
 
     public void CheckForInput()
     {
-        rgdBody.velocity = Vector3.zero;
         float forward = Input.GetAxisRaw("Vertical");
-        bool moveForward = forward > 0;
-        bool jump = Input.GetButtonDown("Jump");
-        if (jump && controller.onForwardWall ||
-            controller.onForwardWall && Input.GetButton("Jump") && moveForward)
+
+        if (Input.GetButton("Jump") || forward > 0)
         {
             onTryClimbUp = true;
             posToDown = new Vector3(transform.localPosition.x - (controller.HorizontalHit().normal.x * 1.25f), transform.position.y + 1, transform.localPosition.z - (controller.HorizontalHit().normal.z * 1.25f));
             posToForward = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
         }
-        else if (jump && !controller.onForwardWall)
+        else if (Input.GetButtonDown("Jump") && !controller.onForwardWall)
         {
             Vector3 result = (transform.up + transform.forward).normalized;
             rgdBody.velocity = result * controller.jumpStrength;
             onLedge = false;
         }
-        else if (forward < 0 || moveForward && !controller.onForwardWall)
+
+        if (forward < 0 || !controller.onForwardWall && !onTryClimbUp)
             onLedge = false;
     }
 
@@ -100,14 +107,7 @@ public class LedgeGrab : BaseState
                 transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * climbSpeed);
 
                 if (Vector3.Distance(transform.position, targetPos) < 0.15f)
-                {
-                    onMoveUp = false;
                     onLedge = false;
-                    onTryClimbUp = false;
-                    rgdBody.isKinematic = false;
-                    GetComponent<CapsuleCollider>().enabled = true;
-                }
-
             }
         }
     }

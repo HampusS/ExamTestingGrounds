@@ -11,6 +11,8 @@ public class WallRun : BaseState
 
     public bool WallRunAssisting = true;
 
+    bool init = false;
+
     Vector3 prevNormal, currNormal, snapPos;
     CamStates camTilt;
     CameraControls camControl;
@@ -35,6 +37,7 @@ public class WallRun : BaseState
             camTilt.onRight = true;
         else if (controller.onRightWall)
             camTilt.onLeft = true;
+        init = false;
     }
 
     public override bool Enter()
@@ -51,7 +54,7 @@ public class WallRun : BaseState
                     currNormal = controller.HorizontalHit().normal;
                     if (currNormal != prevNormal)
                     {
-                        InitializeRun();
+                        init = true;
                         return true;
                     }
                 }
@@ -63,6 +66,9 @@ public class WallRun : BaseState
 
     public override void Run()
     {
+        if(init)
+            InitializeRun();
+
         if (WallRunAssisting)
         {
             SupportRun();
@@ -97,6 +103,7 @@ public class WallRun : BaseState
             prevNormal = currNormal;
             camTilt.ResetCamera();
             camTilt.onAlign = true;
+            init = false;
             return true;
         }
         return false;
