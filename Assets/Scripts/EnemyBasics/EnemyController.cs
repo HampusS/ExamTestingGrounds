@@ -34,6 +34,8 @@ public class EnemyController : MonoBehaviour
 
     public Vector3 Destination { get; set; }
 
+    ParticleSystem.EmissionModule em;
+
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -50,6 +52,11 @@ public class EnemyController : MonoBehaviour
         states.Add(GetComponent<EnemyNavMoveState>());
         states.Add(GetComponent<EnemyAttackState>());
         currentState = states[0];
+
+        smoke = Instantiate(DamagedEffect, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+        smoke.transform.parent = gameObject.transform;
+        em = smoke.GetComponent<ParticleSystem>().emission;
+        em.rateOverTime = 0;
     }
 
     void Update()
@@ -87,11 +94,9 @@ public class EnemyController : MonoBehaviour
         if (!damaged)
         {
             damaged = true;
-            smoke = Instantiate(DamagedEffect, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
-            smoke.transform.parent = gameObject.transform;
+
         }
-        ParticleSystem.EmissionModule em = smoke.GetComponent<ParticleSystem>().emission;
-        em.rateOverTime = 100 * ((startHealth - health) / startHealth);
+        em.rateOverTime = 50 * ((startHealth - health) / startHealth);
     }
 
     public void KillMe()
