@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour
     }
     void PickOrder()
     {
-        for (int i = 0; i < nrOfScenes - 2; i++)
+        for (int i = 0; i < nrOfScenes - 3; i++)
         {
             int pick = Random.Range(0, orderList.Count-1);
             int sNr = orderList[pick];

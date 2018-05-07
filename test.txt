@@ -1,38 +1,76 @@
-Tester name: Tom
-Tester id: 1
-The test order for this player was: 1243
------------------------------Tester name: hampus
+Tester name: 231
 Tester id: 2
-The test order for this player was: 4231
-------------------------------------------------------------------Tester name: tom
-Tester id: 3
-The test order for this player was: 3124
+The test order for this player was: 4213
 -----------------------------------------------------------------------------------------------
-Tester name: tom
-Tester id: 4
-The test order for this player was: 3214
------------------------------------------------------------------------------------------------
-Tester name: tom
-Tester id: 3
-The test order for this player was: 2413
------------------------------------------------------------------------------------------------
-Tester name: t
+Tester name: 231
 Tester id: 2
-The test order for this player was: 3421
+The test order for this player was: 4213
 -----------------------------------------------------------------------------------------------
-Tester name: t
-Tester id: 3
-The test order for this player was: 1423
+Tester name: 231
+Tester id: 2
+The test order for this player was: 4213
 -----------------------------------------------------------------------------------------------
-Tester name: we
-Tester id: 3
-The test order for this player was: 2134
+Tester name: 231
+Tester id: 2
+The test order for this player was: 4213
+-----------------------------------------------------------------------------------------------
+Tester name: 231
+Tester id: 2
+The test order for this player was: 4213
 -----------------------------------------------------------------------------------------------
 Tester name: qw
-Tester id: 5
+Tester id: 1
+The test order for this player was: 1253
+-----------------------------------------------------------------------------------------------
+Tester name: qw
+Tester id: 1
+The test order for this player was: 1253
+-----------------------------------------------------------------------------------------------
+Tester name: qw
+Tester id: 1
+The test order for this player was: 1253
+-----------------------------------------------------------------------------------------------
+Tester name: qw
+Tester id: 1
+The test order for this player was: 1253
+-----------------------------------------------------------------------------------------------
+Tester name: qw
+Tester id: 1
+The test order for this player was: 1253
+-----------------------------------------------------------------------------------------------
+Tester name: qw
+Tester id: 1
+The test order for this player was: 1253
+-----------------------------------------------------------------------------------------------
+Tester name: qw
+Tester id: 1
+The test order for this player was: 1253
+-----------------------------------------------------------------------------------------------
+Tester name: qw
+Tester id: 1
+The test order for this player was: 1253
+-----------------------------------------------------------------------------------------------
+Tester name: das
+Tester id: 3
+The test order for this player was: 1234
+-----------------------------------------------------------------------------------------------
+Tester name: das
+Tester id: 3
+The test order for this player was: 1234
+-----------------------------------------------------------------------------------------------
+Tester name: das
+Tester id: 3
+The test order for this player was: 1234
+-----------------------------------------------------------------------------------------------
+Tester name: das
+Tester id: 3
+The test order for this player was: 1234
+-----------------------------------------------------------------------------------------------
+Tester name: w
+Tester id: 3
 The test order for this player was: 2341
 -----------------------------------------------------------------------------------------------
-Tester name: Emll
-Tester id: 1
-The test order for this player was: 1423
+Tester name: w
+Tester id: 2
+The test order for this player was: 4321
 -----------------------------------------------------------------------------------------------
