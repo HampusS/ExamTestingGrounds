@@ -673,8 +673,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd584859bf53a044b9c10f471b2ed78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallTime: 1.6
+  runTimeLength: 1.6
   jumpStrengthMultiplier: 1.75
+  WallRunAssisting: 1
 --- !u!114 &114270374417033792
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -771,7 +772,6 @@ MonoBehaviour:
   jumpStrength: 10
   jumpHeight: 6
   turnAroundSpeed: 6
-  rayLengthHorizontal: 0.7
   crouchSpeed: 8
   hpText: {fileID: 0}
 --- !u!114 &114757508819226032

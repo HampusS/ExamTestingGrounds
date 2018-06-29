@@ -16,7 +16,6 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         nrOfScenes = SceneManager.sceneCountInBuildSettings;
-        Debug.Log(nrOfScenes);
         for (int i = 2; i < nrOfScenes; i++)
         {
             orderList.Add(i);

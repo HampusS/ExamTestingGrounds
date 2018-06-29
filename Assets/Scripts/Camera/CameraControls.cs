@@ -19,25 +19,30 @@ public class CameraControls : MonoBehaviour
     float assistTimer;
 
     public bool LockTurning { get; set; }
+    public bool Disable { get; set; }
 
     // Use this for initialization
     void Start()
     {
         LockTurning = false;
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        Disable = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        camUpDown += Input.GetAxis("Mouse Y") * sensY;
-        camUpDown = Mathf.Clamp(camUpDown, -65, 65);
-        transform.localRotation = Quaternion.AngleAxis(-camUpDown, Vector3.right);
-
-        if (!LockTurning)
+        if (!Disable)
         {
-            camLeftRight = Input.GetAxis("Mouse X") * sensX;
-            player.Rotate(Vector3.up, camLeftRight);
+            camUpDown += Input.GetAxis("Mouse Y") * sensY;
+            camUpDown = Mathf.Clamp(camUpDown, -65, 65);
+            transform.localRotation = Quaternion.AngleAxis(-camUpDown, Vector3.right);
+
+            if (!LockTurning)
+            {
+                camLeftRight = Input.GetAxis("Mouse X") * sensX;
+                player.Rotate(Vector3.up, camLeftRight);
+            }
         }
     }
 
@@ -52,6 +57,17 @@ public class CameraControls : MonoBehaviour
             }
             else
                 assistTimer = 0;
+    }
+
+    public void TiltCameraUpDown(Vector3 target)
+    {
+        Vector3 plane = Vector3.Cross(transform.forward, transform.up);
+        target = Vector3.ProjectOnPlane(target, Vector3.up);
+        float speed = 5 * Time.deltaTime;
+        Vector3 newDir = Vector3.RotateTowards(transform.forward, target, speed, 0);
+        newDir = Vector3.ProjectOnPlane(newDir, plane);
+        transform.rotation = Quaternion.LookRotation(newDir);
+        camUpDown = 0;
     }
 
     public void CrouchCam()

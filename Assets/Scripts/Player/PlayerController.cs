@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviour
     public Text hpText;
     FlickerHealth flicker;
 
+    public bool Disable { get; set; }
+
     public bool isAlive()
     {
         return Health != 0;
@@ -83,30 +85,33 @@ public class PlayerController : MonoBehaviour
         onForceLockMovement = false;
         hpText.text = lerpHp.ToString();
         maxHp = Health;
+        Disable = false;
     }
 
     void Update()
     {
-        RayTrace();
-        Crouching();
-        Invulnerable();
-        UpdateHudHp();
-        PlayerDeath();
-        prevMoveState = currMoveState;
-        if (currentState.Exit())
+        if (!Disable)
         {
-            foreach (BaseState state in states)
+            RayTrace();
+            Crouching();
+            Invulnerable();
+            UpdateHudHp();
+            PlayerDeath();
+            prevMoveState = currMoveState;
+            if (currentState.Exit())
             {
-                if (state.Enter())
+                foreach (BaseState state in states)
                 {
-                    currMoveState = state.myStateType;
-                    currentState = state;
+                    if (state.Enter())
+                    {
+                        currMoveState = state.myStateType;
+                        currentState = state;
+                    }
                 }
             }
+            //Debug.Log(currMoveState);
+            currentState.Run();
         }
-        //Debug.Log(currMoveState);
-        currentState.Run();
-
         if (Input.GetKeyDown("escape"))
             Cursor.lockState = CursorLockMode.None;
     }

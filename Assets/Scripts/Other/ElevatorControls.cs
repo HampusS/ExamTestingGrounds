@@ -34,12 +34,12 @@ public class ElevatorControls : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
             Activated = true;
-
         if (Input.GetButtonDown("Jump"))
         {
-            Vector3 relativeVel = (TargetPos.position - transform.position);
-            if (relativeVel.y > 0)
-                player.velocity = relativeVel.normalized * speed;
+            Vector3 relativeVel = (TargetPos.position - transform.position).normalized;
+            if (Activated/* && relativeVel.y > 0*/)
+                player.velocity += relativeVel * speed;
+            Debug.Log(relativeVel);
         }
 
         if (Activated)
