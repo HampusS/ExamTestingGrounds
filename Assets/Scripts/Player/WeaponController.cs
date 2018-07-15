@@ -43,6 +43,11 @@ public class WeaponController : MonoBehaviour {
         }
     }
 
+    public void EnableHitbox()
+    {
+        currWeapon.boxCollider.enabled = true;
+    }
+
     public void DisableHitbox()
     {
         currWeapon.boxCollider.enabled = false;

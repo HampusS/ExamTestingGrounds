@@ -10,7 +10,6 @@ public class WeaponBase : MonoBehaviour {
 
     public void ExecuteWeapon()
     {
-        boxCollider.enabled = true;
         animator.SetTrigger("Execute");
         animator.speed = 1 - attackRate;
     }

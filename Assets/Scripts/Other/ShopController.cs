@@ -23,8 +23,6 @@ public class ShopController : MonoBehaviour
     PlayerController player;
     bool interact;
     CameraControls cam;
-    [SerializeField]
-    Camera custCam;
 
     GameObject canvas;
     [SerializeField]
@@ -60,8 +58,6 @@ public class ShopController : MonoBehaviour
         ShopCanvas.SetActive(activate);
         Cursor.visible = activate;
         player.HideWeapon = activate;
-        //Camera.main.enabled = !activate;
-        //custCam.enabled = activate;
     }
 
     void InputShop()
