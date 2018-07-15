@@ -15,9 +15,8 @@ public class EnemyController : MonoBehaviour
     public GameObject player { get; private set; }
     public Animator anim;
     public GameObject DeathEffect;
-    public GameObject DamagedEffect;
-    GameObject smoke;
-    bool damaged = false;
+    public bool damaged { get; set; }
+    
     public Rigidbody rgdBody { get; set; }
     public float health = 2;
     float startHealth;
@@ -50,11 +49,6 @@ public class EnemyController : MonoBehaviour
         states.Add(GetComponent<EnemyNavMoveState>());
         states.Add(GetComponent<EnemyAttackState>());
         currentState = states[0];
-
-        //smoke = Instantiate(DamagedEffect, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
-        //smoke.transform.parent = gameObject.transform;
-        //ParticleSystem.EmissionModule em = smoke.GetComponent<ParticleSystem>().emission;
-        //em.rateOverTime = 0;
     }
 
     void Update()
@@ -92,10 +86,16 @@ public class EnemyController : MonoBehaviour
         if (!damaged)
         {
             damaged = true;
-
         }
-        //ParticleSystem.EmissionModule em = smoke.GetComponent<ParticleSystem>().emission;
-        //em.rateOverTime = 50 * ((startHealth - health) / startHealth);
+    }
+
+    public void KnockBack(Vector3 source)
+    {
+        Vector3 vect = transform.position - source;
+        vect.Normalize();
+        vect += Vector3.up;
+        vect *= 10;
+        rgdBody.AddForce(vect, ForceMode.Impulse);
     }
 
     public void KillMe()
@@ -103,7 +103,6 @@ public class EnemyController : MonoBehaviour
         GameObject clone = Instantiate(DeathEffect, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
         Destroy(gameObject);
         Destroy(clone, 5);
-        Destroy(smoke);
     }
 
     public bool isAlive()

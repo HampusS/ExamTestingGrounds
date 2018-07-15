@@ -48,26 +48,26 @@ public class CameraControls : MonoBehaviour
 
     public void TurnToVector(Vector3 target)
     {
-            assistTimer += Time.deltaTime;
-            bool assist = Input.GetAxis("Mouse X") == 0;
-            if (assist)
-            {
-                if (assistTimer > assistDelay)
-                    player.rotation = Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * turnAssistSpeed);
-            }
-            else
-                assistTimer = 0;
+        assistTimer += Time.deltaTime;
+        bool assist = Input.GetAxis("Mouse X") == 0;
+        if (assist)
+        {
+            if (assistTimer > assistDelay)
+                player.rotation = Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * turnAssistSpeed);
+        }
+        else
+            assistTimer = 0;
     }
 
     public void TiltCameraUpDown(Vector3 target)
     {
         Vector3 plane = Vector3.Cross(transform.forward, transform.up);
-        target = Vector3.ProjectOnPlane(target, Vector3.up);
-        float speed = 5 * Time.deltaTime;
+        float speed = 8 * Time.deltaTime;
         Vector3 newDir = Vector3.RotateTowards(transform.forward, target, speed, 0);
         newDir = Vector3.ProjectOnPlane(newDir, plane);
-        transform.rotation = Quaternion.LookRotation(newDir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(newDir), Time.deltaTime * 5 * turnAssistSpeed);
         camUpDown = 0;
+        //Debug.Log(camUpDown);
     }
 
     public void CrouchCam()

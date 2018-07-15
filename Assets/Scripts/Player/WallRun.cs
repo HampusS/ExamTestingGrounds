@@ -28,7 +28,7 @@ public class WallRun : BaseState
     {
         Vector3 result = (transform.forward + (transform.up * 0.1f)).normalized * controller.jumpStrength * jumpStrengthMultiplier;
         rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
-        controller.onGravityMultiplier = false;
+        controller.MultiplyGravity = false;
         rgdBody.useGravity = false;
         exit = false;
         timer = 0;
@@ -112,7 +112,7 @@ public class WallRun : BaseState
     void SupportRun()
     {
         if (!controller.onLeftWall && !controller.onRightWall)
-            controller.UpdateRays();
+            controller.ExtraUpdateRays();
     }
 
     void SnapToWall()

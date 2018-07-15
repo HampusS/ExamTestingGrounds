@@ -27,9 +27,12 @@ public class EnemyIdleState : EnemyBase
 
     public override void Run()
     {
-        if(controller.InAggroSight())
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(controller.playerControl.transform.position - transform.position), Time.deltaTime * 10);
-
+        if (controller.InAggroSight())
+        {
+            Vector3 lookVect = controller.playerControl.transform.position - transform.position;
+            lookVect = Vector3.ProjectOnPlane(lookVect, Vector3.up);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookVect), Time.deltaTime * 10);
+        }
         if (controller.anim != null)
         {
             controller.anim.SetBool("Walking", false);

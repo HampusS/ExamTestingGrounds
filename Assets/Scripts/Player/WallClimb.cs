@@ -22,7 +22,7 @@ public class WallClimb : BaseState
     {
         if (initOnce)
         {
-            controller.onGravityMultiplier = true;
+            controller.MultiplyGravity = true;
             rgdBody.useGravity = false;
             controller.ForceGravity = false;
             initOnce = false;
@@ -62,7 +62,7 @@ public class WallClimb : BaseState
 
             if (timer > 0 && Input.GetButtonDown("Jump"))
             {
-                controller.onGravityMultiplier = false;
+                controller.MultiplyGravity = false;
                 rgdBody.useGravity = false;
                 rgdBody.velocity = Vector3.zero;
                 turning = true;

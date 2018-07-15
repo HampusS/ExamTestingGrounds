@@ -9,8 +9,7 @@ public class GroundState : BaseState
 
     Vector3 friction;
     CamStates camTilt;
-
-
+    
     private void Start()
     {
         myStateType = MoveStates.GROUND;
@@ -37,8 +36,11 @@ public class GroundState : BaseState
     {
         if (Input.GetButtonDown("Jump"))
             rgdBody.AddForce(transform.up * (controller.jumpHeight * 0.925f), ForceMode.VelocityChange);
+        controller.RunWeapon = false;
 
         Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
+        if (controller.LockMovement)
+            direction = Vector3.zero;
 
         if (controller.Crouch)
         {
@@ -56,7 +58,10 @@ public class GroundState : BaseState
             if (direction == Vector3.zero)
                 friction = new Vector3(-rgdBody.velocity.x, 0, -rgdBody.velocity.z) * frictionCoefficient * staticFrictionCoefficient;
             else
+            {
+                controller.RunWeapon = true;
                 friction = new Vector3(-rgdBody.velocity.x, 0, -rgdBody.velocity.z) * frictionCoefficient;
+            }
 
             if (controller.BottomRayHit().normal != Vector3.up)
             {

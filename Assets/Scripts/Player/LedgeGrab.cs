@@ -24,7 +24,7 @@ public class LedgeGrab : BaseState
         onLedge = true;
         onTryClimbUp = false;
         rgdBody.useGravity = false;
-        controller.onGravityMultiplier = false;
+        controller.MultiplyGravity = false;
         rgdBody.velocity = Vector3.zero;
         init = false;
     }

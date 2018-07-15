@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyAttackState : EnemyBase {
-    public float attackRate = 0.5f;
+    public float attackRate = 1;
     public float knockBackStrength = 25;
     public float damage = 25;
     float timer;
@@ -20,6 +20,7 @@ public class EnemyAttackState : EnemyBase {
     {
         if (controller.InAttackRange())
         {
+            controller.anim.SetTrigger("Loading");
             navMesh.enabled = false;
             timer = 0;
             return true;
@@ -29,9 +30,17 @@ public class EnemyAttackState : EnemyBase {
 
     public override void Run()
     {
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(controller.playerControl.transform.position - transform.position), Time.deltaTime * 10);
+        Debug.Log(timer);
+        if(controller.damaged)
+        {
+            timer = 0;
+            controller.damaged = false;
+            Debug.Log("DAMAGED");
+        }
+        Vector3 lookat = controller.playerControl.transform.position - transform.position;
+        lookat = Vector3.ProjectOnPlane(lookat, Vector3.up);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookat), Time.deltaTime * 10);
         timer += Time.deltaTime;
-        controller.anim.SetTrigger("Loading");
         //controller.anim.speed = controller.anim.speed / attackRate;
         if (timer >= attackRate)
         {

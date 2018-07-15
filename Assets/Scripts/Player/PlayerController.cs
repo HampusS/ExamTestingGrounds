@@ -37,9 +37,9 @@ public class PlayerController : MonoBehaviour
     public bool onRightWall { get; set; }
     public bool onLeftWall { get; set; }
 
-    public bool onGravityMultiplier { get; set; }
+    public bool MultiplyGravity { get; set; }
     public bool ForceGravity { get; set; }
-    public bool onForceLockMovement { get; set; }
+    public bool LockMovement { get; set; }
     float invulnerableTimer = 0;
     float invulnerableLimit = 1.5f;
 
@@ -60,7 +60,11 @@ public class PlayerController : MonoBehaviour
     public Text hpText;
     FlickerHealth flicker;
 
-    public bool Disable { get; set; }
+    public int Currency { get; set; }
+
+    // Animations
+    public bool HideWeapon { get; set; }
+    public bool RunWeapon { get; set; }
 
     public bool isAlive()
     {
@@ -82,43 +86,39 @@ public class PlayerController : MonoBehaviour
 
         currentState = states[0];
         currMoveState = MoveStates.AIR;
-        onForceLockMovement = false;
+        LockMovement = false;
         hpText.text = lerpHp.ToString();
         maxHp = Health;
-        Disable = false;
     }
 
     void Update()
     {
-        if (!Disable)
+        RayTrace();
+        Crouching();
+        Invulnerable();
+        UpdateHudHp();
+        PlayerDeath();
+        prevMoveState = currMoveState;
+        if (currentState.Exit())
         {
-            RayTrace();
-            Crouching();
-            Invulnerable();
-            UpdateHudHp();
-            PlayerDeath();
-            prevMoveState = currMoveState;
-            if (currentState.Exit())
+            foreach (BaseState state in states)
             {
-                foreach (BaseState state in states)
+                if (state.Enter())
                 {
-                    if (state.Enter())
-                    {
-                        currMoveState = state.myStateType;
-                        currentState = state;
-                    }
+                    currMoveState = state.myStateType;
+                    currentState = state;
                 }
             }
-            //Debug.Log(currMoveState);
-            currentState.Run();
         }
+        //Debug.Log(currMoveState);
+        currentState.Run();
         if (Input.GetKeyDown("escape"))
             Cursor.lockState = CursorLockMode.None;
     }
 
     private void FixedUpdate()
     {
-        if (onGravityMultiplier)
+        if (MultiplyGravity)
         {
             if (rgdBody.velocity.y < 0 || rgdBody.velocity.y > 0 && !Input.GetButton("Jump") || ForceGravity && rgdBody.velocity.y > 0)
             {
@@ -194,7 +194,7 @@ public class PlayerController : MonoBehaviour
         if (input)
         {
             capsule.height = 1;
-            onGravityMultiplier = true;
+            MultiplyGravity = true;
             GetComponentInChildren<CameraControls>().CrouchCam();
         }
         else if (Crouch)
@@ -225,7 +225,7 @@ public class PlayerController : MonoBehaviour
             if (!onTop)
             {
                 capsule.height = 2;
-                onGravityMultiplier = false;
+                MultiplyGravity = false;
                 GetComponentInChildren<CameraControls>().StandCam();
             }
             else
@@ -255,7 +255,7 @@ public class PlayerController : MonoBehaviour
         onForwardWall = Physics.Raycast(ray.origin, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);
     }
 
-    public void UpdateRays()
+    public void ExtraUpdateRays()
     {
         if (!onLeftWall && !onRightWall)
         {

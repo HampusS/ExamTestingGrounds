@@ -29,7 +29,7 @@ public class AirState : BaseState
     {
         if (init)
         {
-            controller.onGravityMultiplier = true;
+            controller.MultiplyGravity = true;
             rgdBody.useGravity = true;
         }
         Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
