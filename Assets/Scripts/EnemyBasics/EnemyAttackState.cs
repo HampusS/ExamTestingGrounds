@@ -30,12 +30,10 @@ public class EnemyAttackState : EnemyBase {
 
     public override void Run()
     {
-        Debug.Log(timer);
         if(controller.damaged)
         {
             timer = 0;
             controller.damaged = false;
-            Debug.Log("DAMAGED");
         }
         Vector3 lookat = controller.playerControl.transform.position - transform.position;
         lookat = Vector3.ProjectOnPlane(lookat, Vector3.up);

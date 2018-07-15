@@ -15,9 +15,7 @@ public class ShopController : MonoBehaviour
     [SerializeField]
     GameObject ShopCanvas;
     [SerializeField]
-    GameObject WeaponsCanvas;
-    [SerializeField]
-    GameObject AbilitiesCanvas;
+    GameObject UpgradesCanvas;
 
     [SerializeField]
     Text currencyText;
@@ -49,7 +47,7 @@ public class ShopController : MonoBehaviour
         {
             Vector3 newPos = new Vector3(shopKeeper.position.x - player.transform.position.x, 0, shopKeeper.position.z - player.transform.position.z).normalized;
             player.transform.position = shopKeeper.position + (newPos * 99);
-            player.transform.position += Vector3.up * 0.49f;
+            //player.transform.position += Vector3.up * 0.05f;
             //player.transform.rotation = Quaternion.LookRotation(-newPos);
         }
     }
@@ -122,23 +120,15 @@ public class ShopController : MonoBehaviour
         ExitShop();
     }
 
-    public void BuyWeapons()
+    public void ShowUpgrades()
     {
-        AbilitiesCanvas.SetActive(false);
-        WeaponsCanvas.SetActive(true);
-    }
-
-    public void BuyAbilities()
-    {
-        AbilitiesCanvas.SetActive(true);
-        WeaponsCanvas.SetActive(false);
+        UpgradesCanvas.SetActive(true);
     }
 
     public void ExitShop()
     {
         ActivateShop(false);
-        AbilitiesCanvas.SetActive(false);
-        WeaponsCanvas.SetActive(false);
+        UpgradesCanvas.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
     }
 }

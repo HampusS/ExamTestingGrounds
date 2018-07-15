@@ -855,7 +855,7 @@ Prefab:
     - target: {fileID: 195489252610505342, guid: 37c77b4bd2f0bed4eb8117c587c33658,
         type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114075156661814960, guid: 37c77b4bd2f0bed4eb8117c587c33658,
         type: 2}
@@ -871,6 +871,11 @@ Prefab:
         type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 54140321612774416, guid: 37c77b4bd2f0bed4eb8117c587c33658,
+        type: 2}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37c77b4bd2f0bed4eb8117c587c33658, type: 2}
@@ -4377,7 +4382,7 @@ Transform:
   - {fileID: 1791138539}
   - {fileID: 1737525183}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &959584326
 GameObject:
@@ -4664,7 +4669,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1050012537
 GameObject:
@@ -5685,7 +5690,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh7060
+  m_Name: pb_Mesh17988
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -5878,7 +5883,7 @@ GameObject:
   - component: {fileID: 1531088031}
   - component: {fileID: 1531088030}
   m_Layer: 5
-  m_Name: WeaponsButton
+  m_Name: UpgradesButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5943,7 +5948,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1737525184}
-        m_MethodName: BuyWeapons
+        m_MethodName: ShowUpgrades
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6020,6 +6025,48 @@ Transform:
   m_Father: {fileID: 351060446}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 23.601002, y: 4.438, z: 57.677002}
+--- !u!1001 &1577463378
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4671352216121904, guid: b802860959b8b3c4f830078c000e98c0, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -76.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671352216121904, guid: b802860959b8b3c4f830078c000e98c0, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 6.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671352216121904, guid: b802860959b8b3c4f830078c000e98c0, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671352216121904, guid: b802860959b8b3c4f830078c000e98c0, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671352216121904, guid: b802860959b8b3c4f830078c000e98c0, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671352216121904, guid: b802860959b8b3c4f830078c000e98c0, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671352216121904, guid: b802860959b8b3c4f830078c000e98c0, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671352216121904, guid: b802860959b8b3c4f830078c000e98c0, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b802860959b8b3c4f830078c000e98c0, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &1592866474
 GameObject:
   m_ObjectHideFlags: 0
@@ -6283,8 +6330,7 @@ MonoBehaviour:
   lookHere: {fileID: 354984108}
   shopPivot: {fileID: 1752891524}
   ShopCanvas: {fileID: 142485634}
-  WeaponsCanvas: {fileID: 1952058726}
-  AbilitiesCanvas: {fileID: 0}
+  UpgradesCanvas: {fileID: 1952058726}
   currencyText: {fileID: 936348391}
   custCam: {fileID: 0}
   shopMenu: {fileID: 142485634}
