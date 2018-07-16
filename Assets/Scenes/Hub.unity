@@ -894,7 +894,17 @@ Prefab:
       objectReference: {fileID: 1737525183}
     - target: {fileID: 1507369067026634, guid: 37c77b4bd2f0bed4eb8117c587c33658, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114620755385128362, guid: 37c77b4bd2f0bed4eb8117c587c33658,
+        type: 2}
+      propertyPath: Loot
+      value: 
+      objectReference: {fileID: 1054677656}
+    - target: {fileID: 114620755385128362, guid: 37c77b4bd2f0bed4eb8117c587c33658,
+        type: 2}
+      propertyPath: money
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 23459762732888900, guid: 37c77b4bd2f0bed4eb8117c587c33658, type: 2}
@@ -4723,6 +4733,11 @@ Transform:
   m_Father: {fileID: 1562310261}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -2.055, y: 34.260002, z: -54.394}
+--- !u!1 &1054677656 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1270315562698568, guid: b802860959b8b3c4f830078c000e98c0,
+    type: 2}
+  m_PrefabInternal: {fileID: 1513050011}
 --- !u!1 &1119550570
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour
     public Animator anim;
     public GameObject DeathEffect;
     public bool damaged { get; set; }
-    
+
     public Rigidbody rgdBody { get; set; }
     public float health = 2;
     float startHealth;
@@ -32,6 +32,10 @@ public class EnemyController : MonoBehaviour
     public PlayerController playerControl { get; set; }
 
     public Vector3 Destination { get; set; }
+    [SerializeField]
+    GameObject Loot;
+    [SerializeField]
+    int money;
 
     private void Awake()
     {
@@ -100,9 +104,14 @@ public class EnemyController : MonoBehaviour
 
     public void KillMe()
     {
-        GameObject clone = Instantiate(DeathEffect, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+        GameObject deathParticles = Instantiate(DeathEffect, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+        playerControl.Currency += money;
+        float rand = Random.Range(0f, 1f);
+        Debug.Log(rand);
+        if (rand <= 0.25f)
+            Instantiate(Loot, transform.position, transform.rotation);
         Destroy(gameObject);
-        Destroy(clone, 5);
+        Destroy(deathParticles, 5);
     }
 
     public bool isAlive()
