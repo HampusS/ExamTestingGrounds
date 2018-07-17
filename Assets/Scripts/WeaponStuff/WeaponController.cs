@@ -72,11 +72,11 @@ public class WeaponController : MonoBehaviour {
         if(previousWeapon != weaponIndex)
         {
             //SHEATH CURRENT WEAPON AND AT THE END OF ANIMATION CALL FOR WEAPON SWITCH
-            WeaponSelection();
+            currWeapon.SwapWeapon();
         }
     }
 
-    void WeaponSelection()
+    public void WeaponSelection()
     {
         int i = 0;
         foreach (GameObject weapon in weapons)
@@ -85,6 +85,7 @@ public class WeaponController : MonoBehaviour {
             {
                 weapon.SetActive(true);
                 currWeapon = weapon.GetComponent<WeaponBase>();
+                currWeapon.SwappedWeapon();
             }
             else
                 weapon.SetActive(false);
@@ -100,5 +101,10 @@ public class WeaponController : MonoBehaviour {
     public void DisableHitbox()
     {
         currWeapon.DisableHitbox();
+    }
+
+    public void ResetAnimationSpeed()
+    {
+        currWeapon.ResetAnimationSpeed();
     }
 }

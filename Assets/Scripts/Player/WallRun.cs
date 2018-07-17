@@ -74,7 +74,7 @@ public class WallRun : BaseState
 
         if (WallRunAssisting)
         {
-            SnapToWall();
+            //SnapToWall();
             camControl.TurnToVector(new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z));
         }
 
@@ -114,6 +114,6 @@ public class WallRun : BaseState
     void SnapToWall()
     {
         snapPos = controller.HorizontalHit().point + (currNormal * controller.capsule.radius);
-        transform.position = Vector3.Lerp(transform.position, snapPos, Time.deltaTime * 5);
+        transform.position = Vector3.Lerp(transform.position, snapPos, Time.deltaTime * 2);
     }
 }

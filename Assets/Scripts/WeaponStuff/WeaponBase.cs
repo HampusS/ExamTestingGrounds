@@ -9,8 +9,8 @@ public abstract class WeaponBase : MonoBehaviour {
     protected float attackRate;
     [SerializeField]
     protected float damage;
-
     protected BoxCollider boxCollider;
+
     private void Start()
     {
         boxCollider = GetComponent<BoxCollider>();
@@ -35,5 +35,15 @@ public abstract class WeaponBase : MonoBehaviour {
     public virtual void DisableHitbox()
     {
         boxCollider.enabled = false;
+    }
+
+    public virtual void SwapWeapon()
+    {
+        animator.SetBool("Swap", true);
+    }
+
+    public virtual void SwappedWeapon()
+    {
+        animator.SetBool("Swap", false);
     }
 }

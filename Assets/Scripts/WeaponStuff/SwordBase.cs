@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class SwordBase : WeaponBase
 {
-    //private void Start()
-    //{
-    //    boxCollider = GetComponent<BoxCollider>();
-    //}
 
     public override void Execute()
     {
