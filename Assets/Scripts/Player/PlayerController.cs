@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
 
     // Animations
     public bool HideWeapon { get; set; }
-    public bool RunWeapon { get; set; }
+    public bool isRunning { get; set; }
 
     public bool isAlive()
     {

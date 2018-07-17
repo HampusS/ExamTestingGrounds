@@ -36,7 +36,7 @@ public class GroundState : BaseState
     {
         if (Input.GetButtonDown("Jump"))
             rgdBody.AddForce(transform.up * (controller.jumpHeight * 0.925f), ForceMode.VelocityChange);
-        controller.RunWeapon = false;
+        controller.isRunning = false;
 
         Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
         if (controller.LockMovement)
@@ -59,7 +59,7 @@ public class GroundState : BaseState
                 friction = new Vector3(-rgdBody.velocity.x, 0, -rgdBody.velocity.z) * frictionCoefficient * staticFrictionCoefficient;
             else
             {
-                controller.RunWeapon = true;
+                controller.isRunning = true;
                 friction = new Vector3(-rgdBody.velocity.x, 0, -rgdBody.velocity.z) * frictionCoefficient;
             }
 
