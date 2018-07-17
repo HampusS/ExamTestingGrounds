@@ -51,7 +51,10 @@ public class WallRun : BaseState
             {
                 if (Input.GetButton("Jump") || controller.prevMoveState == myStateType && !controller.onBottom)
                 {
-                    currNormal = controller.HorizontalHit().normal;
+                    if (controller.onLeftWall)
+                        currNormal = controller.leftHit.normal;
+                    else
+                        currNormal = controller.rightHit.normal;
                     if (currNormal != prevNormal)
                     {
                         init = true;
@@ -71,7 +74,6 @@ public class WallRun : BaseState
 
         if (WallRunAssisting)
         {
-            SupportRun();
             SnapToWall();
             camControl.TurnToVector(new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z));
         }
@@ -107,12 +109,6 @@ public class WallRun : BaseState
             return true;
         }
         return false;
-    }
-
-    void SupportRun()
-    {
-        if (!controller.onLeftWall && !controller.onRightWall)
-            controller.ExtraUpdateRays();
     }
 
     void SnapToWall()

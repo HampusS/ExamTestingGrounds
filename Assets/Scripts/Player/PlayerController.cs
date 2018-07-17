@@ -43,9 +43,19 @@ public class PlayerController : MonoBehaviour
     float invulnerableTimer = 0;
     float invulnerableLimit = 1.5f;
 
-    public RaycastHit HorizontalHit() { return horizHit; }
+    public RaycastHit HorizontalHit()
+    {
+        if (onRightWall)
+            return rightHit;
+        else if (onLeftWall)
+            return leftHit;
+        else if (onForwardWall)
+            return forwardHit;
+
+        return new RaycastHit();
+    }
     public RaycastHit BottomRayHit() { return bottomHit; }
-    RaycastHit bottomHit, horizHit;
+    public RaycastHit bottomHit, forwardHit, rightHit, leftHit;
     Rigidbody rgdBody;
     public CapsuleCollider capsule { get; set; }
 
@@ -110,7 +120,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        //Debug.Log(currMoveState);
         currentState.Run();
         if (Input.GetKeyDown("escape"))
             Cursor.lockState = CursorLockMode.None;
@@ -150,7 +159,6 @@ public class PlayerController : MonoBehaviour
                 flicker.ResetColor();
             }
         }
-
     }
 
     private void UpdateHudHp()
@@ -244,35 +252,14 @@ public class PlayerController : MonoBehaviour
 
         //Left
         Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.red);
-        onLeftWall = Physics.Raycast(ray.origin, -transform.right, out horizHit, rayLengthHorizontal, wallLayer);
+        onLeftWall = Physics.Raycast(ray.origin, -transform.right, out leftHit, rayLengthHorizontal, wallLayer);
 
         //Right
         Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.red);
-        onRightWall = Physics.Raycast(ray.origin, transform.right, out horizHit, rayLengthHorizontal, wallLayer);
+        onRightWall = Physics.Raycast(ray.origin, transform.right, out rightHit, rayLengthHorizontal, wallLayer);
 
         //Forward
         Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.red);
-        onForwardWall = Physics.Raycast(ray.origin, transform.forward, out horizHit, rayLengthHorizontal, wallLayer);
-    }
-
-    public void ExtraUpdateRays()
-    {
-        if (!onLeftWall && !onRightWall)
-        {
-            Ray ray = new Ray(transform.position, Vector3.down);
-
-            Debug.DrawRay(ray.origin, (-transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.red);
-            Debug.DrawRay(ray.origin, (transform.right + -transform.forward).normalized * rayLengthHorizontal, Color.red);
-            onLeftWall = Physics.Raycast(ray.origin, (-transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
-            onRightWall = Physics.Raycast(ray.origin, (transform.right + -transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
-
-            if (!onLeftWall && !onRightWall)
-            {
-                Debug.DrawRay(ray.origin, (-transform.right + transform.forward).normalized * rayLengthHorizontal, Color.red);
-                Debug.DrawRay(ray.origin, (transform.right + transform.forward).normalized * rayLengthHorizontal, Color.red);
-                onLeftWall = Physics.Raycast(ray.origin, (-transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
-                onRightWall = Physics.Raycast(ray.origin, (transform.right + transform.forward).normalized, out horizHit, rayLengthHorizontal, wallLayer);
-            }
-        }
+        onForwardWall = Physics.Raycast(ray.origin, transform.forward, out forwardHit, rayLengthHorizontal, wallLayer);
     }
 }
