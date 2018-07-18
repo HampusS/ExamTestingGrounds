@@ -9,10 +9,11 @@ public class LedgeGrab : BaseState
     bool onMoveUp;
     bool init = true;
     public float climbSpeed = 4;
-
+    bool wasOnLedge;
     Vector3 targetPos;
-    Vector3 posToDown;
+    Vector3 posToGround;
     Vector3 posToForward;
+
 
     void Start()
     {
@@ -27,11 +28,16 @@ public class LedgeGrab : BaseState
         controller.MultiplyGravity = false;
         rgdBody.velocity = Vector3.zero;
         init = false;
+        wasOnLedge = true;
+        currNormal = controller.forwardHit.normal;
+        currPoint = controller.forwardHit.point;
     }
 
     public override bool Enter()
     {
-        if (inReachOfLedge())
+        if (controller.onBottom)
+            wasOnLedge = false;
+        if (inReachOfLedge() && !wasOnLedge)
         {
             init = true;
             return true;
@@ -41,11 +47,16 @@ public class LedgeGrab : BaseState
 
     public override void Run()
     {
-        if(init)
+        if (init)
             Initialize();
         CheckForInput();
+        SnapToWall();
         if (onTryClimbUp)
             ClimbUp();
+        Debug.DrawRay(posToGround, Vector3.down, Color.red);
+        Debug.DrawRay(posToForward, transform.forward, Color.green);
+        Debug.DrawRay(posToGround, Vector3.up, Color.red);
+        snapStrength = 10;
     }
 
     public override bool Exit()
@@ -69,10 +80,10 @@ public class LedgeGrab : BaseState
     {
         float forward = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetButton("Jump") || forward > 0)
+        if (Input.GetButtonDown("Jump") && controller.onForwardWall || forward > 0 && controller.onForwardWall)
         {
             onTryClimbUp = true;
-            posToDown = new Vector3(transform.localPosition.x - (controller.HorizontalHit().normal.x * 1.25f), transform.position.y + 1, transform.localPosition.z - (controller.HorizontalHit().normal.z * 1.25f));
+            posToGround = new Vector3(transform.localPosition.x - (controller.forwardHit.normal.x), transform.position.y + 1, transform.localPosition.z - (controller.forwardHit.normal.z));
             posToForward = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
         }
         else if (Input.GetButtonDown("Jump") && !controller.onForwardWall)
@@ -80,10 +91,20 @@ public class LedgeGrab : BaseState
             Vector3 result = (transform.up + transform.forward).normalized;
             rgdBody.velocity = result * controller.jumpStrength;
             onLedge = false;
+            wasOnLedge = false;
         }
 
-        if (forward < 0 || !controller.onForwardWall && !onTryClimbUp)
+        if (forward < 0)
             onLedge = false;
+
+    }
+
+    protected override void SnapToWall()
+    {
+        if (onLedge && wasOnLedge && !onMoveUp)
+        {
+            base.SnapToWall();
+        }
     }
 
     public void ClimbUp()
@@ -93,12 +114,13 @@ public class LedgeGrab : BaseState
             if (!onMoveUp)
             {
                 RaycastHit groundHit;
-                bool freeLedge = !Physics.Raycast(posToForward, transform.forward, 1f);
-                bool onToGround = Physics.Raycast(posToDown, Vector3.down, out groundHit, 1f);
+                bool freeInfront = !Physics.Raycast(posToForward, transform.forward, 1f);
+                bool freeAbove = !Physics.Raycast(posToGround, Vector3.up, 1f);
+                bool onToGround = Physics.Raycast(posToGround, Vector3.down, out groundHit, 1f);
 
-                if (freeLedge && onToGround)
+                if (freeInfront && freeAbove && onToGround)
                 {
-                    targetPos = new Vector3(posToDown.x, groundHit.point.y + 1.15f, posToDown.z);
+                    targetPos = new Vector3(posToGround.x, groundHit.point.y + 1.15f, posToGround.z);
                     onMoveUp = true;
                     rgdBody.isKinematic = true;
                     GetComponent<CapsuleCollider>().enabled = false;

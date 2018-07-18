@@ -107,7 +107,7 @@ public class EnemyController : MonoBehaviour
         GameObject deathParticles = Instantiate(DeathEffect, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
         playerControl.Currency += money;
         float rand = Random.Range(0f, 1f);
-        Debug.Log(rand);
+
         if (rand <= 0.25f)
             Instantiate(Loot, transform.position, transform.rotation);
         Destroy(gameObject);

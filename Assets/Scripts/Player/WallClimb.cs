@@ -9,13 +9,14 @@ public class WallClimb : BaseState
     bool initOnce;
     bool turning;
     bool exit;
-    Vector3 prevNormal, currNormal;
+    Vector3 prevNormal;
     CameraControls camControl;
 
     void Start()
     {
         myStateType = MoveStates.WALLCLIMB;
         camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
+        snapStrength = 10;
     }
 
     private void InitializeRun()
@@ -41,7 +42,7 @@ public class WallClimb : BaseState
 
         if (controller.onForwardWall && !inReachOfLedge() && Vector3.Dot(controller.HorizontalHit().normal, transform.forward) < -0.9f)
         {
-            currNormal = controller.HorizontalHit().normal;
+            currNormal = controller.HorizontalHit().normal;            
             if (currNormal != prevNormal && Input.GetButton("Jump"))
             {
                 initOnce = true;
@@ -57,6 +58,7 @@ public class WallClimb : BaseState
         InitializeRun();
         if (!turning)
         {
+            SnapToWall();
             if (timer >= timeBeforeFall)
                 rgdBody.useGravity = true;
 
@@ -101,6 +103,10 @@ public class WallClimb : BaseState
         return false;
     }
 
-
+    protected override void SnapToWall()
+    {
+        currPoint = controller.HorizontalHit().point;
+        base.SnapToWall();
+    }
 
 }

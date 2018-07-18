@@ -60,7 +60,7 @@ public class EnemyAttackState : EnemyBase {
 
     void Attack()
     {
-        if (!controller.playerControl.isDamaged)
+        if (!controller.playerControl.isInvulnerable)
         {
             controller.anim.SetTrigger("Hit");
             controller.playerControl.KnockBack((controller.playerControl.transform.position - transform.position).normalized, knockBackStrength);

@@ -14,8 +14,7 @@ public class FlickerHealth : MonoBehaviour
     Color startColor;
     [SerializeField]
     Color targetColor;
-
-    bool lowerIntensity;
+    float flickerSpeed = 4;
 
     // Use this for initialization
     void Start()
@@ -26,20 +25,8 @@ public class FlickerHealth : MonoBehaviour
 
     public void FlickerHp()
     {
-        if (lowerIntensity)
-        {
-            hpText.color = Color.Lerp(hpText.color, targetColor, Time.deltaTime * 40);
-            hpImg.color = hpText.color;
-            if (hpText.color == targetColor)
-                lowerIntensity = false;
-        }
-        else if (!lowerIntensity)
-        {
-            hpText.color = Color.Lerp(hpText.color, startColor, Time.deltaTime * 40);
-            hpImg.color = hpText.color;
-            if (hpText.color == startColor)
-                lowerIntensity = true;
-        }
+        hpText.color = new Color(targetColor.r, targetColor.g, targetColor.b, Mathf.PingPong(Time.time * flickerSpeed, 1));
+        hpImg.color = hpText.color;
     }
 
     public void ResetColor()

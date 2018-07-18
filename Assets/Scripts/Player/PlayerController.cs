@@ -43,6 +43,9 @@ public class PlayerController : MonoBehaviour
     float invulnerableTimer = 0;
     float invulnerableLimit = 1.5f;
 
+    public bool CanJump { get; set; }
+
+
     public RaycastHit HorizontalHit()
     {
         if (onRightWall)
@@ -66,7 +69,7 @@ public class PlayerController : MonoBehaviour
     float lerpHp = 100;
     float Health = 100;
     float maxHp;
-    public bool isDamaged { get; set; }
+    public bool isInvulnerable { get; set; }
     public Text hpText;
     FlickerHealth flicker;
 
@@ -103,11 +106,14 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+            isInvulnerable = true;
         RayTrace();
         Crouching();
-        Invulnerable();
         UpdateHudHp();
+        Invulnerable();
         PlayerDeath();
+
         prevMoveState = currMoveState;
         if (currentState.Exit())
         {
@@ -123,6 +129,15 @@ public class PlayerController : MonoBehaviour
         currentState.Run();
         if (Input.GetKeyDown("escape"))
             Cursor.lockState = CursorLockMode.None;
+        if (isInvulnerable)
+            Debug.Log("INVULN " + Time.time);
+
+        if (CanJump && Input.GetButtonDown("Jump"))
+        {
+            rgdBody.velocity = new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z);
+            rgdBody.AddForce(transform.up * (jumpHeight * 0.925f), ForceMode.VelocityChange);
+            CanJump = false;
+        }
     }
 
     private void FixedUpdate()
@@ -146,19 +161,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Invulnerable()
+    public void Invulnerable()
     {
-        if (isDamaged)
+        if (isInvulnerable)
         {
             invulnerableTimer += Time.deltaTime;
             flicker.FlickerHp();
             if (invulnerableTimer > invulnerableLimit)
             {
-                isDamaged = false;
+                isInvulnerable = false;
                 invulnerableTimer = 0;
                 flicker.ResetColor();
             }
         }
+    }
+
+    public void CancelInvulnerability()
+    {
+        invulnerableTimer = invulnerableLimit;
     }
 
     private void UpdateHudHp()
@@ -183,7 +203,7 @@ public class PlayerController : MonoBehaviour
     public void DamagePlayer(float amount)
     {
         GetComponentInChildren<CamStates>().onShake = true;
-        isDamaged = true;
+        isInvulnerable = true;
         if (Health > 0 && Health - amount < 0)
             Health = 0;
         else

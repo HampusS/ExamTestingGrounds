@@ -7,6 +7,9 @@ abstract public class BaseState : MonoBehaviour
     public MoveStates myStateType { get; set; }
     protected PlayerController controller;
     protected Rigidbody rgdBody;
+    protected Vector3 currNormal;
+    protected Vector3 currPoint;
+    protected float snapStrength = 1;
 
     private void Awake()
     {
@@ -37,4 +40,10 @@ abstract public class BaseState : MonoBehaviour
         return false;
     }
     
+    protected virtual void SnapToWall()
+    {
+        Vector3 snapPos = currPoint + (currNormal * controller.capsule.radius);
+        transform.position = Vector3.Lerp(transform.position, snapPos, Time.deltaTime * snapStrength);
+    }
+
 }

@@ -7,7 +7,6 @@ public class AirState : BaseState
     public float airResistance = 3;
     public float airSpeed = 5;
     Vector3 drag;
-
     bool init = true;
 
     void Start()
@@ -32,6 +31,7 @@ public class AirState : BaseState
             controller.MultiplyGravity = true;
             rgdBody.useGravity = true;
         }
+
         Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
         rgdBody.AddForce(direction * airSpeed, ForceMode.Acceleration);
 

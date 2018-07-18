@@ -6,10 +6,11 @@ public class GroundState : BaseState
 {
     public float frictionCoefficient = 4;
     public float staticFrictionCoefficient = 4;
+    float coyoteTime, coyoteLimit = 0.45f;
 
     Vector3 friction;
     CamStates camTilt;
-    
+
     private void Start()
     {
         myStateType = MoveStates.GROUND;
@@ -21,21 +22,32 @@ public class GroundState : BaseState
         if (controller.onBottom)
         {
             // New Entry on ground
-            if (controller.prevMoveState != myStateType && controller.prevMoveState != MoveStates.LEDGEGRAB)
+            if (controller.prevMoveState != myStateType)
             {
-                camTilt.onBump = true;
-                controller.ForceGravity = false;
-                rgdBody.velocity += new Vector3(-rgdBody.velocity.x * 0.5f, 0, -rgdBody.velocity.z * 0.5f);
+                controller.CanJump = true;
+                coyoteTime = 0;
+                if (controller.prevMoveState != MoveStates.LEDGEGRAB)
+                {
+                    camTilt.onBump = true;
+                    controller.ForceGravity = false;
+                    rgdBody.velocity += new Vector3(-rgdBody.velocity.x * 0.5f, 0, -rgdBody.velocity.z * 0.5f);
+                }
             }
             return true;
+        }
+        else if (controller.CanJump)
+        {
+            coyoteTime += Time.deltaTime;
+            if (coyoteTime >= coyoteLimit)
+            {
+                controller.CanJump = false;
+            }
         }
         return false;
     }
 
     public override void Run()
     {
-        if (Input.GetButtonDown("Jump"))
-            rgdBody.AddForce(transform.up * (controller.jumpHeight * 0.925f), ForceMode.VelocityChange);
         controller.isRunning = false;
 
         Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
@@ -45,7 +57,10 @@ public class GroundState : BaseState
         if (controller.Crouch)
         {
             if (rgdBody.velocity.magnitude > controller.crouchSpeed)
+            {
                 friction = new Vector3(-rgdBody.velocity.x, 0, -rgdBody.velocity.z) * 0.25f;
+
+            }
             else
             {
                 friction = new Vector3(-rgdBody.velocity.x, 0, -rgdBody.velocity.z) * frictionCoefficient;
@@ -63,11 +78,11 @@ public class GroundState : BaseState
                 friction = new Vector3(-rgdBody.velocity.x, 0, -rgdBody.velocity.z) * frictionCoefficient;
             }
 
-            if (controller.BottomRayHit().normal != Vector3.up)
-            {
-                direction = Vector3.ProjectOnPlane(direction, controller.BottomRayHit().normal);
-                friction = Vector3.ProjectOnPlane(friction, controller.BottomRayHit().normal);
-            }
+            //if (controller.BottomRayHit().normal != Vector3.up)
+            //{
+            //    direction = Vector3.ProjectOnPlane(direction, controller.BottomRayHit().normal);
+            //    friction = Vector3.ProjectOnPlane(friction, controller.BottomRayHit().normal);
+            //}
             rgdBody.AddForce(direction * controller.moveSpeed, ForceMode.Acceleration);
             rgdBody.AddForce(friction, ForceMode.Acceleration);
         }

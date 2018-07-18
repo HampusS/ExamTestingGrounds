@@ -13,7 +13,7 @@ public class WallRun : BaseState
 
     bool init = false;
 
-    Vector3 prevNormal, currNormal, snapPos;
+    Vector3 prevNormal;
     CamStates camTilt;
     CameraControls camControl;
 
@@ -22,20 +22,27 @@ public class WallRun : BaseState
         myStateType = MoveStates.WALLRUN;
         camTilt = Camera.main.GetComponent<CamStates>();
         camControl = Camera.main.transform.parent.gameObject.GetComponent<CameraControls>();
+        snapStrength = 2;
     }
 
     void InitializeRun()
     {
-        Vector3 result = (transform.forward + (transform.up * 0.1f)).normalized * controller.jumpStrength * jumpStrengthMultiplier;
+        Vector3 result;
+        if (prevNormal == Vector3.zero)
+        {
+            result = (transform.forward + (transform.up * 0.1f)).normalized * controller.jumpStrength * jumpStrengthMultiplier;
+            timer = 0;
+        }
+        else
+            result = transform.forward * controller.jumpStrength * jumpStrengthMultiplier;
         rgdBody.velocity = Vector3.ProjectOnPlane(result, controller.HorizontalHit().normal);
         controller.MultiplyGravity = false;
         rgdBody.useGravity = false;
         exit = false;
-        timer = 0;
         camTilt.ResetCamera();
         if (controller.onLeftWall)
             camTilt.onRight = true;
-        else if (controller.onRightWall)
+        else
             camTilt.onLeft = true;
         init = false;
     }
@@ -49,7 +56,7 @@ public class WallRun : BaseState
         {
             if (Vector3.Dot(transform.forward, rgdBody.velocity.normalized) > 0)
             {
-                if (Input.GetButton("Jump") || controller.prevMoveState == myStateType && !controller.onBottom)
+                if (Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") > 0 || controller.prevMoveState == myStateType && !controller.onBottom)
                 {
                     if (controller.onLeftWall)
                         currNormal = controller.leftHit.normal;
@@ -74,7 +81,7 @@ public class WallRun : BaseState
 
         if (WallRunAssisting)
         {
-            //SnapToWall();
+            SnapToWall();
             camControl.TurnToVector(new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z));
         }
 
@@ -82,6 +89,7 @@ public class WallRun : BaseState
         {
             Vector3 result = (transform.forward + transform.up * 0.5f + controller.HorizontalHit().normal * 1.35f);
             rgdBody.velocity = result.normalized * controller.jumpStrength * jumpStrengthMultiplier;
+            timer = 0;
             exit = true;
         }
 
@@ -93,6 +101,7 @@ public class WallRun : BaseState
 
         if (!controller.onLeftWall && !controller.onRightWall ||
             controller.onBottom && rgdBody.velocity.y < 0 ||
+            !Input.GetButton("Jump") && Input.GetAxisRaw("Vertical") <= 0 ||
             Input.GetAxisRaw("Vertical") < 0)
             exit = true;
         timer += Time.deltaTime;
@@ -111,9 +120,12 @@ public class WallRun : BaseState
         return false;
     }
 
-    void SnapToWall()
+    protected override void SnapToWall()
     {
-        snapPos = controller.HorizontalHit().point + (currNormal * controller.capsule.radius);
-        transform.position = Vector3.Lerp(transform.position, snapPos, Time.deltaTime * 2);
+        if (controller.onLeftWall || controller.onRightWall)
+        {
+            currPoint = controller.HorizontalHit().point;
+            base.SnapToWall();
+        }
     }
 }

@@ -35,16 +35,21 @@ public class HealthPack : MonoBehaviour
         }
     }
 
+    public void PickedUp()
+    {
+        used = true;
+        canvasText.gameObject.SetActive(true);
+        canvasText.text = "+" + Amount;
+        canvasText.color = startColor;
+        player.AddHealth(Amount);
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (!used && other.tag == "Player")
         {
-            used = true;
-            canvasText.gameObject.SetActive(true);
-            canvasText.text = "+" + Amount;
-            canvasText.color = startColor;
-            player.AddHealth(Amount);
-            gameObject.GetComponent<MeshRenderer>().enabled = false;
+            PickedUp();
         }
     }
 }
