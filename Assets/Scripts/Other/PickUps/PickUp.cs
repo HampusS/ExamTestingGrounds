@@ -5,15 +5,10 @@ using UnityEngine;
 public class PickUp : MonoBehaviour
 {
     public Transform target;
-    protected float dragRange = 6;
-    protected float dragSpeed = 15;
-    // Use this for initialization
-    void Start()
-    {
+    public float dragRange = 6;
+    public float dragSpeed = 25;
 
-    }
-
-    public void DragToPlayer(Transform target)
+    public void DragToTarget(Transform target)
     {
         float distance = Vector3.Distance(target.position, transform.position);
 
@@ -29,6 +24,6 @@ public class PickUp : MonoBehaviour
     private void Update()
     {
         if (target != null)
-            DragToPlayer(target);
+            DragToTarget(target);
     }
 }

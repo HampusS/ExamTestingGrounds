@@ -83,6 +83,7 @@ public class EnemyController : MonoBehaviour
 
     public void Damage(float amount)
     {
+        // PLAY HIT SOUND (& HIT ANIMATION?)
         if (health > 0 && health - amount <= 0)
             health = 0;
         else
@@ -110,7 +111,7 @@ public class EnemyController : MonoBehaviour
 
         if (rand <= 0.25f)
             Instantiate(Loot, transform.position, transform.rotation);
-        Destroy(gameObject);
+        Destroy(gameObject, 0.1f);
         Destroy(deathParticles, 5);
     }
 
