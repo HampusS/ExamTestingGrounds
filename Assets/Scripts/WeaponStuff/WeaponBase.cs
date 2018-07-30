@@ -10,10 +10,12 @@ public abstract class WeaponBase : MonoBehaviour {
     [SerializeField]
     protected float damage;
     protected BoxCollider boxCollider;
+    protected AudioM audioM;
 
     private void Start()
     {
         boxCollider = GetComponent<BoxCollider>();
+        audioM = FindObjectOfType<AudioM>();
     }
 
     public abstract void Execute();

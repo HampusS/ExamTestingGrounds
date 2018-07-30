@@ -79,6 +79,10 @@ public class PlayerController : MonoBehaviour
     public bool HideWeapon { get; set; }
     public bool isRunning { get; set; }
 
+    public AudioM audioM { get; private set; }
+
+
+
     public bool isAlive()
     {
         return Health != 0;
@@ -102,6 +106,7 @@ public class PlayerController : MonoBehaviour
         LockMovement = false;
         hpText.text = lerpHp.ToString();
         maxHp = Health;
+        audioM = FindObjectOfType<AudioM>();
     }
 
     void Update()
@@ -137,7 +142,20 @@ public class PlayerController : MonoBehaviour
             rgdBody.velocity = new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z);
             rgdBody.AddForce(transform.up * (jumpHeight * 0.925f), ForceMode.VelocityChange);
             CanJump = false;
+            audioM.Stop("running");
         }
+
+        if (isRunning && onBottom)
+        {
+            Sound s = audioM.FindSound("step");
+            if (!s.source.isPlaying)
+            {
+                s.source.pitch = Random.Range(2f, 2.5f);
+                s.source.volume = Random.Range(0.1f, 0.3f);
+                s.source.Play();
+            }
+        }
+
     }
 
     private void FixedUpdate()

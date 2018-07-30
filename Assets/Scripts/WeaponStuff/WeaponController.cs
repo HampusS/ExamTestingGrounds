@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponController : MonoBehaviour {
+public class WeaponController : MonoBehaviour
+{
     PlayerController player;
 
     WeaponBase currWeapon;
@@ -13,12 +14,13 @@ public class WeaponController : MonoBehaviour {
     [SerializeField]
     List<GameObject> weapons;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         player = FindObjectOfType<PlayerController>();
         WeaponSelection();
         enable = true;
-	}
+    }
 
     // Update is called once per frame
     void Update()
@@ -41,10 +43,11 @@ public class WeaponController : MonoBehaviour {
                 reset = false;
             }
 
-            if (player.isRunning)
-                currWeapon.Running();
-            else
-                currWeapon.StopRunning();
+            if (currWeapon != null)
+                if (player.isRunning)
+                    currWeapon.Running();
+                else
+                    currWeapon.StopRunning();
 
             ScrollThroughWeapons();
         }
@@ -69,7 +72,7 @@ public class WeaponController : MonoBehaviour {
                 weaponIndex--;
         }
 
-        if(previousWeapon != weaponIndex)
+        if (previousWeapon != weaponIndex)
         {
             //SHEATH CURRENT WEAPON AND AT THE END OF ANIMATION CALL FOR WEAPON SWITCH
             currWeapon.SwapWeapon();

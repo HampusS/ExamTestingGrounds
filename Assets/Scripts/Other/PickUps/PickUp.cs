@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class PickUp : MonoBehaviour
 {
-    public Transform target;
+    Transform target;
     public float dragRange = 6;
     public float dragSpeed = 25;
+
+    private void Start()
+    {
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+    }
 
     public void DragToTarget(Transform target)
     {

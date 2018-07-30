@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114073629361392572}
   - component: {fileID: 33167077896632838}
   - component: {fileID: 23426353144511700}
+  - component: {fileID: 114823355592728680}
   m_Layer: 0
   m_Name: HpUp
   m_TagString: Untagged
@@ -110,3 +111,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasText: {fileID: 0}
   Amount: 25
+--- !u!114 &114823355592728680
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1270315562698568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03f5613edf96c9e498ea5df8a545b9bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 4222903692774916, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
+  dragRange: 6
+  dragSpeed: 15

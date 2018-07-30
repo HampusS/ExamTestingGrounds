@@ -85,7 +85,10 @@ public class EnemyController : MonoBehaviour
     {
         // PLAY HIT SOUND (& HIT ANIMATION?)
         if (health > 0 && health - amount <= 0)
+        {
             health = 0;
+            FindObjectOfType<AudioM>().Play("explosion");
+        }
         else
             health -= amount;
         if (!damaged)
@@ -111,7 +114,8 @@ public class EnemyController : MonoBehaviour
 
         if (rand <= 0.25f)
             Instantiate(Loot, transform.position, transform.rotation);
-        Destroy(gameObject, 0.1f);
+
+        Destroy(gameObject);
         Destroy(deathParticles, 5);
     }
 

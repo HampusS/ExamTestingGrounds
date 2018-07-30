@@ -49,10 +49,12 @@ public class GroundState : BaseState
     public override void Run()
     {
         controller.isRunning = false;
-
+        
         Vector3 direction = transform.TransformDirection(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"))).normalized;
         if (controller.LockMovement)
             direction = Vector3.zero;
+        if (direction != Vector3.zero)
+            controller.isRunning = true;
 
         if (controller.Crouch)
         {
@@ -74,9 +76,9 @@ public class GroundState : BaseState
                 friction = new Vector3(-rgdBody.velocity.x, 0, -rgdBody.velocity.z) * frictionCoefficient * staticFrictionCoefficient;
             else
             {
-                controller.isRunning = true;
                 friction = new Vector3(-rgdBody.velocity.x, 0, -rgdBody.velocity.z) * frictionCoefficient;
             }
+
 
             //if (controller.BottomRayHit().normal != Vector3.up)
             //{
@@ -86,6 +88,7 @@ public class GroundState : BaseState
             rgdBody.AddForce(direction * controller.moveSpeed, ForceMode.Acceleration);
             rgdBody.AddForce(friction, ForceMode.Acceleration);
         }
+
     }
 
     public override bool Exit()

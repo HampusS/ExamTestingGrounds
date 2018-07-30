@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class HealthPack : MonoBehaviour
 {
     PlayerController player;
+    AudioM audioM;
     public Text canvasText;
     public float Amount;
     bool used;
@@ -17,32 +18,39 @@ public class HealthPack : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
-        startColor = canvasText.color;
+        audioM = FindObjectOfType<AudioM>();
+        if (canvasText != null)
+            startColor = canvasText.color;
     }
 
     private void Update()
     {
         if (used)
         {
-            canvasText.color = new Color(canvasText.color.r, canvasText.color.g, canvasText.color.b, Mathf.PingPong(Time.time * 2, 1));
-
             time += Time.deltaTime;
             if (time >= timer)
             {
-                canvasText.gameObject.SetActive(false);
+                if (canvasText != null)
+                    canvasText.gameObject.SetActive(false);
                 Destroy(gameObject);
             }
+            if (canvasText != null)
+                canvasText.color = new Color(canvasText.color.r, canvasText.color.g, canvasText.color.b, Mathf.PingPong(Time.time * 2, 1));
         }
     }
 
     public void PickedUp()
     {
         used = true;
-        canvasText.gameObject.SetActive(true);
-        canvasText.text = "+" + Amount;
-        canvasText.color = startColor;
+        if (canvasText != null)
+        {
+            canvasText.gameObject.SetActive(true);
+            canvasText.text = "+" + Amount;
+            canvasText.color = startColor;
+        }
         player.AddHealth(Amount);
         gameObject.GetComponent<MeshRenderer>().enabled = false;
+        audioM.Play("healthpickup");
     }
 
     private void OnTriggerEnter(Collider other)
