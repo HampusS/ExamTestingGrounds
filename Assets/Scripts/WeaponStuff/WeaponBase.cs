@@ -12,8 +12,17 @@ public abstract class WeaponBase : MonoBehaviour {
     protected BoxCollider boxCollider;
     protected AudioM audioM;
 
-    private void Start()
+    public enum WeaponType
     {
+        None,
+        Melee,
+        Range,
+    }
+    public WeaponType weaponType;
+
+    protected virtual void Start()
+    {
+        weaponType = WeaponType.None;
         boxCollider = GetComponent<BoxCollider>();
         audioM = FindObjectOfType<AudioM>();
     }
@@ -23,6 +32,8 @@ public abstract class WeaponBase : MonoBehaviour {
     public abstract void StopRunning();
     public abstract void Sheath();
     public abstract void Unsheath();
+    public abstract void SetWeaponType();
+    public abstract void ResetWeaponType();
 
     public virtual void ResetAnimationSpeed()
     {

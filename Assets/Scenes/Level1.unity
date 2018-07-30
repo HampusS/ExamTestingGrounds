@@ -2918,61 +2918,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 114075044730564068, guid: 360ec5bf603972641b631b9fc712d612,
-        type: 2}
-      propertyPath: sounds.Array.data[6].name
-      value: explosion
-      objectReference: {fileID: 0}
-    - target: {fileID: 114075044730564068, guid: 360ec5bf603972641b631b9fc712d612,
-        type: 2}
-      propertyPath: sounds.Array.data[6].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 893849df50e6fa24aac013a680bc6350, type: 3}
-    - target: {fileID: 114075044730564068, guid: 360ec5bf603972641b631b9fc712d612,
-        type: 2}
-      propertyPath: sounds.Array.data[3].name
-      value: step
-      objectReference: {fileID: 0}
-    - target: {fileID: 114075044730564068, guid: 360ec5bf603972641b631b9fc712d612,
-        type: 2}
-      propertyPath: sounds.Array.data[3].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 116fe1f849d801a479ab4240d2d04a83, type: 3}
-    - target: {fileID: 114075044730564068, guid: 360ec5bf603972641b631b9fc712d612,
-        type: 2}
-      propertyPath: sounds.Array.data[3].loop
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114075044730564068, guid: 360ec5bf603972641b631b9fc712d612,
-        type: 2}
-      propertyPath: sounds.Array.data[3].pitch
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114075044730564068, guid: 360ec5bf603972641b631b9fc712d612,
-        type: 2}
-      propertyPath: sounds.Array.data[4].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: b1c7adbe3d9bb47428c0669786fa0134, type: 3}
-    - target: {fileID: 114075044730564068, guid: 360ec5bf603972641b631b9fc712d612,
-        type: 2}
-      propertyPath: sounds.Array.data[4].pitch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114075044730564068, guid: 360ec5bf603972641b631b9fc712d612,
-        type: 2}
-      propertyPath: sounds.Array.data[4].volume
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114075044730564068, guid: 360ec5bf603972641b631b9fc712d612,
-        type: 2}
-      propertyPath: sounds.Array.data[5].pitch
-      value: 1.46
-      objectReference: {fileID: 0}
-    - target: {fileID: 114075044730564068, guid: 360ec5bf603972641b631b9fc712d612,
-        type: 2}
-      propertyPath: sounds.Array.data[2].pitch
-      value: 1.46
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 360ec5bf603972641b631b9fc712d612, type: 2}
   m_IsPrefabAsset: 0

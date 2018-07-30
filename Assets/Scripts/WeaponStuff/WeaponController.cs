@@ -20,6 +20,7 @@ public class WeaponController : MonoBehaviour
         player = FindObjectOfType<PlayerController>();
         WeaponSelection();
         enable = true;
+        currWeapon.GetComponent<WeaponBase>().SetWeaponType();
     }
 
     // Update is called once per frame
@@ -27,28 +28,29 @@ public class WeaponController : MonoBehaviour
     {
         if (enable)
         {
-            if (Input.GetMouseButtonDown(0) && !player.HideWeapon)
-            {
-                currWeapon.Execute();
-            }
-
-            if (player.HideWeapon && !reset)
-            {
-                currWeapon.Sheath();
-                reset = true;
-            }
-            else if (!player.HideWeapon && reset)
-            {
-                currWeapon.Unsheath();
-                reset = false;
-            }
-
             if (currWeapon != null)
+            {
+                if (Input.GetMouseButtonDown(0) && !player.HideWeapon)
+                {
+                    currWeapon.Execute();
+                }
+
+                if (player.HideWeapon && !reset)
+                {
+                    currWeapon.Sheath();
+                    reset = true;
+                }
+                else if (!player.HideWeapon && reset)
+                {
+                    currWeapon.Unsheath();
+                    reset = false;
+                }
+
                 if (player.isRunning)
                     currWeapon.Running();
                 else
                     currWeapon.StopRunning();
-
+            }
             ScrollThroughWeapons();
         }
     }
@@ -74,7 +76,6 @@ public class WeaponController : MonoBehaviour
 
         if (previousWeapon != weaponIndex)
         {
-            //SHEATH CURRENT WEAPON AND AT THE END OF ANIMATION CALL FOR WEAPON SWITCH
             currWeapon.SwapWeapon();
         }
     }
@@ -86,9 +87,12 @@ public class WeaponController : MonoBehaviour
         {
             if (i == weaponIndex)
             {
+                if (currWeapon != null)
+                    currWeapon.ResetWeaponType();
                 weapon.SetActive(true);
                 currWeapon = weapon.GetComponent<WeaponBase>();
                 currWeapon.SwappedWeapon();
+                currWeapon.SetWeaponType();
             }
             else
                 weapon.SetActive(false);
@@ -109,5 +113,10 @@ public class WeaponController : MonoBehaviour
     public void ResetAnimationSpeed()
     {
         currWeapon.ResetAnimationSpeed();
+    }
+
+    public void SpawnProjectile()
+    {
+
     }
 }

@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4555983779275198}
   - component: {fileID: 114075044730564068}
+  - component: {fileID: 114060094580074862}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -34,12 +35,23 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1210996384350338}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.008451, y: 4.49823, z: -116.54503}
+  m_LocalPosition: {x: 3.0084534, y: 4.49823, z: -116.54501}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114060094580074862
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1210996384350338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419897e554a41054e8dc2d1cfc31c294, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114075044730564068
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -67,38 +79,38 @@ MonoBehaviour:
   - name: healthpickup
     clip: {fileID: 8300000, guid: 9c347c0b362024b428df4034c27315d9, type: 3}
     volume: 1
-    pitch: 2.34
+    pitch: 1.46
     loop: 0
     source: {fileID: 0}
-  - name: running
-    clip: {fileID: 8300000, guid: 2bc9445f1b7cf474db94e20510d2f289, type: 3}
+  - name: step
+    clip: {fileID: 8300000, guid: 116fe1f849d801a479ab4240d2d04a83, type: 3}
     volume: 1
-    pitch: 0.94
-    loop: 1
+    pitch: 1.5
+    loop: 0
     source: {fileID: 0}
   - name: weaponswing
-    clip: {fileID: 8300000, guid: a6680ea145809dd41b29830450134d96, type: 3}
-    volume: 1
-    pitch: 0.94
+    clip: {fileID: 8300000, guid: b1c7adbe3d9bb47428c0669786fa0134, type: 3}
+    volume: 0.5
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: whack
     clip: {fileID: 8300000, guid: 4a18115016949d141825e9120ab8d0ad, type: 3}
     volume: 1
-    pitch: 0.94
+    pitch: 1.46
     loop: 0
     source: {fileID: 0}
-  - name: 'click '
-    clip: {fileID: 8300000, guid: a6680ea145809dd41b29830450134d96, type: 3}
+  - name: explosion
+    clip: {fileID: 8300000, guid: 893849df50e6fa24aac013a680bc6350, type: 3}
     volume: 1
     pitch: 0.94
     loop: 0
     source: {fileID: 0}
-  - name: 'click '
-    clip: {fileID: 8300000, guid: a6680ea145809dd41b29830450134d96, type: 3}
-    volume: 1
+  - name: miami
+    clip: {fileID: 8300000, guid: 8e3ce51dc48bd6d4e955a319679d07fa, type: 3}
+    volume: 0.38
     pitch: 0.94
-    loop: 0
+    loop: 1
     source: {fileID: 0}
   - name: 'click '
     clip: {fileID: 8300000, guid: a6680ea145809dd41b29830450134d96, type: 3}

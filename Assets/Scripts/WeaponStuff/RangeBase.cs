@@ -2,13 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwordBase : WeaponBase
-{
+public class RangeBase : WeaponBase {
+
+    protected override void Start()
+    {
+        base.Start();
+        weaponType = WeaponType.Range;
+    }
 
     public override void Execute()
     {
-        animator.SetTrigger("Execute");
+        animator.SetTrigger("ExecuteAttack");
         animator.speed = 1 - attackRate;
+    }
+
+    public override void SetWeaponType()
+    {
+        animator.SetBool("Range", true);
+    }
+
+    public override void ResetWeaponType()
+    {
+        animator.SetBool("Range", false);
     }
 
     public override void Running()
@@ -31,19 +46,8 @@ public class SwordBase : WeaponBase
         animator.SetBool("Sheath", false);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Enemy")
-        {
-            EnemyController temp = other.GetComponent<EnemyController>();
-            temp.Damage(damage);
-            temp.KnockBack(transform.position);
-        }
-    }
-
     public override void EnableHitbox()
     {
-        audioM.Play("weaponswing");
         base.EnableHitbox();
     }
 

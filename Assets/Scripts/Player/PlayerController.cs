@@ -134,15 +134,13 @@ public class PlayerController : MonoBehaviour
         currentState.Run();
         if (Input.GetKeyDown("escape"))
             Cursor.lockState = CursorLockMode.None;
-        if (isInvulnerable)
-            Debug.Log("INVULN " + Time.time);
 
         if (CanJump && Input.GetButtonDown("Jump"))
         {
             rgdBody.velocity = new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z);
             rgdBody.AddForce(transform.up * (jumpHeight * 0.925f), ForceMode.VelocityChange);
             CanJump = false;
-            audioM.Stop("running");
+            audioM.Stop("step");
         }
 
         if (isRunning && onBottom)
