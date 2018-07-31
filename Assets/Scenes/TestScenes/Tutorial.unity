@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 401522584}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.10063008, g: 0.114615686, b: 0.14001614, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3369,6 +3369,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4605125762544750, guid: f0dac457fbb65ab4abbdeb9900998792, type: 2}
       propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1520910184950354, guid: f0dac457fbb65ab4abbdeb9900998792, type: 2}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -18503,7 +18507,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &696784435
 Transform:
   m_ObjectHideFlags: 0
@@ -26829,6 +26833,8 @@ GameObject:
   - component: {fileID: 1002700264}
   - component: {fileID: 1002700263}
   - component: {fileID: 1002700262}
+  - component: {fileID: 1002700266}
+  - component: {fileID: 1002700265}
   m_Layer: 0
   m_Name: ThrowingDisk
   m_TagString: Untagged
@@ -26842,13 +26848,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1002700260}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.015, y: 0.037, z: 0.029}
+  m_LocalRotation: {x: 0.0062101297, y: 0.0014369182, z: -0.020911517, w: 0.999761}
+  m_LocalPosition: {x: -0.07400069, y: 0.059000272, z: 0.013003309}
   m_LocalScale: {x: 0.2027, y: 0.04904703, z: 0.2027}
   m_Children: []
   m_Father: {fileID: 961867208}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.71500003, y: 0.15, z: -2.3960001}
 --- !u!135 &1002700262
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -26903,6 +26909,32 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1002700260}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1002700265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1002700260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603c06bb6b67c514486f07fd8b06bb72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1002700266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1002700260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 912b3ffe69d2b2e4b8bbf8d544805db9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1004206952}
+  attackRate: 0
+  damage: 0
+  weaponType: 2
 --- !u!1 &1004206950
 GameObject:
   m_ObjectHideFlags: 0
@@ -34209,7 +34241,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1199350964
 Transform:
   m_ObjectHideFlags: 0
