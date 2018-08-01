@@ -122,7 +122,7 @@ public class WeaponController : MonoBehaviour
 
     }
 
-    public void Throw()
+    public void ThrowRecive()
     {
         thorwLogic.Update();
     }

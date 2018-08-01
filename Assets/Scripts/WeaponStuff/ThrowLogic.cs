@@ -15,14 +15,20 @@ public class ThrowLogic : MonoBehaviour{
 
 	public void Update () {
         if (transform.parent != null)
-            transform.parent = null;
+            Thorw();
         else
-        {
-            //lerp back to player in a cool manner
-
-        }
-
+            Retrive();
 	}
+    void Thorw()
+    {
+        transform.parent = null;
+
+        transform.Translate(Vector3.forward * Time.deltaTime);
+    }
+    void Retrive()
+    {
+
+    }
 
 
 }
