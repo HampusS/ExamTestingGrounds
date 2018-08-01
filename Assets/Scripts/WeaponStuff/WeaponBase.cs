@@ -15,8 +15,9 @@ public abstract class WeaponBase : MonoBehaviour {
     public enum WeaponType
     {
         None,
-        Melee,
-        Range,
+        Sword,
+        Disk,
+        Gun,
     }
     public WeaponType weaponType;
 

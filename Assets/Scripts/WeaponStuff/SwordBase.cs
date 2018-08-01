@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeBase : WeaponBase
+public class SwordBase : WeaponBase
 {
     protected override void Start()
     {
         base.Start();
-        weaponType = WeaponType.Melee;
+        weaponType = WeaponType.Sword;
     }
 
     public override void SetWeaponType()
     {
-        animator.SetBool("Melee", true);
+        animator.SetBool("Sword", true);
     }
 
     public override void ResetWeaponType()
     {
-        animator.SetBool("Melee", false);
+        animator.SetBool("Sword", false);
     }
 
     public override void Execute()

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangeBase : WeaponBase {
+public class DiskBase : WeaponBase {
 
     protected override void Start()
     {
         base.Start();
-        weaponType = WeaponType.Range;
+        weaponType = WeaponType.Disk;
     }
 
     public override void Execute()
@@ -18,12 +18,12 @@ public class RangeBase : WeaponBase {
 
     public override void SetWeaponType()
     {
-        animator.SetBool("Range", true);
+        animator.SetBool("Disk", true);
     }
 
     public override void ResetWeaponType()
     {
-        animator.SetBool("Range", false);
+        animator.SetBool("Disk", false);
     }
 
     public override void Running()

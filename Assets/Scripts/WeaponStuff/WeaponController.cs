@@ -7,6 +7,7 @@ public class WeaponController : MonoBehaviour
     PlayerController player;
 
     WeaponBase currWeapon;
+    ThrowLogic thorwLogic;
     bool reset = false;
     public bool enable { get; set; }
 
@@ -21,6 +22,7 @@ public class WeaponController : MonoBehaviour
         WeaponSelection();
         enable = true;
         currWeapon.GetComponent<WeaponBase>().SetWeaponType();
+        thorwLogic = new ThrowLogic();
     }
 
     // Update is called once per frame
@@ -129,5 +131,10 @@ public class WeaponController : MonoBehaviour
     public void EnableWeapon()
     {
         currWeapon.gameObject.SetActive(true);
+    }
+
+    public void ThrowRecive()
+    {
+        thorwLogic.Update();
     }
 }
