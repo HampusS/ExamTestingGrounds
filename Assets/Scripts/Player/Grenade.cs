@@ -56,9 +56,8 @@ public class Grenade : MonoBehaviour
                         if (rb.tag == "Enemy")
                         {
                             float dist = Vector3.Distance(rb.position, transform.position);
-                            float trueDmg = damage / dist;
-                            rb.velocity = ((rb.position - transform.position).normalized * force) / (blastRadius + dist);
-                            rb.GetComponent<EnemyController>().Damage(trueDmg);
+                            rb.velocity = ((rb.position - transform.position).normalized * force) /*/ blastRadius*/;
+                            rb.GetComponent<EnemyController>().Damage(damage);
                         }
                         else
                             rb.AddExplosionForce(force, transform.position, blastRadius);
@@ -67,12 +66,7 @@ public class Grenade : MonoBehaviour
             }
             GameObject explosion = Instantiate(effect, transform.position, transform.rotation);
             Destroy(explosion, lifeTime);
-            GetComponent<Renderer>().enabled = false;
-            GetComponent<SphereCollider>().enabled = false;
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            rb.isKinematic = true;
-            Destroy(gameObject, lifeTime);
+            Destroy(gameObject);
         }
     }
 }

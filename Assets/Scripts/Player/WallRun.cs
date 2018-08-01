@@ -17,6 +17,8 @@ public class WallRun : BaseState
     CamStates camTilt;
     CameraControls camControl;
 
+    bool sheath;
+
     private void Start()
     {
         myStateType = MoveStates.WALLRUN;
@@ -31,6 +33,7 @@ public class WallRun : BaseState
         if (prevNormal == Vector3.zero)
         {
             result = (transform.forward + (transform.up * 0.1f)).normalized * controller.jumpStrength * jumpStrengthMultiplier;
+            animator.SetTrigger("Sheath");
             timer = 0;
         }
         else
@@ -41,9 +44,15 @@ public class WallRun : BaseState
         exit = false;
         camTilt.ResetCamera();
         if (controller.onLeftWall)
+        {
             camTilt.onRight = true;
+            animator.SetBool("WallRunLeft", true);
+        }
         else
+        {
             camTilt.onLeft = true;
+            animator.SetBool("WallRunRight", true);
+        }
         init = false;
     }
 
@@ -64,6 +73,12 @@ public class WallRun : BaseState
                         currNormal = controller.rightHit.normal;
                     if (currNormal != prevNormal)
                     {
+                        if (sheath)
+                        {
+                            animator.SetTrigger("Sheath");
+                            sheath = false;
+                        }
+                        controller.isRunning = true;
                         init = true;
                         return true;
                     }
@@ -76,7 +91,7 @@ public class WallRun : BaseState
 
     public override void Run()
     {
-        if(init)
+        if (init)
             InitializeRun();
 
         if (WallRunAssisting)
@@ -89,6 +104,7 @@ public class WallRun : BaseState
         {
             Vector3 result = (transform.forward + transform.up * 0.5f + controller.HorizontalHit().normal * 1.35f);
             rgdBody.velocity = result.normalized * controller.jumpStrength * jumpStrengthMultiplier;
+            sheath = true;
             timer = 0;
             exit = true;
         }
@@ -115,6 +131,10 @@ public class WallRun : BaseState
             camTilt.ResetCamera();
             camTilt.onAlign = true;
             init = false;
+            animator.SetBool("WallRunLeft", false);
+            animator.SetBool("WallRunRight", false);
+
+            controller.isRunning = false;
             return true;
         }
         return false;

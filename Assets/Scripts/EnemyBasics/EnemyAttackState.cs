@@ -42,9 +42,9 @@ public class EnemyAttackState : EnemyBase {
         //controller.anim.speed = controller.anim.speed / attackRate;
         if (timer >= attackRate)
         {
-            FindObjectOfType<AudioM>().Play("whack");
             timer = 0;
             Attack();
+            FindObjectOfType<AudioM>().Play("whack");
         }
     }
 

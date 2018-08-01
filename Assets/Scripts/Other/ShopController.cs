@@ -16,6 +16,8 @@ public class ShopController : MonoBehaviour
     GameObject ShopCanvas;
     [SerializeField]
     GameObject UpgradesCanvas;
+    [SerializeField]
+    GameObject crosshair;
 
     [SerializeField]
     Text currencyText;
@@ -24,9 +26,11 @@ public class ShopController : MonoBehaviour
     bool interact;
     CameraControls cam;
 
-    GameObject canvas;
-    [SerializeField]
-    GameObject shopMenu;
+    GameObject weaponSystem;
+    Camera cameraMain;
+
+    //[SerializeField]
+    //GameObject shopMenu;
 
     // Use this for initialization
     void Start()
@@ -34,14 +38,15 @@ public class ShopController : MonoBehaviour
         GameObject temp = GameObject.FindGameObjectWithTag("Player");
         player = temp.GetComponent<PlayerController>();
         cam = temp.GetComponentInChildren<CameraControls>();
-        canvas = GameObject.Find("Canvas");
+        weaponSystem = GameObject.Find("WeaponSystem");
+        cameraMain = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
         float distance = Vector3.Distance(player.transform.position, shopKeeper.position);
-        if(distance > 100)
+        if (distance > 100)
         {
             Vector3 newPos = new Vector3(shopKeeper.position.x - player.transform.position.x, 0, shopKeeper.position.z - player.transform.position.z).normalized;
             player.transform.position = shopKeeper.position + (newPos * 99);
@@ -56,18 +61,21 @@ public class ShopController : MonoBehaviour
         player.LockMovement = activate;
         cam.Disable = activate;
         ShopCanvas.SetActive(activate);
+        crosshair.SetActive(!activate);
         Cursor.visible = activate;
-        player.HideWeapon = activate;
     }
 
     void InputShop()
     {
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Return))
         {
             ActivateShop(true);
+            weaponSystem.transform.parent = cameraMain.transform.parent;
             Cursor.lockState = CursorLockMode.None;
         }
-        else if (Input.GetKey(KeyCode.Q))
+        else if (Input.GetKey(KeyCode.Q) ||
+            Input.GetKey(KeyCode.Escape) ||
+            Input.GetMouseButton(1))
         {
             ExitShop();
         }
@@ -81,10 +89,10 @@ public class ShopController : MonoBehaviour
             if (interact)
             {
                 currencyText.text = player.Currency.ToString();
-                Camera camera = Camera.main;
-                camera.transform.position = Vector3.Lerp(camera.transform.position, shopPivot.position, Time.deltaTime * 10);
+                if (cameraMain.transform.position != shopPivot.position)
+                    cameraMain.transform.position = Vector3.Lerp(cameraMain.transform.position, shopPivot.position, Time.deltaTime * 10);
 
-                Vector3 target = lookHere.position - camera.transform.position;
+                Vector3 target = lookHere.position - cameraMain.transform.position;
                 RotateTarget(-target, shopKeeper);
                 cam.TiltCameraUpDown(target);
 
@@ -95,10 +103,10 @@ public class ShopController : MonoBehaviour
             {
                 Vector3 target = other.transform.position - lookHere.position;
                 RotateTarget(target, shopKeeper);
-                Camera camera = Camera.main;
-                camera.transform.localPosition = Vector3.Lerp(camera.transform.localPosition, Vector3.zero, Time.deltaTime * 10);
-                //if(camera.transform.localPosition == Vector3.zero)
-
+                if (cameraMain.transform.localPosition != Vector3.zero)
+                    cameraMain.transform.localPosition = Vector3.Lerp(cameraMain.transform.localPosition, Vector3.zero, Time.deltaTime * 10);
+                else
+                    weaponSystem.transform.parent = cameraMain.transform;
             }
         }
     }
@@ -126,5 +134,6 @@ public class ShopController : MonoBehaviour
         ActivateShop(false);
         UpgradesCanvas.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
+        cameraMain.transform.localPosition = Vector3.zero;
     }
 }

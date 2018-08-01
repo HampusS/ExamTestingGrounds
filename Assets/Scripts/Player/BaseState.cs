@@ -10,12 +10,14 @@ abstract public class BaseState : MonoBehaviour
     protected Vector3 currNormal;
     protected Vector3 currPoint;
     protected float snapStrength = 1;
+    protected Animator animator;
 
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
         rgdBody = GetComponent<Rigidbody>();
         myStateType = MoveStates.ERROR;
+        animator = GetComponentInChildren<Animator>();
     }
 
     public abstract bool Enter();

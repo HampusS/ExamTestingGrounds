@@ -30,7 +30,7 @@ public class WeaponController : MonoBehaviour
         {
             if (currWeapon != null)
             {
-                if (Input.GetMouseButtonDown(0) && !player.HideWeapon)
+                if (Input.GetMouseButtonDown(0) && !player.HideWeapon && !player.LockMovement)
                 {
                     currWeapon.Execute();
                 }
@@ -51,7 +51,8 @@ public class WeaponController : MonoBehaviour
                 else
                     currWeapon.StopRunning();
             }
-            ScrollThroughWeapons();
+            if (!player.LockMovement)
+                ScrollThroughWeapons();
         }
     }
 
@@ -117,6 +118,16 @@ public class WeaponController : MonoBehaviour
 
     public void SpawnProjectile()
     {
+        currWeapon.GetComponentInChildren<SpawnProjectile>().Spawn();
+    }
 
+    public void DisableWeapon()
+    {
+        currWeapon.gameObject.SetActive(false);
+    }
+
+    public void EnableWeapon()
+    {
+        currWeapon.gameObject.SetActive(true);
     }
 }

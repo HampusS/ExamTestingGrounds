@@ -43,4 +43,14 @@ public class SceneHandler : MonoBehaviour
         else
             SceneManager.LoadScene(order[current]);
     }
+
+    public void LoadCurrentLevel()
+    {
+
+    }
+
+    public void LoadHub()
+    {
+
+    }
 }

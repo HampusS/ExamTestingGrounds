@@ -45,6 +45,11 @@ public class PlayerController : MonoBehaviour
 
     public bool CanJump { get; set; }
 
+    public Text hpUpText;
+    float hpupTimer = 1.5f, hpupTime;
+    public bool DisplayHpUp { get; set; }
+    Color startColor, currColor;
+
 
     public RaycastHit HorizontalHit()
     {
@@ -82,7 +87,6 @@ public class PlayerController : MonoBehaviour
     public AudioM audioM { get; private set; }
 
 
-
     public bool isAlive()
     {
         return Health != 0;
@@ -107,6 +111,8 @@ public class PlayerController : MonoBehaviour
         hpText.text = lerpHp.ToString();
         maxHp = Health;
         audioM = FindObjectOfType<AudioM>();
+        startColor = hpUpText.color;
+        currColor = startColor;
     }
 
     void Update()
@@ -117,6 +123,7 @@ public class PlayerController : MonoBehaviour
         Crouching();
         UpdateHudHp();
         Invulnerable();
+        PingPongHpUp();
         PlayerDeath();
 
         prevMoveState = currMoveState;
@@ -149,6 +156,16 @@ public class PlayerController : MonoBehaviour
             if (!s.source.isPlaying)
             {
                 s.source.pitch = Random.Range(2f, 2.5f);
+                s.source.volume = Random.Range(0.1f, 0.3f);
+                s.source.Play();
+            }
+        }
+        else if(isRunning && currentState.myStateType == MoveStates.WALLRUN)
+        {
+            Sound s = audioM.FindSound("step");
+            if (!s.source.isPlaying)
+            {
+                s.source.pitch = Random.Range(3f, 3.5f);
                 s.source.volume = Random.Range(0.1f, 0.3f);
                 s.source.Play();
             }
@@ -211,9 +228,23 @@ public class PlayerController : MonoBehaviour
     public void AddHealth(float amount)
     {
         if (Health + amount < maxHp)
+        {
             Health += amount;
+            hpUpText.text = "+" + amount.ToString();
+            currColor = startColor;
+        }
+        else if(Health == maxHp)
+        {
+            hpUpText.text = "FULL";
+            currColor = Color.red;
+        }
         else
+        {
+            amount = maxHp - Health;
+            hpUpText.text = "+" + amount.ToString();
             Health = maxHp;
+        }
+        DisplayHpUp = true;
     }
 
     public void DamagePlayer(float amount)
@@ -244,23 +275,23 @@ public class PlayerController : MonoBehaviour
         else if (Crouch)
         {
             //Up
-            Debug.DrawRay(transform.position, transform.up * (rayLengthVertical + 0.5f), Color.red);
+            //Debug.DrawRay(transform.position, transform.up * (rayLengthVertical + 0.5f), Color.red);
             bool onTop = Physics.Raycast(transform.position, transform.up, (rayLengthVertical + 0.5f));
             if (!onTop)
             {
-                Debug.DrawRay(transform.position + (transform.forward * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
+                //Debug.DrawRay(transform.position + (transform.forward * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
                 onTop = Physics.Raycast(transform.position + (transform.forward * 0.5f), transform.up, (rayLengthVertical + 0.5f));
                 if (!onTop)
                 {
-                    Debug.DrawRay(transform.position + (-transform.forward * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
+                    //Debug.DrawRay(transform.position + (-transform.forward * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
                     onTop = Physics.Raycast(transform.position + (-transform.forward * 0.5f), transform.up, (rayLengthVertical + 0.5f));
                     if (!onTop)
                     {
-                        Debug.DrawRay(transform.position + (transform.right * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
+                        //Debug.DrawRay(transform.position + (transform.right * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
                         onTop = Physics.Raycast(transform.position + (transform.right * 0.5f), transform.up, (rayLengthVertical + 0.5f));
                         if (!onTop)
                         {
-                            Debug.DrawRay(transform.position + (-transform.right * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
+                            //Debug.DrawRay(transform.position + (-transform.right * 0.5f), transform.up * (rayLengthVertical + 0.5f), Color.red);
                             onTop = Physics.Raycast(transform.position + (-transform.right * 0.5f), transform.up, (rayLengthVertical + 0.5f));
                         }
                     }
@@ -283,19 +314,34 @@ public class PlayerController : MonoBehaviour
         Ray ray = new Ray(transform.position, Vector3.down);
 
         //Down
-        Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.red);
+        //Debug.DrawRay(ray.origin, -transform.up * rayLengthVertical, Color.red);
         onBottom = Physics.Raycast(ray.origin, -transform.up, out bottomHit, rayLengthVertical);
 
         //Left
-        Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.red);
+        //Debug.DrawRay(ray.origin, -transform.right * rayLengthHorizontal, Color.red);
         onLeftWall = Physics.Raycast(ray.origin, -transform.right, out leftHit, rayLengthHorizontal, wallLayer);
 
         //Right
-        Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.red);
+        //Debug.DrawRay(ray.origin, transform.right * rayLengthHorizontal, Color.red);
         onRightWall = Physics.Raycast(ray.origin, transform.right, out rightHit, rayLengthHorizontal, wallLayer);
 
         //Forward
-        Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.red);
+        //Debug.DrawRay(ray.origin, transform.forward * rayLengthHorizontal, Color.red);
         onForwardWall = Physics.Raycast(ray.origin, transform.forward, out forwardHit, rayLengthHorizontal, wallLayer);
+    }
+    
+    public void PingPongHpUp()
+    {
+        if (DisplayHpUp)
+        {
+            hpupTime += Time.deltaTime;
+            hpUpText.color = new Color(currColor.r, currColor.g, currColor.b, Mathf.PingPong(Time.time * 2, 1));
+            if(hpupTime > hpupTimer)
+            {
+                DisplayHpUp = false;
+                hpupTime = 0;
+                hpUpText.color = Color.clear;
+            }
+        }
     }
 }

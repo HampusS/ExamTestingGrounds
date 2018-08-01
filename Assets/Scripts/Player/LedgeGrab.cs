@@ -23,6 +23,7 @@ public class LedgeGrab : BaseState
     void Initialize()
     {
         onLedge = true;
+        onMoveUp = false; 
         onTryClimbUp = false;
         rgdBody.useGravity = false;
         controller.MultiplyGravity = false;
@@ -53,9 +54,9 @@ public class LedgeGrab : BaseState
         SnapToWall();
         if (onTryClimbUp)
             ClimbUp();
-        Debug.DrawRay(posToGround, Vector3.down, Color.red);
-        Debug.DrawRay(posToForward, transform.forward, Color.green);
-        Debug.DrawRay(posToGround, Vector3.up * 1.5f, Color.red);
+        //Debug.DrawRay(posToGround, Vector3.down, Color.red);
+        //Debug.DrawRay(posToForward, transform.forward, Color.green);
+        //Debug.DrawRay(posToGround, Vector3.up * 1.5f, Color.red);
         snapStrength = 10;
     }
 
@@ -83,7 +84,7 @@ public class LedgeGrab : BaseState
         if (Input.GetButtonDown("Jump") && controller.onForwardWall || forward > 0 && controller.onForwardWall)
         {
             onTryClimbUp = true;
-            posToGround = new Vector3(transform.localPosition.x - (controller.forwardHit.normal.x * 0.7f), transform.position.y + 0.75f, transform.localPosition.z - (controller.forwardHit.normal.z * 0.7f));
+            posToGround = new Vector3(transform.localPosition.x - (controller.forwardHit.normal.x * 0.7f), transform.position.y + 1, transform.localPosition.z - (controller.forwardHit.normal.z * 0.7f));
             posToForward = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
         }
         else if (Input.GetButtonDown("Jump") && !controller.onForwardWall)
@@ -116,7 +117,7 @@ public class LedgeGrab : BaseState
                 RaycastHit groundHit;
                 bool freeInfront = !Physics.Raycast(posToForward, transform.forward, 1f);
                 bool freeAbove = !Physics.Raycast(posToGround, Vector3.up, 1.5f);
-                bool onToGround = Physics.Raycast(posToGround, Vector3.down, out groundHit, 1f);
+                bool onToGround = Physics.Raycast(posToGround, Vector3.down, out groundHit, 1.5f);
 
                 if (freeInfront && freeAbove && onToGround)
                 {
