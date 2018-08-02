@@ -24,7 +24,7 @@ public class MainMenu : MonoBehaviour
     {
         for (int i = 0; i < nrOfScenes - 3; i++)
         {
-            int pick = Random.Range(0, orderList.Count-1);
+            int pick = Random.Range(0, orderList.Count - 1);
             int sNr = orderList[pick];
             order[i] = sNr;
             orderList.RemoveAt(pick);

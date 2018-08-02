@@ -7,7 +7,9 @@ public class WeaponController : MonoBehaviour
     PlayerController player;
 
     WeaponBase currWeapon;
-    ThrowLogic thorwLogic;
+
+    [SerializeField]
+    ThrowLogic throwLogic;
     bool reset = false;
     public bool enable { get; set; }
 
@@ -22,7 +24,6 @@ public class WeaponController : MonoBehaviour
         WeaponSelection();
         enable = true;
         currWeapon.GetComponent<WeaponBase>().SetWeaponType();
-        thorwLogic = new ThrowLogic();
     }
 
     // Update is called once per frame
@@ -133,8 +134,8 @@ public class WeaponController : MonoBehaviour
         currWeapon.gameObject.SetActive(true);
     }
 
-    public void ThrowRecive()
+    public void Throw()
     {
-        thorwLogic.Update();
+        throwLogic.Throw();
     }
 }

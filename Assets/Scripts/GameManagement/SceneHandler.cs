@@ -51,6 +51,6 @@ public class SceneHandler : MonoBehaviour
 
     public void LoadHub()
     {
-
+        SceneManager.LoadScene(1);
     }
 }

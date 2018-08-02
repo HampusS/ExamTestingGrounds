@@ -7,6 +7,7 @@ public class ThrowLogic : MonoBehaviour{
     [SerializeField]
     float speed;
     Rigidbody player;
+    bool thrown;
     
 	void Start () {
         player = GameObject.FindGameObjectWithTag("Player").
@@ -14,16 +15,18 @@ public class ThrowLogic : MonoBehaviour{
     }
 
 	public void Update () {
-        if (transform.parent != null)
-            Thorw();
-        else
-            Retrive();
-	}
-    void Thorw()
+        if (thrown)
+        {
+            transform.Translate(Vector3.forward * Time.deltaTime);
+        }
+    }
+    public void Throw()
     {
+        Debug.Log(transform + " " + transform.parent);
+        Transform temp = transform.parent;
         transform.parent = null;
-
-        transform.Translate(Vector3.forward * Time.deltaTime);
+        transform.position = temp.position;
+        thrown = true;
     }
     void Retrive()
     {
