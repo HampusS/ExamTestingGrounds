@@ -113,11 +113,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: c12c3384a0bb254429e3f67ffb04ff0c, type: 2}
---- !u!4 &15131436 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4835335667316376, guid: a76ac625abdc38c4498d99e68aba330c,
-    type: 2}
-  m_PrefabInternal: {fileID: 1643962306}
 --- !u!1 &15793656
 GameObject:
   m_ObjectHideFlags: 0
@@ -3034,11 +3029,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114670052691895574, guid: a76ac625abdc38c4498d99e68aba330c,
-        type: 2}
-      propertyPath: shopPivot
-      value: 
-      objectReference: {fileID: 15131436}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
   m_IsPrefabAsset: 0
@@ -3087,7 +3077,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shopKeeper: {fileID: 985410269}
   lookHere: {fileID: 354984108}
-  shopPivot: {fileID: 15131436}
 --- !u!65 &1737525185
 BoxCollider:
   m_ObjectHideFlags: 0

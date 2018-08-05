@@ -2510,6 +2510,7 @@ MonoBehaviour:
   jumpStrength: 10
   jumpHeight: 6
   turnAroundSpeed: 10
+  shopPivot: {fileID: 4835335667316376}
   crouchSpeed: 8
 --- !u!114 &114684589809289158
 MonoBehaviour:

@@ -47,7 +47,6 @@ public class PlayerController : MonoBehaviour
     
     float hpupTimer = 1.5f, hpupTime;
     public bool DisplayHpUp { get; set; }
-    Color startColor, currColor;
     public Transform shopPivot;
 
     public RaycastHit HorizontalHit()
@@ -116,8 +115,6 @@ public class PlayerController : MonoBehaviour
         LockMovement = false;
 
         maxHp = Health;
-        startColor = CanvasManager.Instance.hpUpText.color;
-        currColor = startColor;
     }
 
     void Update()
@@ -235,12 +232,10 @@ public class PlayerController : MonoBehaviour
         {
             Health += amount;
             CanvasManager.Instance.hpUpText.text = "+" + amount.ToString();
-            currColor = startColor;
         }
         else if(Health == maxHp)
         {
             CanvasManager.Instance.hpUpText.text = "FULL";
-            currColor = Color.red;
         }
         else
         {
@@ -339,12 +334,12 @@ public class PlayerController : MonoBehaviour
         if (DisplayHpUp)
         {
             hpupTime += Time.deltaTime;
-            CanvasManager.Instance.hpUpText.color = new Color(currColor.r, currColor.g, currColor.b, Mathf.PingPong(Time.time * 2, 1));
+            CanvasManager.Instance.hpUpText.color = new Color(CanvasManager.Instance.hpUpText.color.r, CanvasManager.Instance.hpUpText.color.g, CanvasManager.Instance.hpUpText.color.b, Mathf.PingPong(Time.time * 2, 1));
             if(hpupTime > hpupTimer)
             {
                 DisplayHpUp = false;
                 hpupTime = 0;
-                CanvasManager.Instance.hpUpText.color = Color.clear;
+                CanvasManager.Instance.hpUpText.color = new Color(CanvasManager.Instance.hpUpText.color.r, CanvasManager.Instance.hpUpText.color.g, CanvasManager.Instance.hpUpText.color.b, 0);
             }
         }
     }
