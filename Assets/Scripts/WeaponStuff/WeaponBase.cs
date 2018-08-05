@@ -10,7 +10,6 @@ public abstract class WeaponBase : MonoBehaviour {
     [SerializeField]
     protected float damage;
     protected BoxCollider boxCollider;
-    protected AudioM audioM;
 
     public enum WeaponType
     {
@@ -25,7 +24,6 @@ public abstract class WeaponBase : MonoBehaviour {
     {
         weaponType = WeaponType.None;
         boxCollider = GetComponent<BoxCollider>();
-        audioM = FindObjectOfType<AudioM>();
     }
 
     public abstract void Execute();

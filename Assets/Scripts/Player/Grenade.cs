@@ -9,7 +9,6 @@ public class Grenade : MonoBehaviour
     public float force = 700;
     public float damage = 1;
     public GameObject effect;
-    Rigidbody rb;
 
     bool exploded;
     float countdown;
@@ -24,7 +23,6 @@ public class Grenade : MonoBehaviour
     void Start()
     {
         countdown = lifeTime;
-        rb = GetComponent<Rigidbody>();
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("InvisWallLayer"), LayerMask.NameToLayer("InvisWallLayer"));
     }
 
@@ -55,8 +53,8 @@ public class Grenade : MonoBehaviour
                     {
                         if (rb.tag == "Enemy")
                         {
-                            float dist = Vector3.Distance(rb.position, transform.position);
-                            rb.velocity = ((rb.position - transform.position).normalized * force) /*/ blastRadius*/;
+                            //float dist = Vector3.Distance(rb.position, transform.position);
+                            rb.velocity = ((rb.position - transform.position).normalized * force) / blastRadius;
                             rb.GetComponent<EnemyController>().Damage(damage);
                         }
                         else

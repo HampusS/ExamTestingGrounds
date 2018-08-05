@@ -3,9 +3,35 @@ using System;
 using UnityEngine;
 
 public class AudioM : MonoBehaviour {
+    public static AudioM instance;
+    public static AudioM Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<AudioM>();
+
+                if (instance == null)
+                {
+                    GameObject container = new GameObject("Player");
+                    instance = container.AddComponent<AudioM>();
+                }
+            }
+
+            return instance;
+        }
+    }
 
     public Sound[] sounds;
     void Awake () {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+
         foreach (Sound s in sounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();

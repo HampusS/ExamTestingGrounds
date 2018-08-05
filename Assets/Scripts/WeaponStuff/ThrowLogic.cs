@@ -6,12 +6,10 @@ public class ThrowLogic : MonoBehaviour{
 
     [SerializeField]
     float speed;
-    Rigidbody player;
     bool thrown;
     
 	void Start () {
-        player = GameObject.FindGameObjectWithTag("Player").
-            GetComponent<Rigidbody>();
+
     }
 
 	public void Update () {

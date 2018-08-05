@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 5
-  blastRadius: 6
+  blastRadius: 5
   force: 1000
   damage: 5
   effect: {fileID: 1535279215683900, guid: be8b46634d003f94eaab73428999d76c, type: 2}

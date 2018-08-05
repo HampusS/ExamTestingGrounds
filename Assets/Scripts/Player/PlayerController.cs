@@ -44,12 +44,11 @@ public class PlayerController : MonoBehaviour
     float invulnerableLimit = 1.5f;
 
     public bool CanJump { get; set; }
-
-    public Text hpUpText;
+    
     float hpupTimer = 1.5f, hpupTime;
     public bool DisplayHpUp { get; set; }
     Color startColor, currColor;
-
+    public Transform shopPivot;
 
     public RaycastHit HorizontalHit()
     {
@@ -71,12 +70,10 @@ public class PlayerController : MonoBehaviour
     public bool Crouch { get; set; }
     public float crouchSpeed = 8;
 
-    float lerpHp = 100;
+    float lerpHp = 0;
     float Health = 100;
     float maxHp;
     public bool isInvulnerable { get; set; }
-    public Text hpText;
-    FlickerHealth flicker;
 
     public int Currency { get; set; }
 
@@ -84,19 +81,28 @@ public class PlayerController : MonoBehaviour
     public bool HideWeapon { get; set; }
     public bool isRunning { get; set; }
 
-    public AudioM audioM { get; private set; }
-
 
     public bool isAlive()
     {
         return Health != 0;
     }
 
+    public static PlayerController Instance;
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         capsule = GetComponent<CapsuleCollider>();
-        flicker = GameObject.Find("Canvas").GetComponent<FlickerHealth>();
+        //flicker = GameObject.Find("Canvas").GetComponent<FlickerHealth>();
         rgdBody = GetComponent<Rigidbody>();
         states = new List<BaseState>();
         states.Add(GetComponent<AirState>());
@@ -108,10 +114,9 @@ public class PlayerController : MonoBehaviour
         currentState = states[0];
         currMoveState = MoveStates.AIR;
         LockMovement = false;
-        hpText.text = lerpHp.ToString();
+
         maxHp = Health;
-        audioM = FindObjectOfType<AudioM>();
-        startColor = hpUpText.color;
+        startColor = CanvasManager.Instance.hpUpText.color;
         currColor = startColor;
     }
 
@@ -139,20 +144,18 @@ public class PlayerController : MonoBehaviour
             }
         }
         currentState.Run();
-        if (Input.GetKeyDown("escape"))
-            Cursor.lockState = CursorLockMode.None;
 
         if (CanJump && Input.GetButtonDown("Jump"))
         {
             rgdBody.velocity = new Vector3(rgdBody.velocity.x, 0, rgdBody.velocity.z);
             rgdBody.AddForce(transform.up * (jumpHeight * 0.925f), ForceMode.VelocityChange);
             CanJump = false;
-            audioM.Stop("step");
+            AudioM.Instance.Stop("step");
         }
 
         if (isRunning && onBottom)
         {
-            Sound s = audioM.FindSound("step");
+            Sound s = AudioM.Instance.FindSound("step");
             if (!s.source.isPlaying)
             {
                 s.source.pitch = Random.Range(2f, 2.5f);
@@ -162,7 +165,7 @@ public class PlayerController : MonoBehaviour
         }
         else if(isRunning && currentState.myStateType == MoveStates.WALLRUN)
         {
-            Sound s = audioM.FindSound("step");
+            Sound s = AudioM.Instance.FindSound("step");
             if (!s.source.isPlaying)
             {
                 s.source.pitch = Random.Range(3f, 3.5f);
@@ -171,6 +174,8 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.H))
+            GameObject.Find("ScenesManager").GetComponent<SceneHandler>().LoadHub();
     }
 
     private void FixedUpdate()
@@ -188,9 +193,8 @@ public class PlayerController : MonoBehaviour
     {
         if (!isAlive())
         {
-            Debug.Log("Died");
-            int scene = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(scene, LoadSceneMode.Single);
+            ShadeController.Instance.TriggerHub();
+            AddHealth(100);
         }
     }
 
@@ -199,12 +203,12 @@ public class PlayerController : MonoBehaviour
         if (isInvulnerable)
         {
             invulnerableTimer += Time.deltaTime;
-            flicker.FlickerHp();
+            CanvasManager.Instance.flickerHP.FlickerHp();
             if (invulnerableTimer > invulnerableLimit)
             {
                 isInvulnerable = false;
                 invulnerableTimer = 0;
-                flicker.ResetColor();
+                CanvasManager.Instance.flickerHP.ResetColor();
             }
         }
     }
@@ -221,7 +225,7 @@ public class PlayerController : MonoBehaviour
             lerpHp = Mathf.Lerp(lerpHp, Health, Time.deltaTime * 5);
             if (Mathf.RoundToInt(lerpHp) == Health)
                 lerpHp = Health;
-            hpText.text = ((int)lerpHp).ToString();
+            CanvasManager.Instance.hpText.text = ((int)lerpHp).ToString();
         }
     }
 
@@ -230,18 +234,18 @@ public class PlayerController : MonoBehaviour
         if (Health + amount < maxHp)
         {
             Health += amount;
-            hpUpText.text = "+" + amount.ToString();
+            CanvasManager.Instance.hpUpText.text = "+" + amount.ToString();
             currColor = startColor;
         }
         else if(Health == maxHp)
         {
-            hpUpText.text = "FULL";
+            CanvasManager.Instance.hpUpText.text = "FULL";
             currColor = Color.red;
         }
         else
         {
             amount = maxHp - Health;
-            hpUpText.text = "+" + amount.ToString();
+            CanvasManager.Instance.hpUpText.text = "+" + amount.ToString();
             Health = maxHp;
         }
         DisplayHpUp = true;
@@ -335,12 +339,12 @@ public class PlayerController : MonoBehaviour
         if (DisplayHpUp)
         {
             hpupTime += Time.deltaTime;
-            hpUpText.color = new Color(currColor.r, currColor.g, currColor.b, Mathf.PingPong(Time.time * 2, 1));
+            CanvasManager.Instance.hpUpText.color = new Color(currColor.r, currColor.g, currColor.b, Mathf.PingPong(Time.time * 2, 1));
             if(hpupTime > hpupTimer)
             {
                 DisplayHpUp = false;
                 hpupTime = 0;
-                hpUpText.color = Color.clear;
+                CanvasManager.Instance.hpUpText.color = Color.clear;
             }
         }
     }

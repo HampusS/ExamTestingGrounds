@@ -122,6 +122,7 @@ public class WeaponController : MonoBehaviour
     public void SpawnProjectile()
     {
         currWeapon.GetComponentInChildren<SpawnProjectile>().Spawn();
+        AudioM.Instance.Play("launch");
     }
 
     public void DisableWeapon()

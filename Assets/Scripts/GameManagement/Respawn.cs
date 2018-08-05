@@ -6,26 +6,23 @@ using UnityEngine.PostProcessing;
 public class Respawn : MonoBehaviour
 {
     [SerializeField]
-    private Transform player;
-    [SerializeField]
     private Transform respawn;
-    [SerializeField]
-    GameObject deathScreen;
 
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            deathScreen.GetComponent<DeathVisual>().Dead();
+            ShadeController.Instance.SetDeathColor();
+            ShadeController.Instance.ColorShade();
             Invoke("RespawnPlayer", 2);
         }
     }
 
     void RespawnPlayer()
     {
-        player.transform.position = respawn.transform.position;
-        player.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        player.rotation = respawn.rotation;
-        deathScreen.GetComponent<DeathVisual>().Alive();
+        PlayerController.Instance.transform.position = respawn.transform.position;
+        PlayerController.Instance.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        PlayerController.Instance.transform.rotation = respawn.rotation;
+        ShadeController.Instance.TransparentShade();
     }
 }

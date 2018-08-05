@@ -6,51 +6,60 @@ using System.IO;
 
 public class SceneHandler : MonoBehaviour
 {
-    public GameObject mainMenu;
-    int[] order = new int[5];
-    int current = -1;
+    public static SceneHandler Instance;
+    bool ended = false;
+    int current = 2;
+    int menu = 0, hub = 1, tutorial = 2;
+    public bool onLoadLevel { get; set; }
+    public bool onLoadHub { get; set; }
 
-    void Awake()
+    private void Awake()
     {
-        DontDestroyOnLoad(this);
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
     }
-    void Start()
-    {
-        order = mainMenu.GetComponent<MainMenu>().order;
-    }
+
     void Update()
     {
         if (Input.GetKeyDown("i"))
         {
-            Debug.Log("in loading next");
-            LoadNext();
+            IncreaseLevelIndex();
+            LoadCurrentLevel();
         }
-        if (Input.GetKeyDown("i") && 
-            Input.GetKeyDown("o"))
+
+        if (!ended && SceneManager.GetActiveScene().name == "Endingscreen")
         {
-            SceneManager.LoadScene(order[6]);
+            ended = true;
+            CanvasManager.Instance.HideGUI();
+            PlayerController.Instance.LockMovement = true;
         }
+
+        if (onLoadLevel)
+            LoadCurrentLevel();
+        if (onLoadHub)
+            LoadHub();
+
     }
-    public void LoadNext()
+
+    public void IncreaseLevelIndex()
     {
         current++;
-        Debug.Log(current);
-        if (current == 4)
-        {
-            SceneManager.LoadScene(6);
-            current = 6;
-        }
-        else
-            SceneManager.LoadScene(order[current]);
     }
 
     public void LoadCurrentLevel()
     {
-
+        SceneManager.LoadScene(current);
+        onLoadLevel = false;
     }
 
     public void LoadHub()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(hub);
+        MouseControl.Instance.LockMouse();
+        onLoadHub = false;
     }
 }

@@ -58,7 +58,7 @@ public class SwordBase : WeaponBase
 
     public override void EnableHitbox()
     {
-        audioM.Play("weaponswing");
+        AudioM.Instance.Play("weaponswing");
         base.EnableHitbox();
     }
 

@@ -9,18 +9,6 @@ public class ShopController : MonoBehaviour
     Transform shopKeeper;
     [SerializeField]
     Transform lookHere;
-    [SerializeField]
-    Transform shopPivot;
-
-    [SerializeField]
-    GameObject ShopCanvas;
-    [SerializeField]
-    GameObject UpgradesCanvas;
-    [SerializeField]
-    GameObject crosshair;
-
-    [SerializeField]
-    Text currencyText;
 
     PlayerController player;
     bool interact;
@@ -29,12 +17,17 @@ public class ShopController : MonoBehaviour
     GameObject weaponSystem;
     Camera cameraMain;
 
-    //[SerializeField]
-    //GameObject shopMenu;
+    public static ShopController Instance;
 
     // Use this for initialization
     void Start()
     {
+        if(Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         GameObject temp = GameObject.FindGameObjectWithTag("Player");
         player = temp.GetComponent<PlayerController>();
         cam = temp.GetComponentInChildren<CameraControls>();
@@ -53,6 +46,10 @@ public class ShopController : MonoBehaviour
             //player.transform.position += Vector3.up * 0.05f;
             //player.transform.rotation = Quaternion.LookRotation(-newPos);
         }
+        if (CanvasManager.Instance.GUI)
+        {
+            CanvasManager.Instance.HideGUI();
+        }
     }
 
     void ActivateShop(bool activate)
@@ -60,8 +57,7 @@ public class ShopController : MonoBehaviour
         interact = activate;
         player.LockMovement = activate;
         cam.Disable = activate;
-        ShopCanvas.SetActive(activate);
-        crosshair.SetActive(!activate);
+        CanvasManager.Instance.ShopCanvas.SetActive(activate);
         Cursor.visible = activate;
     }
 
@@ -72,6 +68,7 @@ public class ShopController : MonoBehaviour
             ActivateShop(true);
             weaponSystem.transform.parent = cameraMain.transform.parent;
             Cursor.lockState = CursorLockMode.None;
+            CanvasManager.Instance.HideGUI();
         }
         else if (Input.GetKey(KeyCode.Q) ||
             Input.GetKey(KeyCode.Escape) ||
@@ -88,9 +85,8 @@ public class ShopController : MonoBehaviour
             InputShop();
             if (interact)
             {
-                currencyText.text = player.Currency.ToString();
-                if (cameraMain.transform.position != shopPivot.position)
-                    cameraMain.transform.position = Vector3.Lerp(cameraMain.transform.position, shopPivot.position, Time.deltaTime * 10);
+                if (cameraMain.transform.position != PlayerController.Instance.shopPivot.position)
+                    cameraMain.transform.position = Vector3.Lerp(cameraMain.transform.position, PlayerController.Instance.shopPivot.position, Time.deltaTime * 10);
 
                 Vector3 target = lookHere.position - cameraMain.transform.position;
                 RotateTarget(-target, shopKeeper);
@@ -124,16 +120,24 @@ public class ShopController : MonoBehaviour
         ExitShop();
     }
 
+    public void EnterSystem()
+    {
+        ExitShop();
+        ShadeController.Instance.TriggerLevel();
+        PlayerController.Instance.AddHealth(100);
+    }
+
     public void ShowUpgrades()
     {
-        UpgradesCanvas.SetActive(true);
+        CanvasManager.Instance.UpgradesCanvas.SetActive(true);
     }
 
     public void ExitShop()
     {
         ActivateShop(false);
-        UpgradesCanvas.SetActive(false);
+        CanvasManager.Instance.UpgradesCanvas.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         cameraMain.transform.localPosition = Vector3.zero;
+        CanvasManager.Instance.ShowGUI();
     }
 }
