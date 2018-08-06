@@ -1,0 +1,202 @@
+fileFormatVersion: 2
+guid: f39d65e272ce3664385ee9e73e077237
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Backwindow4
+    100002: Backwindow5
+    100004: Backwindow6
+    100006: //RootNode
+    100008: Door
+    100010: Door1
+    100012: Frame5
+    100014: FrontWindow2
+    100016: FrontWindow3
+    100018: FrontWindow4
+    100020: pCylinder1
+    100022: pCylinder1 1
+    100024: pCylinder2
+    100026: pCylinder2 1
+    100028: pPipe4
+    100030: pPipe4 1
+    100032: pPipe5
+    100034: pPipe6
+    100036: pPipe6 1
+    100038: pPipe7
+    100040: transform5
+    100042: transform6
+    100044: transform7
+    100046: transform8
+    100048: Wheel
+    100050: Wheel 1
+    100052: Wheel1
+    100054: Wheel1 1
+    100056: Wheels
+    100058: Wheels1
+    400000: Backwindow4
+    400002: Backwindow5
+    400004: Backwindow6
+    400006: //RootNode
+    400008: Door
+    400010: Door1
+    400012: Frame5
+    400014: FrontWindow2
+    400016: FrontWindow3
+    400018: FrontWindow4
+    400020: pCylinder1
+    400022: pCylinder1 1
+    400024: pCylinder2
+    400026: pCylinder2 1
+    400028: pPipe4
+    400030: pPipe4 1
+    400032: pPipe5
+    400034: pPipe6
+    400036: pPipe6 1
+    400038: pPipe7
+    400040: transform5
+    400042: transform6
+    400044: transform7
+    400046: transform8
+    400048: Wheel
+    400050: Wheel 1
+    400052: Wheel1
+    400054: Wheel1 1
+    400056: Wheels
+    400058: Wheels1
+    2100000: Base
+    2100002: Window
+    2100004: lambert1
+    2100006: FrontLigtFrame
+    2100008: FrontLight
+    2100010: frontBar
+    2100012: BackLight
+    2100014: WheelRubber
+    2100016: Rims
+    2300000: Backwindow6
+    2300002: Door
+    2300004: Door1
+    2300006: Frame5
+    2300008: FrontWindow4
+    2300010: pCylinder1
+    2300012: pCylinder1 1
+    2300014: pCylinder2
+    2300016: pCylinder2 1
+    2300018: pPipe4
+    2300020: pPipe4 1
+    2300022: pPipe5
+    2300024: pPipe6
+    2300026: pPipe6 1
+    2300028: pPipe7
+    3300000: Backwindow6
+    3300002: Door
+    3300004: Door1
+    3300006: Frame5
+    3300008: FrontWindow4
+    3300010: pCylinder1
+    3300012: pCylinder1 1
+    3300014: pCylinder2
+    3300016: pCylinder2 1
+    3300018: pPipe4
+    3300020: pPipe4 1
+    3300022: pPipe5
+    3300024: pPipe6
+    3300026: pPipe6 1
+    3300028: pPipe7
+    4300000: Door
+    4300002: pPipe5
+    4300004: Frame5
+    4300006: Backwindow6
+    4300008: FrontWindow4
+    4300010: Door1
+    4300012: pPipe6
+    4300014: pCylinder2
+    4300016: pPipe4
+    4300018: pCylinder1
+    4300020: pPipe6
+    4300022: pCylinder2
+    4300024: pPipe4
+    4300026: pCylinder1
+    4300028: pPipe7
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
