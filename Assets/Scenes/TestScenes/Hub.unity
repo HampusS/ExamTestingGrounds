@@ -2990,6 +2990,12 @@ Mesh:
   m_MeshMetrics[0]: 1
   m_MeshMetrics[1]: 1
   m_MeshOptimized: 0
+--- !u!114 &1573058985 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114515425705590512, guid: a76ac625abdc38c4498d99e68aba330c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1643962306}
+  m_Script: {fileID: 11500000, guid: 603c06bb6b67c514486f07fd8b06bb72, type: 3}
 --- !u!1001 &1643962306
 Prefab:
   m_ObjectHideFlags: 0
@@ -3029,6 +3035,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114597547763817676, guid: a76ac625abdc38c4498d99e68aba330c,
+        type: 2}
+      propertyPath: throwLogic
+      value: 
+      objectReference: {fileID: 1573058985}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a76ac625abdc38c4498d99e68aba330c, type: 2}
   m_IsPrefabAsset: 0

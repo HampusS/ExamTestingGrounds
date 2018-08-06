@@ -6,7 +6,8 @@ public class WeaponController : MonoBehaviour
 {
     PlayerController player;
     WeaponBase currWeapon;
-
+    [SerializeField]
+    ThrowLogic throwLogic;
     bool reset = false;
     public bool enable { get; set; }
 
@@ -36,7 +37,7 @@ public class WeaponController : MonoBehaviour
                     {
                         currWeapon.Execute();
                     }
-                    else if (Input.GetMouseButton(1) || ThrowLogic.Instance.Recall == true)
+                    else if (Input.GetMouseButton(1) || throwLogic.Recall == true)
                     {
                         currWeapon.CustomExecute();
                     }
@@ -104,7 +105,7 @@ public class WeaponController : MonoBehaviour
             }
             else
                 weapon.SetActive(false);
-            if (weapon.GetComponent<WeaponBase>().weaponType == WeaponBase.WeaponType.Disk && ThrowLogic.Instance.Thrown)
+            if (weapon.GetComponent<WeaponBase>().weaponType == WeaponBase.WeaponType.Disk && throwLogic.Thrown)
                 weapon.SetActive(true);
 
             i++;
@@ -144,11 +145,11 @@ public class WeaponController : MonoBehaviour
 
     public void Throw()
     {
-        ThrowLogic.Instance.Throw();
+        throwLogic.Throw();
     }
 
     public void Retrieve()
     {
-        ThrowLogic.Instance.Retrieve();
+        throwLogic.Retrieve();
     }
 }
