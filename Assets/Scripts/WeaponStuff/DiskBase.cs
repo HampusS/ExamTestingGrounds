@@ -2,12 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DiskBase : WeaponBase {
+public class DiskBase : WeaponBase
+{
 
     protected override void Start()
     {
         base.Start();
         weaponType = WeaponType.Disk;
+    }
+
+    private void Update()
+    {
+
+    }
+
+    public override void CustomExecute()
+    {
+        if (ThrowLogic.Instance.Thrown)
+        {
+            ThrowLogic.Instance.Recall = true;
+            animator.SetBool("RecallDisk", true);
+        }
+        else
+        {
+            animator.SetBool("RecallDisk", false);
+            ThrowLogic.Instance.Recall = false;
+        }
     }
 
     public override void Execute()
@@ -59,5 +79,16 @@ public class DiskBase : WeaponBase {
     public override void ResetAnimationSpeed()
     {
         base.ResetAnimationSpeed();
+    }
+
+    public override void Disable()
+    {
+        if (!ThrowLogic.Instance.Thrown)
+            base.Disable();
+    }
+
+    public override void Enable()
+    {
+        base.Enable();
     }
 }

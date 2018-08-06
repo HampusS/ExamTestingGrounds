@@ -60,4 +60,14 @@ public class GunBase : WeaponBase {
     {
         base.ResetAnimationSpeed();
     }
+
+    public override void Disable()
+    {
+        base.Disable();
+    }
+
+    public override void Enable()
+    {
+        base.Enable();
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerSpawn : MonoBehaviour {
     
-    private void Awake()
+    private void Start()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         MouseControl.Instance.LockMouse();

@@ -33,6 +33,20 @@ public abstract class WeaponBase : MonoBehaviour {
     public abstract void Unsheath();
     public abstract void SetWeaponType();
     public abstract void ResetWeaponType();
+    public virtual void CustomExecute()
+    {
+
+    }
+
+    public virtual void Disable()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public virtual void Enable()
+    {
+        gameObject.SetActive(true);
+    }
 
     public virtual void ResetAnimationSpeed()
     {

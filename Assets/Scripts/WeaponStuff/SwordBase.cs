@@ -71,4 +71,14 @@ public class SwordBase : WeaponBase
     {
         base.ResetAnimationSpeed();
     }
+
+    public override void Disable()
+    {
+        base.Disable();
+    }
+
+    public override void Enable()
+    {
+        base.Enable();
+    }
 }

@@ -1036,6 +1036,20 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 224038260425174884, guid: 3da46cc4c68212047a09e14086d384d6,
+        type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114337767933739656, guid: 3da46cc4c68212047a09e14086d384d6,
+        type: 2}
+      propertyPath: m_Text
+      value: Shop
+      objectReference: {fileID: 0}
+    - target: {fileID: 1776184719206592, guid: 3da46cc4c68212047a09e14086d384d6, type: 2}
+      propertyPath: m_Name
+      value: ShopText
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3da46cc4c68212047a09e14086d384d6, type: 2}
   m_IsPrefabAsset: 0

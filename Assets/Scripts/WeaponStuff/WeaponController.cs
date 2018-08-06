@@ -5,11 +5,8 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     PlayerController player;
-
     WeaponBase currWeapon;
 
-    [SerializeField]
-    ThrowLogic throwLogic;
     bool reset = false;
     public bool enable { get; set; }
 
@@ -33,9 +30,16 @@ public class WeaponController : MonoBehaviour
         {
             if (currWeapon != null)
             {
-                if (Input.GetMouseButtonDown(0) && !player.HideWeapon && !player.LockMovement)
+                if (!player.HideWeapon && !player.LockMovement)
                 {
-                    currWeapon.Execute();
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        currWeapon.Execute();
+                    }
+                    else if (Input.GetMouseButton(1) || ThrowLogic.Instance.Recall == true)
+                    {
+                        currWeapon.CustomExecute();
+                    }
                 }
 
                 if (player.HideWeapon && !reset)
@@ -100,6 +104,9 @@ public class WeaponController : MonoBehaviour
             }
             else
                 weapon.SetActive(false);
+            if (weapon.GetComponent<WeaponBase>().weaponType == WeaponBase.WeaponType.Disk && ThrowLogic.Instance.Thrown)
+                weapon.SetActive(true);
+
             i++;
         }
     }
@@ -127,16 +134,21 @@ public class WeaponController : MonoBehaviour
 
     public void DisableWeapon()
     {
-        currWeapon.gameObject.SetActive(false);
+        currWeapon.Disable();
     }
 
     public void EnableWeapon()
     {
-        currWeapon.gameObject.SetActive(true);
+        currWeapon.Enable();
     }
 
     public void Throw()
     {
-        throwLogic.Throw();
+        ThrowLogic.Instance.Throw();
+    }
+
+    public void Retrieve()
+    {
+        ThrowLogic.Instance.Retrieve();
     }
 }

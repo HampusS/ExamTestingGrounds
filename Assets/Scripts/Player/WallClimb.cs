@@ -32,6 +32,8 @@ public class WallClimb : BaseState
             timer = 0;
             rgdBody.velocity = Vector3.zero;
             rgdBody.AddForce(Vector3.up * controller.jumpHeight, ForceMode.VelocityChange);
+            animator.SetTrigger("Sheath");
+            animator.SetBool("WallClimb", true);
         }
     }
 
@@ -98,6 +100,7 @@ public class WallClimb : BaseState
         {
             camControl.LockTurning = false;
             prevNormal = currNormal;
+            animator.SetBool("WallClimb", false);
             return true;
         }
         return false;
