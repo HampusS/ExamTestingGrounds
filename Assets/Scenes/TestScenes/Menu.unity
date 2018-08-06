@@ -1050,6 +1050,22 @@ Prefab:
       propertyPath: m_Name
       value: ShopText
       objectReference: {fileID: 0}
+    - target: {fileID: 1983893057628170, guid: 3da46cc4c68212047a09e14086d384d6, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1807533475002456, guid: 3da46cc4c68212047a09e14086d384d6, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1581808732985116, guid: 3da46cc4c68212047a09e14086d384d6, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1009507228720098, guid: 3da46cc4c68212047a09e14086d384d6, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3da46cc4c68212047a09e14086d384d6, type: 2}
   m_IsPrefabAsset: 0

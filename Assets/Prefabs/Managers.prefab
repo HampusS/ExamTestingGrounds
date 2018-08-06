@@ -45,7 +45,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1147107772749346
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,7 +283,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1585331996930294
 GameObject:
   m_ObjectHideFlags: 1
@@ -422,7 +422,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1842034619443598
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,7 +561,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4025258684134692
 Transform:
   m_ObjectHideFlags: 1
@@ -1826,18 +1826,6 @@ MonoBehaviour:
     pitch: 0.94
     loop: 0
     source: {fileID: 0}
-  - name: reload
-    clip: {fileID: 8300000, guid: cee3ebed989e96b4ca98cbdf711edb8d, type: 3}
-    volume: 0.522
-    pitch: 1.83
-    loop: 0
-    source: {fileID: 0}
-  - name: healthpickup
-    clip: {fileID: 8300000, guid: 9c347c0b362024b428df4034c27315d9, type: 3}
-    volume: 1
-    pitch: 1.46
-    loop: 0
-    source: {fileID: 0}
   - name: step
     clip: {fileID: 8300000, guid: 116fe1f849d801a479ab4240d2d04a83, type: 3}
     volume: 1
@@ -1856,28 +1844,28 @@ MonoBehaviour:
     pitch: 1.46
     loop: 0
     source: {fileID: 0}
-  - name: explosion
-    clip: {fileID: 8300000, guid: 893849df50e6fa24aac013a680bc6350, type: 3}
-    volume: 1
-    pitch: 0.94
-    loop: 0
-    source: {fileID: 0}
   - name: miami
     clip: {fileID: 8300000, guid: 8e3ce51dc48bd6d4e955a319679d07fa, type: 3}
     volume: 0.38
     pitch: 0.94
     loop: 1
     source: {fileID: 0}
-  - name: 'click '
-    clip: {fileID: 8300000, guid: a6680ea145809dd41b29830450134d96, type: 3}
+  - name: key
+    clip: {fileID: 8300000, guid: d59d3dd2459d7f24fbc7bf791ff019de, type: 3}
     volume: 1
-    pitch: 0.94
+    pitch: 1
     loop: 0
     source: {fileID: 0}
-  - name: 'click '
-    clip: {fileID: 8300000, guid: a6680ea145809dd41b29830450134d96, type: 3}
+  - name: recall
+    clip: {fileID: 8300000, guid: cbf65fcf4b50d2e4b9b1fdb9ea7b9e19, type: 3}
     volume: 1
-    pitch: 0.94
+    pitch: 1.8
+    loop: 0
+    source: {fileID: 0}
+  - name: throw
+    clip: {fileID: 8300000, guid: 9862a345dd503db4cbabdfe55a584ac6, type: 3}
+    volume: 1
+    pitch: 1
     loop: 0
     source: {fileID: 0}
 --- !u!114 &114974185518592276

@@ -40,8 +40,8 @@ public class AudioM : MonoBehaviour {
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
         }
-        //Play("miami");
-	}
+        Play("miami");
+    }
 	//Call sound with FindObjectOfType<AudioManager>().play("nameOfclip");
 	public void Play (string name) {
         Sound s = FindSound(name);

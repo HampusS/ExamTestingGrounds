@@ -15,6 +15,7 @@ public class PickUpKey : MonoBehaviour {
             door.GetComponent<Door>().keys.Add(gameObject);
             door.GetComponent<Door>().haskey = true;
             gameObject.GetComponent<MeshRenderer>().enabled = false;
+            FindObjectOfType<AudioM>().Play("key");
         }
     }
 }

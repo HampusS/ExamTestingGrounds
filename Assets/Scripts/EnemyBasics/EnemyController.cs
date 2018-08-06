@@ -87,7 +87,6 @@ public class EnemyController : MonoBehaviour
         if (health > 0 && health - amount <= 0)
         {
             health = 0;
-            FindObjectOfType<AudioM>().Play("explosion");
         }
         else
             health -= amount;

@@ -11,15 +11,12 @@ public class DiskBase : WeaponBase
         weaponType = WeaponType.Disk;
     }
 
-    private void Update()
-    {
-
-    }
-
     public override void CustomExecute()
     {
         if (ThrowLogic.Instance.Thrown)
         {
+            if (!ThrowLogic.Instance.Recall)
+                FindObjectOfType<AudioM>().Play("recall");
             ThrowLogic.Instance.Recall = true;
             animator.SetBool("RecallDisk", true);
         }
@@ -27,6 +24,7 @@ public class DiskBase : WeaponBase
         {
             animator.SetBool("RecallDisk", false);
             ThrowLogic.Instance.Recall = false;
+            DisableHitbox();
         }
     }
 
@@ -34,6 +32,7 @@ public class DiskBase : WeaponBase
     {
         animator.SetTrigger("ExecuteAttack");
         animator.speed = 1 - attackRate;
+        EnableHitbox();
     }
 
     public override void SetWeaponType()

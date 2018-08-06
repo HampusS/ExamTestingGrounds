@@ -6,21 +6,22 @@ using UnityEngine.UI;
 public class HealthPack : MonoBehaviour
 {
     PlayerController player;
-    AudioM audioM;
+    AudioSource sound;
     public float Amount;
 
     // Use this for initialization
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
-        audioM = FindObjectOfType<AudioM>();
+        sound = GetComponent<AudioSource>();
     }
 
     public void PickedUp()
     {
         player.AddHealth(Amount);
-        audioM.Play("healthpickup");
-        Destroy(gameObject);
+        sound.Play();
+        GetComponent<Renderer>().enabled = false;
+        Destroy(gameObject, 1);
     }
 
     private void OnTriggerEnter(Collider other)

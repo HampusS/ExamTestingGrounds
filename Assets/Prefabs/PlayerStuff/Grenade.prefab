@@ -218,7 +218,7 @@ MonoBehaviour:
   blastRadius: 5
   force: 1000
   damage: 5
-  effect: {fileID: 1535279215683900, guid: be8b46634d003f94eaab73428999d76c, type: 2}
+  effect: {fileID: 1425683958625886, guid: 9f5e5849f1742c546983996d7fa971d0, type: 2}
 --- !u!135 &135732493817734382
 SphereCollider:
   m_ObjectHideFlags: 1

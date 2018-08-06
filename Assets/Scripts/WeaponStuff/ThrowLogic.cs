@@ -36,6 +36,12 @@ public class ThrowLogic : MonoBehaviour
         {
             rb.velocity = Vector3.zero;
             transform.position = prevPos;
+            EnemyController orb = other.GetComponent<EnemyController>();
+            if (orb != null)
+            {
+                orb.Damage(10);
+                orb.KnockBack(transform.position);
+            }
         }
     }
 
@@ -63,12 +69,14 @@ public class ThrowLogic : MonoBehaviour
             transform.parent = null;
             rb.velocity = Camera.main.transform.forward * speed;
             transform.rotation = Quaternion.identity;
+            FindObjectOfType<AudioM>().Play("throw");
         }
     }
 
     public void Retrieve()
     {
-        if (Vector3.Distance(transform.position, hand.position) <= 0.1f)
+        float distance = Vector3.Distance(transform.position, hand.position);
+        if (distance <= 0.3f)
         {
             ActivateDisk(false);
             transform.position = startPivot.position;
@@ -78,7 +86,10 @@ public class ThrowLogic : MonoBehaviour
         else
         {
             rb.velocity = Vector3.zero;
-            transform.position = Vector3.Lerp(transform.position, hand.position, Time.deltaTime * 8);
+            float lerp = 8;
+            if (distance < 2)
+                lerp = 60;
+            transform.position = Vector3.Lerp(transform.position, hand.position, Time.deltaTime * lerp);
         }
     }
 
