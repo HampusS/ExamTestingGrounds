@@ -11,10 +11,7 @@ public class ScrollTexture : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        if (CanvasManager.Instance != null)
-            CanvasManager.Instance.HideGUI();
-        if (PlayerController.Instance != null)
-            Destroy(PlayerController.Instance.gameObject);
+
     }
 
     // Update is called once per frame
@@ -24,5 +21,9 @@ public class ScrollTexture : MonoBehaviour
         float offsetY = Time.time * scrollY;
 
         GetComponent<Renderer>().material.mainTextureOffset = new Vector2(offestX, offsetY);
+        if (CanvasManager.Instance != null)
+            CanvasManager.Instance.HideGUI();
+        if (PlayerController.Instance != null)
+            Destroy(PlayerController.Instance.gameObject);
     }
 }
