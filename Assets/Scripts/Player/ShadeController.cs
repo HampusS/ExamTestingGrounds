@@ -74,7 +74,7 @@ public class ShadeController : MonoBehaviour
 
     public void TeleportHub()
     {
-        SceneHandler.Instance.onLoadHub = true;
+        SceneHandler.Instance.LoadHub();
         TransparentShade();
     }
 
@@ -87,7 +87,7 @@ public class ShadeController : MonoBehaviour
 
     public void TeleportLevel()
     {
-        SceneHandler.Instance.onLoadLevel = true;
+        SceneHandler.Instance.LoadCurrentLevel();
         TransparentShade();
     }
 }

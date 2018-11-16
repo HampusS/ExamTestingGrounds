@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraControls : MonoBehaviour
 {
+    public static CameraControls Instance;
     [SerializeField]
     float sensX = 5f;
     [SerializeField]
@@ -24,6 +25,12 @@ public class CameraControls : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        if(Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         LockTurning = false;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         Disable = false;
@@ -35,7 +42,7 @@ public class CameraControls : MonoBehaviour
         if (!Disable)
         {
             camUpDown += Input.GetAxis("Mouse Y") * sensY;
-            camUpDown = Mathf.Clamp(camUpDown, -65, 65);
+            camUpDown = Mathf.Clamp(camUpDown, -65, 70);
             transform.localRotation = Quaternion.AngleAxis(-camUpDown, Vector3.right);
 
             if (!LockTurning)
@@ -48,15 +55,20 @@ public class CameraControls : MonoBehaviour
 
     public void TurnToVector(Vector3 target)
     {
-        assistTimer += Time.deltaTime;
-        bool assist = Input.GetAxis("Mouse X") == 0;
-        if (assist)
+        if (target.magnitude > 0)
         {
-            if (assistTimer > assistDelay)
-                player.rotation = Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * turnAssistSpeed);
+            assistTimer += Time.deltaTime;
+            bool assist = Input.GetAxis("Mouse X") == 0;
+            if (assist)
+            {
+                if (assistTimer > assistDelay)
+                {
+                    player.rotation = Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(target), Time.deltaTime * turnAssistSpeed);
+                }
+            }
+            else
+                assistTimer = 0;
         }
-        else
-            assistTimer = 0;
     }
 
     public void TiltCameraUpDown(Vector3 target)

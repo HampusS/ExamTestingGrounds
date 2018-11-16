@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestScenes/Hub.unity
     guid: 4def2fb660dae9f45a349ec7801cf166
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TestScenes/FreeRun.unity
     guid: 3c0cb9d29420ad04fa4cbd792ad67ea2
   - enabled: 1

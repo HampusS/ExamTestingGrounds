@@ -9,6 +9,8 @@ TagManager:
   - GoalCubeTag
   - SceneHandler
   - Music
+  - PickUp
+  - Disk
   layers:
   - Default
   - TransparentFX

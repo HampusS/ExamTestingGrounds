@@ -5,9 +5,6 @@ using UnityEngine.PostProcessing;
 
 public class Respawn : MonoBehaviour
 {
-    [SerializeField]
-    private Transform respawn;
-
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -20,9 +17,8 @@ public class Respawn : MonoBehaviour
 
     void RespawnPlayer()
     {
-        PlayerController.Instance.transform.position = respawn.transform.position;
+        PlayerController.Instance.transform.position = PlayerController.Instance.CheckPoint;
         PlayerController.Instance.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        PlayerController.Instance.transform.rotation = respawn.rotation;
         ShadeController.Instance.TransparentShade();
     }
 }

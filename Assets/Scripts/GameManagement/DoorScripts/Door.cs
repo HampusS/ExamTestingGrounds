@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-
     public int nrOfLocks = 1;
-    public bool locked = true;
-    public bool haskey = false;
-    public int currentKeys { get; set; }
+    public int nrOfKeys { get; set; }
     public List<GameObject> keys = new List<GameObject>();
-
     Animator anim;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -19,9 +16,8 @@ public class Door : MonoBehaviour
 
     public void Open()
     {
-        if (currentKeys == nrOfLocks)
+        if (nrOfKeys == nrOfLocks)
         {
-            locked = false;
             anim.SetTrigger("Open");
         }
     }

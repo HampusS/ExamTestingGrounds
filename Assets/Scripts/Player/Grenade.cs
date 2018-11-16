@@ -16,7 +16,12 @@ public class Grenade : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag != ("Player"))
+        {
             Explode();
+            GameObject explosion = Instantiate(effect, transform.position, transform.rotation);
+            Destroy(explosion, lifeTime);
+            Destroy(gameObject);
+        }
     }
 
     // Use this for initialization
@@ -33,7 +38,12 @@ public class Grenade : MonoBehaviour
         {
             countdown -= Time.deltaTime;
             if (countdown <= 0)
+            {
                 Explode();
+                GameObject explosion = Instantiate(effect, transform.position, transform.rotation);
+                Destroy(explosion, lifeTime);
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -46,25 +56,17 @@ public class Grenade : MonoBehaviour
             Collider[] colliders = Physics.OverlapSphere(transform.position, blastRadius);
             foreach (Collider nearObj in colliders)
             {
-                if (nearObj.tag != "Player")
+                Rigidbody rb = nearObj.GetComponent<Rigidbody>();
+                if (rb != null)
                 {
-                    Rigidbody rb = nearObj.GetComponent<Rigidbody>();
-                    if (rb != null)
+                    if (rb.tag == "Enemy")
                     {
-                        if (rb.tag == "Enemy")
-                        {
-                            //float dist = Vector3.Distance(rb.position, transform.position);
-                            rb.velocity = ((rb.position - transform.position).normalized * force) / blastRadius;
-                            rb.GetComponent<EnemyController>().Damage(damage);
-                        }
-                        else
-                            rb.AddExplosionForce(force, transform.position, blastRadius);
+                        rb.GetComponent<EnemyController>().Damage(damage);
                     }
+                    else
+                        rb.AddExplosionForce(force, transform.position, blastRadius);
                 }
             }
-            GameObject explosion = Instantiate(effect, transform.position, transform.rotation);
-            Destroy(explosion, lifeTime);
-            Destroy(gameObject);
         }
     }
 }

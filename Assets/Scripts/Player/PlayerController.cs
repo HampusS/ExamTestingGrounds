@@ -49,6 +49,9 @@ public class PlayerController : MonoBehaviour
     public bool DisplayHpUp { get; set; }
     public Transform shopPivot;
 
+    public Vector3 CheckPoint { get; set; }
+
+
     public RaycastHit HorizontalHit()
     {
         if (onRightWall)
@@ -170,9 +173,6 @@ public class PlayerController : MonoBehaviour
                 s.source.Play();
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.H))
-            GameObject.Find("ScenesManager").GetComponent<SceneHandler>().LoadHub();
     }
 
     private void FixedUpdate()

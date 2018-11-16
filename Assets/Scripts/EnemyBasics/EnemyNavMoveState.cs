@@ -7,12 +7,10 @@ public class EnemyNavMoveState : EnemyBase
 {
     public float acceleration = 15;
     float deceleration;
-    float animspeed;
 
     void Start()
     {
         taskType = EnemyTasks.MOVE;
-        animspeed = navMesh.speed;
         deceleration = acceleration * 10;
     }
 

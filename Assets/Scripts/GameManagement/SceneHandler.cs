@@ -9,9 +9,7 @@ public class SceneHandler : MonoBehaviour
     public static SceneHandler Instance;
     bool ended = false;
     int current = 2;
-    int menu = 0, hub = 1, tutorial = 2;
-    public bool onLoadLevel { get; set; }
-    public bool onLoadHub { get; set; }
+    int menu = 0, hub = 1;
 
     private void Awake()
     {
@@ -37,12 +35,6 @@ public class SceneHandler : MonoBehaviour
             CanvasManager.Instance.HideGUI();
             PlayerController.Instance.LockMovement = true;
         }
-
-        if (onLoadLevel)
-            LoadCurrentLevel();
-        if (onLoadHub)
-            LoadHub();
-
     }
 
     public void IncreaseLevelIndex()
@@ -53,13 +45,16 @@ public class SceneHandler : MonoBehaviour
     public void LoadCurrentLevel()
     {
         SceneManager.LoadScene(current);
-        onLoadLevel = false;
     }
 
     public void LoadHub()
     {
         SceneManager.LoadScene(hub);
         MouseControl.Instance.LockMouse();
-        onLoadHub = false;
+    }
+
+    public void LoadMenu()
+    {
+        SceneManager.LoadScene(menu);
     }
 }

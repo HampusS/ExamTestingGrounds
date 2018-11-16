@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Spring : MonoBehaviour {
-    Rigidbody player;
+    Rigidbody playerRB;
     [SerializeField]
     float impulse = 12;
     [SerializeField]
@@ -11,7 +11,7 @@ public class Spring : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
+        playerRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
 	}
 
     private void OnCollisionEnter(Collision collision)
@@ -24,8 +24,8 @@ public class Spring : MonoBehaviour {
 
     void AddImpulse()
     {
-        player.velocity = new Vector3(player.velocity.x, 0, player.velocity.z);
-        player.AddForce(transform.TransformDirection(direction.normalized * impulse), ForceMode.VelocityChange);
-        player.GetComponent<PlayerController>().ForceGravity = true;
+        playerRB.velocity = new Vector3(playerRB.velocity.x, 0, playerRB.velocity.z);
+        playerRB.AddForce(transform.TransformDirection(direction.normalized * impulse), ForceMode.Impulse);
+        PlayerController.Instance.ForceGravity = true;
     }
 }

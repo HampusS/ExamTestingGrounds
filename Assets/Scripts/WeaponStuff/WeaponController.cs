@@ -152,4 +152,9 @@ public class WeaponController : MonoBehaviour
     {
         throwLogic.Retrieve();
     }
+
+    public void Explode()
+    {
+        throwLogic.Explode();
+    }
 }

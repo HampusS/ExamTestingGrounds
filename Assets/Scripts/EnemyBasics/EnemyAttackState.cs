@@ -8,11 +8,9 @@ public class EnemyAttackState : EnemyBase {
     public float knockBackStrength = 25;
     public float damage = 25;
     float timer;
-    float animspeed;
 
     void Start()
     {
-        animspeed = navMesh.speed;
         taskType = EnemyTasks.ATTACK;
     }
 

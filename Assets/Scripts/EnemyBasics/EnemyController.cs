@@ -19,7 +19,6 @@ public class EnemyController : MonoBehaviour
 
     public Rigidbody rgdBody { get; set; }
     public float health = 2;
-    float startHealth;
     [SerializeField]
     protected float aggroRange = 180;
     [SerializeField]
@@ -42,7 +41,6 @@ public class EnemyController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerControl = player.GetComponent<PlayerController>();
         rgdBody = GetComponent<Rigidbody>();
-        startHealth = health;
     }
 
     void Start()

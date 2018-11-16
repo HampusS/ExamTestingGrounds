@@ -29,13 +29,13 @@ public class MouseControl : MonoBehaviour {
 
     public void LockMouse()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void UnlockMouse()
     {
-        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }

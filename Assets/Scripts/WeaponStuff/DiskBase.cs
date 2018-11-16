@@ -31,6 +31,10 @@ public class DiskBase : WeaponBase
     public override void Execute()
     {
         animator.SetTrigger("ExecuteAttack");
+        if (ThrowLogic.Instance.hasExplosion)
+            animator.SetBool("Thrown", ThrowLogic.Instance.Thrown);
+        else
+            animator.SetBool("Thrown", false);
         animator.speed = 1 - attackRate;
         EnableHitbox();
     }

@@ -4,26 +4,34 @@ using UnityEngine;
 
 public class ShootingRangeManager : MonoBehaviour
 {
-
-    [SerializeField]
-    GameObject fallPlatform;
     private Transform[] childs;
     private List<Transform> ChildList = new List<Transform>();
     int platformCount;
+    bool done;
+
+    [SerializeField]
+    ElevatorControls elevator;
+
     void Start()
     {
         childs = GetComponentsInChildren<Transform>();
-        //platformCount = childs.Length;
         for (int i = 1; i < childs.Length; i += 2)
         {
             ChildList.Add(childs[i]);
         }
     }
+
     void Update()
     {
-        if (ChildList.Count == 0)
+        if (!done && ChildList.Count == 0)
         {
-            Fall();
+            done = true;
+            elevator.Activated = true;
+            GameObject[] cubes = GameObject.FindGameObjectsWithTag("GoalCubeTag");
+            foreach (GameObject cube in cubes)
+            {
+                Destroy(cube, 1);
+            }
         }
         for (int i = 0; i < ChildList.Count; i++)
         {
@@ -31,15 +39,6 @@ public class ShootingRangeManager : MonoBehaviour
             {
                 ChildList.RemoveAt(i);
             }
-        }
-    }
-    void Fall()
-    {
-        fallPlatform.GetComponent<FallPlatform>().Fall();
-        GameObject[] cubes = GameObject.FindGameObjectsWithTag("GoalCubeTag");
-        foreach (GameObject cube in cubes)
-        {
-            Destroy(cube, 1);
         }
     }
 }

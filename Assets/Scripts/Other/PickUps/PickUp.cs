@@ -8,6 +8,7 @@ public class PickUp : MonoBehaviour
     public float dragRange = 6;
     public float dragSpeed = 25;
 
+
     private void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player").transform;
